@@ -1,4 +1,4 @@
-package com.tehfishey.pxmse;
+package com.github.tehfishey.spawnedit;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-public class MainApp extends Application {
+public class Main extends Application {
 	
 	Button button;
 
@@ -25,5 +25,4 @@ public class MainApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
 }
