@@ -22,7 +22,7 @@ public class Condition {
 	int minLightLevel;
 	int maxLightLevel;
 	String tag;
-	TEMPERATURE temperature[];
+	TEMPERATURE temperatures[];
 	String baseBlocks[];
 	String variant[];
 	String neededNearbyBlocks[];
