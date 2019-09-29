@@ -24,12 +24,19 @@ public class SpawnEntry extends SpawnInfoPokemon {
 		return entries;
 	}
 	
-	private ArrayList<Object> generateCartesianProduct(ArrayList<Object>...arrayLists ) {
-		ArrayList<ArrayList<Object>> arrays = new ArrayList<ArrayList<Object>>(Arrays.asList(arrayLists));
-		
-		// A miracle occurs...
-		
-		return new ArrayList<Object>();
+	public void cartesianProductLoop(ArrayList<ArrayList<Object>> arrays, ArrayList<ArrayList<Object>> output, ArrayList<Object> subOutput, int position, ArrayList<Integer> indicies) {
+		if (position == arrays.size())
+			output.add(subOutput);
+		else {
+			ArrayList<Object> currentArray = arrays.get(position);
+			
+			for (int i = 0; i < currentArray.size(); i++)
+			{
+				ArrayList<Object> newSubOutput = (ArrayList<Object>) subOutput.clone();
+				newSubOutput.add(currentArray.get(i));
+				cartesianProductLoop(arrays,output,newSubOutput,position+1, indicies);
+			}
+		}
 	}
 	
 }
