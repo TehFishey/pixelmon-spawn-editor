@@ -47,7 +47,7 @@
                             <AnchorPane maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="141.0" prefWidth="555.0" SplitPane.resizableWithParent="false" />
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                     <fx:include source="MainTable.fxml" fx:id="MainTable"/>
+                                     <fx:include source="MainTable.fxml" fx:id="mainTable"/>
                                  </children>
                               </AnchorPane>
                           </items>

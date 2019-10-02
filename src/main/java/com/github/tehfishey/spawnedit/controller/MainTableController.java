@@ -1,129 +1,205 @@
 package com.github.tehfishey.spawnedit.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
-import com.github.tehfishey.spawnedit.model.TableEntry;
+import com.github.tehfishey.spawnedit.model.Model;
+import com.github.tehfishey.spawnedit.model.SpawnEntry;
+import com.github.tehfishey.spawnedit.pixelmon.Constants;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 public class MainTableController implements Initializable {
-	private HashMap<String, TableColumn<TableEntry, ?>> columnMap;
 	
-	@FXML private TableView<TableEntry> tableView;
+	private Model model;
+	private HashMap<String, TableColumn<HashMap<String, Object>, String>> columnMap;
+	private ObservableList<HashMap<String, Object>> dataList;
 	
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> entryId;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> spawnInfoId;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecSpecies;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> pokemonSpecLevel;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecGender;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecStatus;
-    @FXML private TableColumn<TableEntry, SimpleFloatProperty> pokemonSpecGrowthSize;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecNature;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> pokemonSpecFormId;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecPokeRusStage;
-    @FXML private TableColumn<TableEntry, SimpleBooleanProperty> pokemonSpecRandom;
-    @FXML private TableColumn<TableEntry, SimpleBooleanProperty> pokemonSpecCured;
-    @FXML private TableColumn<TableEntry, SimpleBooleanProperty> pokemonSpecShiny;
-    @FXML private TableColumn<TableEntry, SimpleBooleanProperty> pokemonSpecEgg;
-    @FXML private TableColumn<TableEntry, SimpleBooleanProperty> pokemonSpecUntradeable;
-    @FXML private TableColumn<TableEntry, SimpleBooleanProperty> pokemonSpecUnbreedable;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecIVHP;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecIVATK;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecIVDEF;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecIVSATK;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecIVSDEF;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecIVSPD;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecEVHP;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecEVATK;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecEVDEF;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecEVSATK;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecEVSDEF;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> pokemonSpecEVSPD;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> spawnType;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> intervalType;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> requiredSpace;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> conditionTime;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> conditionWeather;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> conditionBiome;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> conditionTemperature;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> conditionWorld;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionDimension;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> conditionRequiredBlock;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> conditionNearbyBlock;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> conditionVariant;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionMinX;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionMaxX;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionMinZ;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionMaxZ;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionMinY;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionMaxY;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionMinLight;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionMaxLight;
-    @FXML private TableColumn<TableEntry, SimpleBooleanProperty> conditionRequiresSky;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> conditionMoonPhase;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> conditionTag;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> antiConditionTime;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> antiConditionWeather;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> antiConditionBiome;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> antiConditionTemperature;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> antiConditionWorld;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionDimension;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> antiConditionRequiredBlock;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> antiConditionNearbyBlock;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> antiConditionVariant;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionMinX;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionMaxX;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionMinZ;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionMaxZ;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionMinY;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionMaxY;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionMinLight;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionMaxLight;
-    @FXML private TableColumn<TableEntry, SimpleBooleanProperty> antiConditionRequiresSky;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> antiConditionMoonPhase;
-    @FXML private TableColumn<TableEntry, SimpleStringProperty> antiConditionTag;
-    @FXML private TableColumn<TableEntry, SimpleFloatProperty> rarity;
-    @FXML private TableColumn<TableEntry, SimpleFloatProperty> percentage;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> minLevel;
-    @FXML private TableColumn<TableEntry, SimpleIntegerProperty> maxLevel;
-    @FXML private TableColumn<TableEntry, SimpleFloatProperty> specificShinyRate;
-    @FXML private TableColumn<TableEntry, SimpleFloatProperty> specificBossRate;
-    @FXML private TableColumn<TableEntry, SimpleFloatProperty> specificPokeRusRate;    
+	@FXML private TableView<HashMap<String, Object>> tableView;
+	
+	@FXML private TableColumn<HashMap<String, Object>, String> spawnSetId;
+    @FXML private TableColumn<HashMap<String, Object>, String> spawnSetIndex;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecSpecies;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecLevel;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecGender;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecStatus;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecGrowthSize;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecNature;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecFormId;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecPokeRusStage;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecRandom;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecCured;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecShiny;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecEgg;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecUntradeable;
+    @FXML private TableColumn<HashMap<String, Object>, String> pokemonSpecUnbreedable;
+    @FXML private TableColumn<HashMap<String, Object>, String> spawnType;
+    @FXML private TableColumn<HashMap<String, Object>, String> intervalType;
+    @FXML private TableColumn<HashMap<String, Object>, String> requiredSpace;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionTime;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionWeather;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionBiome;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionTemperature;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionWorld;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionDimension;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionRequiredBlock;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionNearbyBlock;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionVariant;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionMinX;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionMaxX;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionMinZ;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionMaxZ;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionMinY;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionMaxY;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionMinLight;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionMaxLight;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionRequiresSky;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionMoonPhase;
+    @FXML private TableColumn<HashMap<String, Object>, String> conditionTag;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionTime;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionWeather;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionBiome;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionTemperature;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionWorld;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionDimension;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionRequiredBlock;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionNearbyBlock;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionVariant;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionMinX;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionMaxX;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionMinZ;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionMaxZ;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionMinY;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionMaxY;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionMinLight;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionMaxLight;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionRequiresSky;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionMoonPhase;
+    @FXML private TableColumn<HashMap<String, Object>, String> antiConditionTag;
+    @FXML private TableColumn<HashMap<String, Object>, String> rarity;
+    @FXML private TableColumn<HashMap<String, Object>, String> percentage;
+    @FXML private TableColumn<HashMap<String, Object>, String> minLevel;
+    @FXML private TableColumn<HashMap<String, Object>, String> maxLevel;
+    @FXML private TableColumn<HashMap<String, Object>, String> specificShinyRate;
+    @FXML private TableColumn<HashMap<String, Object>, String> specificBossRate;
+    @FXML private TableColumn<HashMap<String, Object>, String> specificPokeRusRate;    
     
-	@Override
+    public MainTableController(Model model) {
+        this.model = model;
+    }
+    
+    @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+		dataList = getDataEntries();
 		columnMap = buildTableColumns();
 		
-		for (Entry<String, TableColumn<TableEntry, ?>> entry : columnMap.entrySet()) {
-			TableColumn<TableEntry, ?> column = entry.getValue();
+		tableView.setItems(dataList);
+		
+		spawnSetId.setCellValueFactory(new MapValueFactory("spawnSetId"));
+		spawnSetIndex.setCellValueFactory(new MapValueFactory("spawnSetIndex"));
+		
+		for (Entry<String, TableColumn<HashMap<String, Object>, String>> entry : columnMap.entrySet()) {
+			TableColumn<HashMap<String, Object>, String> column = entry.getValue();
 			String id = entry.getKey();
-			
-			column.setCellValueFactory(new PropertyValueFactory<TableEntry, Object>(id));
+		
+			column.setCellValueFactory(new MapValueFactory(id));
+			column.setCellFactory(getStringCellFactory());
 		}
 		
-		tableView.getItems().setAll(parseEntryList());
+		/*spawnSetId.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HashMap<String, Object>, String>, ObservableValue<String>>() {
+
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<HashMap<String, Object>, String> p) {
+                // for second column we use value
+                return new SimpleStringProperty((String) p.getValue().get("spawnSetId"));
+            }
+        });
+		spawnSetIndex.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HashMap<String, Object>, Integer>, ObservableValue<Integer>>() {
+
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<HashMap<String, Object>, Integer> p) {
+                return new SimpleIntegerProperty((Integer) p.getValue().get("spawnSetIndex")).asObject();
+            }
+        });*/
+		
+		
+		
 	}
 
-	private TableEntry[] parseEntryList(){
-        return new TableEntry[1];   
-    }
+	public void setModel(Model model) {
+		this.model = model;
+	}
 	
-	private HashMap<String, TableColumn<TableEntry, ?>> buildTableColumns() {
-		HashMap<String, TableColumn<TableEntry, ?>> newMap = new HashMap<String, TableColumn<TableEntry, ?>>();
+	/*private class CustomCellFactory implements Callback<TableColumn.CellDataFeatures<HashMap<String, Object>, Object>, ObservableValue<Object>> {
 		
-		newMap.put("entryId", entryId);
-		newMap.put("spawnInfoId", spawnInfoId);
+		@Override
+		public ObservableValue<Object> call(CellDataFeatures<HashMap<String, Object>, Object> data) {
+			Object value = data.getValue();
+	        return (value instanceof ObservableValue)
+	                ? (ObservableValue) value
+	                : new ReadOnlyObjectWrapper<>(value);
+		}
+	}*/
+	
+	private Callback<TableColumn<HashMap<String, Object>, String>, TableCell<HashMap<String, Object>, String>> getStringCellFactory() {
+		return new Callback<TableColumn<HashMap<String, Object>, String>, TableCell<HashMap<String, Object>, String>>() {
+            @SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+            public TableCell call(TableColumn p) {
+                return new TextFieldTableCell(new StringConverter() {
+                    @Override
+                    public String toString(Object t) {
+                    	if (t != null) return t.toString();
+                    	return("");
+                    }
+                    @Override
+                    public Object fromString(String string) {
+                        return string;
+                    }                                    
+                });
+       }
+	};
+	}
+
+	private ObservableList<HashMap<String, Object>> getDataEntries() {
+		ArrayList<SpawnEntry> spawnEntries = model.getSpawnEntries();
+		ArrayList<HashMap<String, Object>> allTableEntries = new ArrayList<HashMap<String, Object>>();
+		
+		for (SpawnEntry entry : spawnEntries) {
+			ArrayList<HashMap<String, Object>> tableEntries = entry.getTableEntries();
+			for (HashMap<String, Object> tableEntry : tableEntries) allTableEntries.add(tableEntry);
+		}
+		
+		return FXCollections.observableArrayList(allTableEntries);	
+	}
+	
+	private HashMap<String, TableColumn<HashMap<String, Object>, String>> buildTableColumns() {
+		HashMap<String, TableColumn<HashMap<String, Object>, String>> newMap = new HashMap<String, TableColumn<HashMap<String, Object>, String>>();
+	
+		newMap.put("spawnSetId", spawnSetId);
+		newMap.put("spawnSetIndex", spawnSetIndex);
 		newMap.put("pokemonSpecSpecies", pokemonSpecSpecies);
 		newMap.put("pokemonSpecLevel", pokemonSpecLevel);
 		newMap.put("pokemonSpecGender", pokemonSpecGender);
@@ -138,18 +214,6 @@ public class MainTableController implements Initializable {
 		newMap.put("pokemonSpecEgg", pokemonSpecEgg);
 		newMap.put("pokemonSpecUntradeable", pokemonSpecUntradeable);
 		newMap.put("pokemonSpecUnbreedable", pokemonSpecUnbreedable);
-		newMap.put("pokemonSpecIVHP", pokemonSpecIVHP);
-		newMap.put("pokemonSpecIVATK", pokemonSpecIVATK);
-		newMap.put("pokemonSpecIVDEF", pokemonSpecIVDEF);
-		newMap.put("pokemonSpecIVSATK", pokemonSpecIVSATK);
-		newMap.put("pokemonSpecIVSDEF", pokemonSpecIVSDEF);
-		newMap.put("pokemonSpecIVSPD", pokemonSpecIVSPD);
-		newMap.put("pokemonSpecEVHP", pokemonSpecEVHP);
-		newMap.put("pokemonSpecEVATK", pokemonSpecEVATK);
-		newMap.put("pokemonSpecEVDEF", pokemonSpecEVDEF);
-		newMap.put("pokemonSpecEVSATK", pokemonSpecEVSATK);
-		newMap.put("pokemonSpecEVSDEF", pokemonSpecEVSDEF);
-		newMap.put("pokemonSpecEVSPD", pokemonSpecEVSPD);
 		newMap.put("spawnType", spawnType);
 		newMap.put("intervalType", intervalType);
 		newMap.put("requiredSpace", requiredSpace);

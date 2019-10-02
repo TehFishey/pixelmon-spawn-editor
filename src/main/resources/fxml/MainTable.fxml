@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<TableView prefHeight="424.0" prefWidth="555.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.MainTableController">
+<TableView fx:id="tableView" prefHeight="424.0" prefWidth="555.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.MainTableController">
   <columns>
-    <TableColumn editable="false" prefWidth="90.0" text="EntryID" fx:id="entryId" />
-      <TableColumn editable="false" prefWidth="90.0" text="SpawnInfo" fx:id="spawnInfoId" />
-      <TableColumn editable="false" prefWidth="78.0" text="PokemonSpec" >
+  	<TableColumn editable="false" prefWidth="90.0" text="SpawnInfo" fx:id="spawnSetId" />
+    <TableColumn editable="false" prefWidth="90.0" text="EntryID" fx:id="spawnSetIndex" />
+    <TableColumn editable="false" prefWidth="78.0" text="PokemonSpec" >
          <columns>
             <TableColumn editable="false" prefWidth="68.0" text="Species" fx:id="pokemonSpecSpecies" />
             <TableColumn editable="false" prefWidth="68.0" text="Level" fx:id="pokemonSpecLevel" />
@@ -30,26 +30,8 @@
             <TableColumn editable="false" prefWidth="68.0" text="Egg State" fx:id="pokemonSpecEgg" />
             <TableColumn editable="false" prefWidth="68.0" text="Untradeable Flag" fx:id="pokemonSpecUntradeable" />
             <TableColumn editable="false" prefWidth="68.0" text="Unbreedable Flag" fx:id="pokemonSpecUnbreedable" />
-            <TableColumn editable="false" prefWidth="68.0" text="IV Stats">
-               <columns>
-                  <TableColumn editable="false" prefWidth="68.0" text="HP" fx:id="pokemonSpecIVHP" />
-                  <TableColumn editable="false" prefWidth="68.0" text="ATK" fx:id="pokemonSpecIVATK" />
-                  <TableColumn editable="false" prefWidth="68.0" text="DEF" fx:id="pokemonSpecIVDEF" />
-                  <TableColumn editable="false" prefWidth="68.0" text="S.ATK" fx:id="pokemonSpecIVSATK" />
-                  <TableColumn editable="false" prefWidth="68.0" text="S.DEF" fx:id="pokemonSpecIVSDEF" />
-                  <TableColumn editable="false" prefWidth="68.0" text="SPD" fx:id="pokemonSpecIVSPD" />
-               </columns>
-            </TableColumn>
-            <TableColumn editable="false" prefWidth="68.0" text="EV Stats">
-               <columns>
-                  <TableColumn editable="false" prefWidth="68.0" text="HP" fx:id="pokemonSpecEVHP" />
-                  <TableColumn editable="false" prefWidth="68.0" text="ATK" fx:id="pokemonSpecEVATK" />
-                  <TableColumn editable="false" prefWidth="68.0" text="DEF" fx:id="pokemonSpecEVDEF" />
-                  <TableColumn editable="false" prefWidth="68.0" text="S.ATK" fx:id="pokemonSpecEVSATK" />
-                  <TableColumn editable="false" prefWidth="68.0" text="S.DEF" fx:id="pokemonSpecEVSDEF" />
-                  <TableColumn editable="false" prefWidth="68.0" text="SPD" fx:id="pokemonSpecEVSPD" />
-               </columns>
-            </TableColumn>
+            <TableColumn editable="false" prefWidth="68.0" text="IV Stats" />
+            <TableColumn editable="false" prefWidth="68.0" text="EV Stats" />
          </columns>
       </TableColumn>
       <TableColumn editable="false" prefWidth="57.0" text="PokemonSpecs" />
