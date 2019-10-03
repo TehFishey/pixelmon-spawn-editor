@@ -2,33 +2,33 @@ package com.github.tehfishey.spawnedit.model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import com.github.tehfishey.spawnedit.pixelmon.PokemonSpawnSet;
+import com.github.tehfishey.spawnedit.pixelmon.SpawnSet;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
 public class FileManager {
 	private final Model parent;
+	private final HashMap<String, String> directoryMap;
 	private final FileLoader fileLoader;
 	private final FileSaver fileSaver;
 	
 	public FileManager(Model parent) {
 		this.parent = parent;
+		this.directoryMap = new HashMap<String, String>();
 		this.fileLoader = new FileLoader();
 		this.fileSaver = new FileSaver();
 	}
 	
 	public void loadFile(File file) {
-		PokemonSpawnSet data = fileLoader.parse(file);
-			// needs to take JSON and return formatted SpawnSet containing all information
-		//directoryMap.put(info.getSetId(), file.getAbsolutePath());
-			//at some point we need to map the SpawnSetId to the file path so that changes can be saved properly
+		SpawnSet data = fileLoader.parse(file);
+		directoryMap.put(data.getSetId(), file.getAbsolutePath());
+		
 		ArrayList<SpawnEntry> newEntries = processSpawnSet(data);
-			//then we need to take SpawnInfo and convert it into an ArrayList of SpawnEntries
 		parent.addSpawnEntries(newEntries);
-			//finally we need to add the ArrayList of SpawnEntries to the model's existing array...
 	}
 	
-	public ArrayList<SpawnEntry> processSpawnSet(PokemonSpawnSet data) {
+	public ArrayList<SpawnEntry> processSpawnSet(SpawnSet data) {
 		ArrayList<SpawnEntry> newEntries = new ArrayList<SpawnEntry>();
 		String SpawnSetId = data.getSetId();
 		

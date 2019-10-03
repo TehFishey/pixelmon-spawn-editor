@@ -1,6 +1,6 @@
 package com.github.tehfishey.spawnedit.pixelmon;
 
-public class PokemonSpawnSet {
+public class SpawnSet {
 	String id;
 	SpawnInfoPokemon spawnInfos[];
 	

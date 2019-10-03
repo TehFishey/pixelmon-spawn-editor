@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<TableView fx:id="tableView" prefHeight="424.0" prefWidth="555.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.MainTableController">
+  <columns>
+  	<TableColumn editable="false" prefWidth="90.0" text="SpawnInfo" fx:id="spawnSetId" />
+    <TableColumn editable="false" prefWidth="90.0" text="EntryID" fx:id="spawnSetIndex" />
+    <TableColumn editable="false" prefWidth="78.0" text="PokemonSpec" >
+         <columns>
+            <TableColumn editable="false" prefWidth="68.0" text="Species" fx:id="pokemonSpecSpecies" />
+            <TableColumn editable="false" prefWidth="68.0" text="Level" fx:id="pokemonSpecLevel" />
+            <TableColumn editable="false" prefWidth="68.0" text="Gender" fx:id="pokemonSpecGender" />
+            <TableColumn editable="false" prefWidth="68.0" text="Status" fx:id="pokemonSpecStatus" />
+            <TableColumn editable="false" prefWidth="76.0" text="Growth Size" fx:id="pokemonSpecGrowthSize" />
+            <TableColumn editable="false" prefWidth="60.0" text="Nature" fx:id="pokemonSpecNature" />
+            <TableColumn editable="false" prefWidth="68.0" text="Form ID" fx:id="pokemonSpecFormId" />
+            <TableColumn editable="false" prefWidth="68.0" text="PokeRus Stage" fx:id="pokemonSpecPokeRusStage" />
+            <TableColumn editable="false" prefWidth="68.0" text="Random Flag" fx:id="pokemonSpecRandom" />
+            <TableColumn editable="false" prefWidth="68.0" text="Cure Flag" fx:id="pokemonSpecCured" />
+            <TableColumn editable="false" prefWidth="68.0" text="Shiny Flag" fx:id="pokemonSpecShiny" />
+            <TableColumn editable="false" prefWidth="68.0" text="Egg State" fx:id="pokemonSpecEgg" />
+            <TableColumn editable="false" prefWidth="68.0" text="Untradeable Flag" fx:id="pokemonSpecUntradeable" />
+            <TableColumn editable="false" prefWidth="68.0" text="Unbreedable Flag" fx:id="pokemonSpecUnbreedable" />
+            <TableColumn editable="false" prefWidth="68.0" text="IV Stats" />
+            <TableColumn editable="false" prefWidth="68.0" text="EV Stats" />
+         </columns>
+      </TableColumn>
+      <TableColumn editable="false" prefWidth="57.0" text="PokemonSpecs" />
+      <TableColumn editable="false" prefWidth="105.0" text="Spawn Type" fx:id="spawnType" />
+    <TableColumn editable="false" prefWidth="95.0" text="Interval Type" fx:id="intervalType" />
+      <TableColumn editable="false" prefWidth="87.0" text="Required Space" fx:id="requiredSpace" />
+      <TableColumn editable="false" prefWidth="26.0" text="Condition">
+         <columns>
+            <TableColumn editable="false" prefWidth="78.0" text="Time" fx:id="conditionTime" />
+            <TableColumn editable="false" prefWidth="78.0" text="Weather" fx:id="conditionWeather" />
+            <TableColumn editable="false" prefWidth="78.0" text="Biome" fx:id="conditionBiome" />
+            <TableColumn editable="false" prefWidth="78.0" text="Temperature" fx:id="conditionTemperature" />
+            <TableColumn editable="false" prefWidth="78.0" text="World" fx:id="conditionWorld" />
+            <TableColumn editable="false" prefWidth="78.0" text="Dimension" fx:id="conditionDimension" />
+            <TableColumn editable="false" prefWidth="78.0" text="Required Block" fx:id="conditionRequiredBlock" />
+            <TableColumn editable="false" prefWidth="78.0" text="Required Near Block" fx:id="conditionNearbyBlock" />
+            <TableColumn editable="false" prefWidth="78.0" text="Variant" fx:id="conditionVariant" />
+            <TableColumn editable="false" prefWidth="78.0" text="Position">
+               <columns>
+                  <TableColumn editable="false" prefWidth="78.0" text="Min X" fx:id="conditionMinX" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Max X" fx:id="conditionMaxX" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Min Z" fx:id="conditionMinZ" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Max Z" fx:id="conditionMaxZ" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Min Y" fx:id="conditionMinY" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Max Y" fx:id="conditionMaxY" />
+               </columns>
+            </TableColumn>
+            <TableColumn editable="false" prefWidth="78.0" text="Light Level">
+               <columns>
+                  <TableColumn editable="false" prefWidth="78.0" text="Min Light" fx:id="conditionMinLight" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Max Light" fx:id="conditionMaxLight" />
+               </columns>
+            </TableColumn>
+            <TableColumn editable="false" prefWidth="78.0" text="Requires Sky" fx:id="conditionRequiresSky" />
+            <TableColumn editable="false" prefWidth="78.0" text="Moon Phase" fx:id="conditionMoonPhase" />
+            <TableColumn editable="false" prefWidth="78.0" text="Tag" fx:id="conditionTag" />
+         </columns>
+      </TableColumn>
+      <TableColumn editable="false" prefWidth="26.0" text="Anti-Condition">
+         <columns>
+            <TableColumn editable="false" prefWidth="78.0" text="Time" fx:id="antiConditionTime" />
+            <TableColumn editable="false" prefWidth="78.0" text="Weather" fx:id="antiConditionWeather" />
+            <TableColumn editable="false" prefWidth="78.0" text="Biome" fx:id="antiConditionBiome" />
+            <TableColumn editable="false" prefWidth="78.0" text="Temperature" fx:id="antiConditionTemperature" />
+            <TableColumn editable="false" prefWidth="78.0" text="World" fx:id="antiConditionWorld" />
+            <TableColumn editable="false" prefWidth="78.0" text="Dimension" fx:id="antiConditionDimension" />
+            <TableColumn editable="false" prefWidth="78.0" text="Required Block" fx:id="antiConditionRequiredBlock" />
+            <TableColumn editable="false" prefWidth="78.0" text="Required Near Block" fx:id="antiConditionNearbyBlock" />
+            <TableColumn editable="false" prefWidth="78.0" text="Variant" fx:id="antiConditionVariant" />
+            <TableColumn editable="false" prefWidth="78.0" text="Position">
+               <columns>
+                  <TableColumn editable="false" prefWidth="78.0" text="Min X" fx:id="antiConditionMinX" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Max X" fx:id="antiConditionMaxX" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Min Z" fx:id="antiConditionMinZ" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Max Z" fx:id="antiConditionMaxZ" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Min Y" fx:id="antiConditionMinY" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Max Y" fx:id="antiConditionMaxY" />
+               </columns>
+            </TableColumn>
+            <TableColumn editable="false" prefWidth="78.0" text="Light Level">
+               <columns>
+                  <TableColumn editable="false" prefWidth="78.0" text="Min Light" fx:id="antiConditionMinLight" />
+                  <TableColumn editable="false" prefWidth="78.0" text="Max Light" fx:id="antiConditionMaxLight" />
+               </columns>
+            </TableColumn>
+            <TableColumn editable="false" prefWidth="78.0" text="Requires Sky" fx:id="antiConditionRequiresSky" />
+            <TableColumn editable="false" prefWidth="78.0" text="Moon Phase" fx:id="antiConditionMoonPhase" />
+            <TableColumn editable="false" prefWidth="78.0" text="Tag" fx:id="antiConditionTag" />
+         </columns>
+      </TableColumn>
+      <TableColumn editable="false" prefWidth="87.0" text="Complex Condition">
+         <columns>
+            <TableColumn editable="false" prefWidth="87.0" text="Conditions" />
+            <TableColumn editable="false" prefWidth="87.0" text="Anti-Conditions" />
+         </columns>
+      </TableColumn>
+      <TableColumn editable="false" prefWidth="87.0" text="Spawn Rarity" fx:id="rarity" />
+      <TableColumn editable="false" prefWidth="87.0" text="Rarity Multipliers" />
+      <TableColumn editable="false" prefWidth="87.0" text="Spawn Percentage" fx:id="percentage" />
+      <TableColumn editable="false" prefWidth="87.0" text="Min Level" fx:id="minLevel" />
+      <TableColumn editable="false" prefWidth="87.0" text="Max Level" fx:id="maxLevel" />
+      <TableColumn editable="false" prefWidth="87.0" text="Shiny Rate" fx:id="specificShinyRate" />
+      <TableColumn editable="false" prefWidth="87.0" text="Boss Rate" fx:id="specificBossRate" />
+      <TableColumn editable="false" prefWidth="87.0" text="PokeRus Rate" fx:id="specificPokeRusRate" />
+      <TableColumn editable="false" prefWidth="87.0" text="Held Items" />
+  </columns>
+</TableView>

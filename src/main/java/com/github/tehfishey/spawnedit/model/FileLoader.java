@@ -7,7 +7,7 @@ import java.io.Reader;
 
 import com.google.gson.Gson;
 
-import com.github.tehfishey.spawnedit.pixelmon.PokemonSpawnSet;
+import com.github.tehfishey.spawnedit.pixelmon.SpawnSet;
 
 public class FileLoader {
 
@@ -17,14 +17,13 @@ public class FileLoader {
 		parser = new Gson();
 	}
 	
-	public PokemonSpawnSet parse(File file) {
+	public SpawnSet parse(File file) {
 		try (Reader reader = new FileReader(file)) {
-			PokemonSpawnSet spawnSet = parser.fromJson(reader, PokemonSpawnSet.class);
-			System.out.println("FileLoader.parse");
+			SpawnSet spawnSet = parser.fromJson(reader, SpawnSet.class);
 			return spawnSet;
 		} catch (IOException e) {
             e.printStackTrace();
-            return new PokemonSpawnSet();
+            return new SpawnSet();
         }
 	}
 }

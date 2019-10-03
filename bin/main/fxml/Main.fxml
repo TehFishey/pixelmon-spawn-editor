@@ -10,15 +10,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.MainController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.MainController">
    <children>
-      <VBox prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox maxHeight="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <MenuBar>
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#Exit" text="Exit" />
+                    <MenuItem fx:id="menuLoad" mnemonicParsing="false" onAction="#loadFile" text="Load" />
+                    <MenuItem fx:id="menuExit" mnemonicParsing="false" onAction="#exit" text="Exit" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
@@ -33,147 +34,21 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <SplitPane dividerPositions="0.29797979797979796" prefHeight="575.0" prefWidth="800.0">
+            <SplitPane dividerPositions="0.29797979797979796" maxHeight="1.7976931348623157E308" prefHeight="575.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
                      <children>
-                        <TreeView maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="544.0" prefWidth="235.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <TreeView maxWidth="-Infinity" prefHeight="544.0" prefWidth="235.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
                         <SplitPane dividerPositions="0.30122591943957966" orientation="VERTICAL" prefHeight="573.0" prefWidth="557.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <items>
-                            <AnchorPane maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="141.0" prefWidth="555.0" />
+                            <AnchorPane maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="141.0" prefWidth="555.0" SplitPane.resizableWithParent="false" />
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="396.0" prefWidth="555.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <columns>
-                                        <TableColumn editable="false" prefWidth="90.0" text="EntryID" />
-                                          <TableColumn editable="false" prefWidth="90.0" text="SpawnInfo" />
-                                          <TableColumn editable="false" prefWidth="78.0" text="PokemonSpec">
-                                             <columns>
-                                                <TableColumn editable="false" prefWidth="68.0" text="Species" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Level" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Gender" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Status" />
-                                                <TableColumn editable="false" prefWidth="76.0" text="Growth Size" />
-                                                <TableColumn editable="false" prefWidth="60.0" text="Nature" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Form ID" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="PokeRus Stage" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Random Flag" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Cure Flag" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Shiny Flag" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Egg State" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Untradeable Flag" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="Unbreedable Flag" />
-                                                <TableColumn editable="false" prefWidth="68.0" text="IV Stats">
-                                                   <columns>
-                                                      <TableColumn editable="false" prefWidth="68.0" text="HP" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="ATK" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="DEF" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="S.ATK" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="S.DEF" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="SPD" />
-                                                   </columns>
-                                                </TableColumn>
-                                                <TableColumn editable="false" prefWidth="68.0" text="EV Stats">
-                                                   <columns>
-                                                      <TableColumn editable="false" prefWidth="68.0" text="HP" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="ATK" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="DEF" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="S.ATK" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="S.DEF" />
-                                                      <TableColumn editable="false" prefWidth="68.0" text="SPD" />
-                                                   </columns>
-                                                </TableColumn>
-                                             </columns>
-                                          </TableColumn>
-                                          <TableColumn editable="false" prefWidth="57.0" text="PokemonSpecs" />
-                                          <TableColumn editable="false" prefWidth="105.0" text="Spawn Type" />
-                                        <TableColumn editable="false" prefWidth="95.0" text="Interval Type" />
-                                          <TableColumn editable="false" prefWidth="87.0" text="Required Space" />
-                                          <TableColumn editable="false" prefWidth="26.0" text="Condition">
-                                             <columns>
-                                                <TableColumn editable="false" prefWidth="78.0" text="Time" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Weather" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Biome" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Temperature" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="World" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Dimension" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Required Block" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Required Near Block" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Variant" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Position">
-                                                   <columns>
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Min X" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Max X" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Min Z" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Max Z" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Min Y" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Max Y" />
-                                                   </columns>
-                                                </TableColumn>
-                                                <TableColumn editable="false" prefWidth="78.0" text="Light Level">
-                                                   <columns>
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Min Light" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Max Light" />
-                                                   </columns>
-                                                </TableColumn>
-                                                <TableColumn editable="false" prefWidth="78.0" text="Requires Sky" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Moon Phase" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Tag" />
-                                             </columns>
-                                          </TableColumn>
-                                          <TableColumn editable="false" prefWidth="26.0" text="Anti-Condition">
-                                             <columns>
-                                                <TableColumn editable="false" prefWidth="78.0" text="Time" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Weather" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Biome" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Temperature" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="World" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Dimension" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Required Block" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Required Near Block" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Variant" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Position">
-                                                   <columns>
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Min X" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Max X" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Min Z" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Max Z" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Min Y" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Max Y" />
-                                                   </columns>
-                                                </TableColumn>
-                                                <TableColumn editable="false" prefWidth="78.0" text="Light Level">
-                                                   <columns>
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Min Light" />
-                                                      <TableColumn editable="false" prefWidth="78.0" text="Max Light" />
-                                                   </columns>
-                                                </TableColumn>
-                                                <TableColumn editable="false" prefWidth="78.0" text="Requires Sky" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Moon Phase" />
-                                                <TableColumn editable="false" prefWidth="78.0" text="Tag" />
-                                             </columns>
-                                          </TableColumn>
-                                          <TableColumn editable="false" prefWidth="87.0" text="Complex Condition">
-                                             <columns>
-                                                <TableColumn editable="false" prefWidth="87.0" text="Conditions" />
-                                                <TableColumn editable="false" prefWidth="87.0" text="Anti-Conditions" />
-                                             </columns>
-                                          </TableColumn>
-                                          <TableColumn editable="false" prefWidth="87.0" text="Spawn Rarity" />
-                                          <TableColumn editable="false" prefWidth="87.0" text="Rarity Multipliers" />
-                                          <TableColumn editable="false" prefWidth="87.0" text="Spawn Percentage" />
-                                          <TableColumn editable="false" prefWidth="87.0" text="Min Level" />
-                                          <TableColumn editable="false" prefWidth="87.0" text="Max Level" />
-                                          <TableColumn editable="false" prefWidth="87.0" text="Shiny Rate" />
-                                          <TableColumn editable="false" prefWidth="87.0" text="Boss Rate" />
-                                          <TableColumn editable="false" prefWidth="87.0" text="PokeRus Rate" />
-                                          <TableColumn editable="false" prefWidth="87.0" text="Held Items" />
-                                      </columns>
-                                    </TableView>
+                                     <fx:include source="MainTable.fxml" fx:id="mainTable"/>
                                  </children>
                               </AnchorPane>
                           </items>

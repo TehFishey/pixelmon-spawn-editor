@@ -35,7 +35,7 @@ import javafx.util.StringConverter;
 public class MainTableController implements Initializable {
 	
 	private Model model;
-	private PropertyChangeListener modelListener;
+	private final PropertyChangeListener modelListener;
 	private HashMap<String, TableColumn<HashMap<String, Object>, String>> columnMap;
 	private final ObservableList<HashMap<String, Object>> dataList;
 	
@@ -110,16 +110,17 @@ public class MainTableController implements Initializable {
     
     public MainTableController(Model model) {
         this.model = model;
-        this.modelListener = new SpawnEntryListener(this);
+        this.modelListener = new ModelUpdateListener(this);
         this.dataList = FXCollections.observableArrayList();
         model.registerListener(modelListener);
     }
     
+    public void setModel(Model model) { this.model = model; }
     
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
-		this.getDataEntries();
+		importModelData(dataList);
 		columnMap = buildTableColumns();
 		
 		tableView.setItems(dataList);
@@ -133,43 +134,9 @@ public class MainTableController implements Initializable {
 		
 			column.setCellValueFactory(new MapValueFactory(id));
 			column.setCellFactory(getStringCellFactory());
-		}
-		
-		/*spawnSetId.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HashMap<String, Object>, String>, ObservableValue<String>>() {
-
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<HashMap<String, Object>, String> p) {
-                // for second column we use value
-                return new SimpleStringProperty((String) p.getValue().get("spawnSetId"));
-            }
-        });
-		spawnSetIndex.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<HashMap<String, Object>, Integer>, ObservableValue<Integer>>() {
-
-            @Override
-            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<HashMap<String, Object>, Integer> p) {
-                return new SimpleIntegerProperty((Integer) p.getValue().get("spawnSetIndex")).asObject();
-            }
-        });*/
-		
-		
-		
+		}	
 	}
 
-	public void setModel(Model model) {
-		this.model = model;
-	}
-	
-	/*private class CustomCellFactory implements Callback<TableColumn.CellDataFeatures<HashMap<String, Object>, Object>, ObservableValue<Object>> {
-		
-		@Override
-		public ObservableValue<Object> call(CellDataFeatures<HashMap<String, Object>, Object> data) {
-			Object value = data.getValue();
-	        return (value instanceof ObservableValue)
-	                ? (ObservableValue) value
-	                : new ReadOnlyObjectWrapper<>(value);
-		}
-	}*/
-	
 	private Callback<TableColumn<HashMap<String, Object>, String>, TableCell<HashMap<String, Object>, String>> getStringCellFactory() {
 		return new Callback<TableColumn<HashMap<String, Object>, String>, TableCell<HashMap<String, Object>, String>>() {
             @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -186,11 +153,11 @@ public class MainTableController implements Initializable {
                         return string;
                     }                                    
                 });
-       }
-	};
+            }
+		};
 	}
 
-	private void getDataEntries() {
+	private void importModelData(ObservableList<HashMap<String, Object>> dataList) {
 		ArrayList<SpawnEntry> spawnEntries = model.getSpawnEntries();
 		ArrayList<HashMap<String, Object>> allTableEntries = new ArrayList<HashMap<String, Object>>();
 		
@@ -203,10 +170,27 @@ public class MainTableController implements Initializable {
 		dataList.addAll(allTableEntries);
 	}
 	
-	private void updateDataEntries() {
-		this.getDataEntries();
-		System.out.println("MainTableController.updateDataEntries");
-		System.out.println(dataList.toString());
+	private void addModelData(ObservableList<HashMap<String, Object>> dataList, ArrayList<SpawnEntry> newSpawnEntries) {
+		ArrayList<HashMap<String, Object>> allTableEntries = new ArrayList<HashMap<String, Object>>();
+		
+		for (SpawnEntry entry : newSpawnEntries) {
+			ArrayList<HashMap<String, Object>> tableEntries = entry.getTableEntries();
+			for (HashMap<String, Object> tableEntry : tableEntries) allTableEntries.add(tableEntry);
+		}
+		
+		dataList.removeAll(allTableEntries);
+		dataList.addAll(allTableEntries);
+	}
+	
+	private void removeModelData(ObservableList<HashMap<String, Object>> dataList, ArrayList<SpawnEntry> oldSpawnEntries) {
+		ArrayList<HashMap<String, Object>> allTableEntries = new ArrayList<HashMap<String, Object>>();
+		
+		for (SpawnEntry entry : oldSpawnEntries) {
+			ArrayList<HashMap<String, Object>> tableEntries = entry.getTableEntries();
+			for (HashMap<String, Object> tableEntry : tableEntries) allTableEntries.add(tableEntry);
+		}
+		
+		dataList.removeAll(allTableEntries);
 	}
 	
 	private HashMap<String, TableColumn<HashMap<String, Object>, String>> buildTableColumns() {
@@ -282,18 +266,27 @@ public class MainTableController implements Initializable {
 		return newMap;
 	}
 	
-	private class SpawnEntryListener implements PropertyChangeListener {
+	private class ModelUpdateListener implements PropertyChangeListener {
 
 		private final MainTableController parent;
 		
-		SpawnEntryListener(MainTableController parent) {
+		ModelUpdateListener(MainTableController parent) {
 			this.parent = parent;
 		}
 		
 		@Override
+		@SuppressWarnings("unchecked")
 		public void propertyChange(PropertyChangeEvent evt) {
 			String propertyName = evt.getPropertyName();
-			if (propertyName.equals("spawnEntries")) parent.updateDataEntries();
+			
+			switch (propertyName) {
+				case "spawnEntriesAdded" :
+					parent.addModelData(dataList, (ArrayList<SpawnEntry>) evt.getNewValue());
+					break;
+				case "spawnEntriesRemoved" :
+					parent.removeModelData(dataList, (ArrayList<SpawnEntry>) evt.getNewValue());
+					break;
+			}
 		}
 		
 	}

@@ -7,12 +7,12 @@ import java.util.ArrayList;
 public class Model {
 	private final FileManager fileManager;
 	private final ArrayList<SpawnEntry> spawnEntries;
-	private final PropertyChangeSupport listenerSupport;
+	private final PropertyChangeSupport modelUpdateSupport;
 	
 	public Model() {
 		fileManager = new FileManager(this);
 		spawnEntries = new ArrayList<SpawnEntry>();
-		listenerSupport = new PropertyChangeSupport(this);
+		modelUpdateSupport = new PropertyChangeSupport(this);
 	}
 	
 	public FileManager getFileManager() {
@@ -23,22 +23,26 @@ public class Model {
 	
 	public void addSpawnEntries(ArrayList<SpawnEntry> spawnEntries) { 
 		this.spawnEntries.addAll(spawnEntries); 
-		notifyListenerChanges(this.spawnEntries);
+		notifyModelAddition(this.spawnEntries);
 	}
 	
 	public void removeSpawnEntries(ArrayList<SpawnEntry> spawnEntries) { 
 		this.spawnEntries.removeAll(spawnEntries); 
-		notifyListenerChanges(this.spawnEntries);
+		notifyModelSubtraction(this.spawnEntries);
 	}
 	
 	
 	public void registerListener(PropertyChangeListener listener) {
-		listenerSupport.addPropertyChangeListener(listener);
+		modelUpdateSupport.addPropertyChangeListener(listener);
 		
 	}
 	
-	private void notifyListenerChanges(ArrayList<SpawnEntry> spawnEntries) {
-		listenerSupport.firePropertyChange("spawnEntries", null, spawnEntries);
+	private void notifyModelAddition(ArrayList<SpawnEntry> spawnEntries) {
+		modelUpdateSupport.firePropertyChange("spawnEntriesAdded", null, spawnEntries);
+	}
+	
+	private void notifyModelSubtraction(ArrayList<SpawnEntry> spawnEntries) {
+		modelUpdateSupport.firePropertyChange("spawnEntriesRemoved", null, spawnEntries);
 	}
 	
 	
