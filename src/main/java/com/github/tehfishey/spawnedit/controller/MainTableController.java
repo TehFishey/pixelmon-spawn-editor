@@ -1,5 +1,7 @@
 package com.github.tehfishey.spawnedit.controller;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +35,9 @@ import javafx.util.StringConverter;
 public class MainTableController implements Initializable {
 	
 	private Model model;
+	private PropertyChangeListener modelListener;
 	private HashMap<String, TableColumn<HashMap<String, Object>, String>> columnMap;
-	private ObservableList<HashMap<String, Object>> dataList;
+	private final ObservableList<HashMap<String, Object>> dataList;
 	
 	@FXML private TableView<HashMap<String, Object>> tableView;
 	
@@ -107,12 +110,16 @@ public class MainTableController implements Initializable {
     
     public MainTableController(Model model) {
         this.model = model;
+        this.modelListener = new SpawnEntryListener(this);
+        this.dataList = FXCollections.observableArrayList();
+        model.registerListener(modelListener);
     }
+    
     
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
-		dataList = getDataEntries();
+		this.getDataEntries();
 		columnMap = buildTableColumns();
 		
 		tableView.setItems(dataList);
@@ -183,7 +190,7 @@ public class MainTableController implements Initializable {
 	};
 	}
 
-	private ObservableList<HashMap<String, Object>> getDataEntries() {
+	private void getDataEntries() {
 		ArrayList<SpawnEntry> spawnEntries = model.getSpawnEntries();
 		ArrayList<HashMap<String, Object>> allTableEntries = new ArrayList<HashMap<String, Object>>();
 		
@@ -192,7 +199,14 @@ public class MainTableController implements Initializable {
 			for (HashMap<String, Object> tableEntry : tableEntries) allTableEntries.add(tableEntry);
 		}
 		
-		return FXCollections.observableArrayList(allTableEntries);	
+		dataList.clear();
+		dataList.addAll(allTableEntries);
+	}
+	
+	private void updateDataEntries() {
+		this.getDataEntries();
+		System.out.println("MainTableController.updateDataEntries");
+		System.out.println(dataList.toString());
 	}
 	
 	private HashMap<String, TableColumn<HashMap<String, Object>, String>> buildTableColumns() {
@@ -268,5 +282,20 @@ public class MainTableController implements Initializable {
 		return newMap;
 	}
 	
+	private class SpawnEntryListener implements PropertyChangeListener {
 
+		private final MainTableController parent;
+		
+		SpawnEntryListener(MainTableController parent) {
+			this.parent = parent;
+		}
+		
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			String propertyName = evt.getPropertyName();
+			if (propertyName.equals("spawnEntries")) parent.updateDataEntries();
+		}
+		
+	}
+	
 }

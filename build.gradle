@@ -26,9 +26,12 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:27.0.1-jre'
-
+	implementation 'com.google.code.gson:gson:2.8.5'
+	
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+
+    
 }
 
 javafx {
@@ -36,4 +39,4 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.base', 'javafx.fxml', 'javafx.graphics', 'javafx.media', 'javafx.swing', 'javafx.web' ]
 }
 
-mainClassName = 'com.tehfishey.pxmse.MainApp'
+mainClassName = 'com.github.tehfishey.spawnedit.Main'

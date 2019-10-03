@@ -7,7 +7,7 @@ import com.github.tehfishey.spawnedit.pixelmon.Constants.STATUS;
 
 public class PokemonSpec {
 	
-	String typeName;
+	String name;
 	int level;
 	GENDER gender;
 	boolean shiny;
@@ -27,10 +27,10 @@ public class PokemonSpec {
 	int iv[];
 	int ev[];
 	public String getTypeName() {
-		return typeName;
+		return name;
 	}
 	public void setTypeName(String typeName) {
-		this.typeName = typeName;
+		this.name = typeName;
 	}
 	public int getLevel() {
 		return level;
