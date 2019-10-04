@@ -44,6 +44,4 @@ public class Model {
 	private void notifyModelSubtraction(ArrayList<SpawnEntry> spawnEntries) {
 		modelUpdateSupport.firePropertyChange("spawnEntriesRemoved", null, spawnEntries);
 	}
-	
-	
 }

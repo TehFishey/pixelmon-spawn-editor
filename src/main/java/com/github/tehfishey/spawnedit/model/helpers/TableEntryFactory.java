@@ -6,6 +6,10 @@ import java.util.HashMap;
 import com.github.tehfishey.spawnedit.model.SpawnEntry;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
+	// Utility class for generating data for TableView display from SpawnEntry domain objects. Each SpawnEntry
+	// can potentially have multiple table-row entries - one for each permutation of its array-properties.
+	// TableEntryFactory takes the Cartesian product of these properties and creates new entry data for each result.
+
 public class TableEntryFactory {
 
 	public static ArrayList<HashMap<String, Object>> buildEntries(SpawnEntry spawnEntry) {

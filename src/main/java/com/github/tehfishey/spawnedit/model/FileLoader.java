@@ -9,6 +9,10 @@ import com.google.gson.Gson;
 
 import com.github.tehfishey.spawnedit.pixelmon.SpawnSet;
 
+	// Component of the FileManager class. Responsible for parsing and validating 
+	// loaded .json data files using Gson. Returns SpawnSet objects, which represent
+	// whole data file contents.
+
 public class FileLoader {
 
 	private Gson parser;
