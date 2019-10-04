@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.tehfishey.spawnedit.model.helpers.TableEntryFactory;
+import com.github.tehfishey.spawnedit.model.helpers.Enums.COLUMN_ID;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
 	// Model's primary domain object type. SpawnEntry serves as a wrapper for SpawnInfo objects, which 
@@ -15,7 +16,7 @@ public class SpawnEntry {
 	String spawnSetId;
 	int spawnSetIndex;
 	SpawnInfoPokemon spawnInfo;
-	ArrayList<HashMap<String, Object>> tableEntries;
+	ArrayList<HashMap<COLUMN_ID, Object>> tableEntries;
 	
 	public SpawnEntry(String spawnSetId, int spawnSetIndex, SpawnInfoPokemon spawnInfo) {
 		this.spawnSetId = spawnSetId;
@@ -24,7 +25,7 @@ public class SpawnEntry {
 		this.tableEntries = TableEntryFactory.buildEntries(this);
 	}
 	
-	public ArrayList<HashMap<String, Object>> getTableEntries() {
+	public ArrayList<HashMap<COLUMN_ID, Object>> getTableEntries() {
 		return tableEntries;
 	}
 	

@@ -13,7 +13,7 @@
 <TableView fx:id="tableView" prefHeight="424.0" prefWidth="555.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.MainTableController">
   <columns>
   	<TableColumn editable="false" prefWidth="90.0" text="SpawnInfo" fx:id="spawnSetId" />
-    <TableColumn editable="false" prefWidth="90.0" text="EntryID" fx:id="spawnSetIndex" />
+    <TableColumn editable="false" prefWidth="90.0" text="SpawnIndex" fx:id="spawnSetIndex" />
     <TableColumn editable="false" prefWidth="78.0" text="PokemonSpec" >
          <columns>
             <TableColumn editable="false" prefWidth="68.0" text="Species" fx:id="pokemonSpecSpecies" />
@@ -24,19 +24,19 @@
             <TableColumn editable="false" prefWidth="60.0" text="Nature" fx:id="pokemonSpecNature" />
             <TableColumn editable="false" prefWidth="68.0" text="Form ID" fx:id="pokemonSpecFormId" />
             <TableColumn editable="false" prefWidth="68.0" text="PokeRus Stage" fx:id="pokemonSpecPokeRusStage" />
-            <TableColumn editable="false" prefWidth="68.0" text="Random Flag" fx:id="pokemonSpecRandom" />
-            <TableColumn editable="false" prefWidth="68.0" text="Cure Flag" fx:id="pokemonSpecCured" />
-            <TableColumn editable="false" prefWidth="68.0" text="Shiny Flag" fx:id="pokemonSpecShiny" />
+            <TableColumn editable="false" prefWidth="68.0" text="Random" fx:id="pokemonSpecRandom" />
+            <TableColumn editable="false" prefWidth="68.0" text="Cured" fx:id="pokemonSpecCured" />
+            <TableColumn editable="false" prefWidth="68.0" text="Shiny" fx:id="pokemonSpecShiny" />
             <TableColumn editable="false" prefWidth="68.0" text="Egg State" fx:id="pokemonSpecEgg" />
             <TableColumn editable="false" prefWidth="68.0" text="Untradeable Flag" fx:id="pokemonSpecUntradeable" />
             <TableColumn editable="false" prefWidth="68.0" text="Unbreedable Flag" fx:id="pokemonSpecUnbreedable" />
-            <TableColumn editable="false" prefWidth="68.0" text="IV Stats" />
-            <TableColumn editable="false" prefWidth="68.0" text="EV Stats" />
+            <TableColumn editable="false" prefWidth="68.0" text="IV Stats" fx:id="pokemonSpecIVStats" />
+            <TableColumn editable="false" prefWidth="68.0" text="EV Stats" fx:id="pokemonSpecEVStats"/>
          </columns>
       </TableColumn>
-      <TableColumn editable="false" prefWidth="57.0" text="PokemonSpecs" />
+      <TableColumn editable="false" prefWidth="57.0" text="PokemonSpecs" fx:id="pokemonSpecs" />
       <TableColumn editable="false" prefWidth="105.0" text="Spawn Type" fx:id="spawnType" />
-    <TableColumn editable="false" prefWidth="95.0" text="Interval Type" fx:id="intervalType" />
+      <TableColumn editable="false" prefWidth="95.0" text="Interval Type" fx:id="intervalType" />
       <TableColumn editable="false" prefWidth="87.0" text="Required Space" fx:id="requiredSpace" />
       <TableColumn editable="false" prefWidth="26.0" text="Condition">
          <columns>
@@ -102,20 +102,20 @@
             <TableColumn editable="false" prefWidth="78.0" text="Tag" fx:id="antiConditionTag" />
          </columns>
       </TableColumn>
-      <TableColumn editable="false" prefWidth="87.0" text="Complex Condition">
+      <TableColumn editable="false" prefWidth="87.0" text="Composite Condition">
          <columns>
-            <TableColumn editable="false" prefWidth="87.0" text="Conditions" />
-            <TableColumn editable="false" prefWidth="87.0" text="Anti-Conditions" />
+            <TableColumn editable="false" prefWidth="87.0" text="Conditions" fx:id="compositeConditionConditions" />
+            <TableColumn editable="false" prefWidth="87.0" text="Anti-Conditions" fx:id="compositeConditionAntiConditions"/>
          </columns>
       </TableColumn>
       <TableColumn editable="false" prefWidth="87.0" text="Spawn Rarity" fx:id="rarity" />
-      <TableColumn editable="false" prefWidth="87.0" text="Rarity Multipliers" />
+      <TableColumn editable="false" prefWidth="87.0" text="Rarity Multipliers" fx:id="rarityMultipliers" />
       <TableColumn editable="false" prefWidth="87.0" text="Spawn Percentage" fx:id="percentage" />
       <TableColumn editable="false" prefWidth="87.0" text="Min Level" fx:id="minLevel" />
       <TableColumn editable="false" prefWidth="87.0" text="Max Level" fx:id="maxLevel" />
       <TableColumn editable="false" prefWidth="87.0" text="Shiny Rate" fx:id="specificShinyRate" />
       <TableColumn editable="false" prefWidth="87.0" text="Boss Rate" fx:id="specificBossRate" />
       <TableColumn editable="false" prefWidth="87.0" text="PokeRus Rate" fx:id="specificPokeRusRate" />
-      <TableColumn editable="false" prefWidth="87.0" text="Held Items" />
+      <TableColumn editable="false" prefWidth="87.0" text="Held Items" fx:id="heldItems"/>
   </columns>
 </TableView>

@@ -1,6 +1,9 @@
-package com.github.tehfishey.spawnedit.pixelmon;
+package com.github.tehfishey.spawnedit.pixelmon.helpers;
 
-public class Constants {
+public class Enums {
+	
+	private Enums() {}
+	
 	public static enum TIME {
 		DAWN("DAWN"),
 		MORNING("MORNING"),

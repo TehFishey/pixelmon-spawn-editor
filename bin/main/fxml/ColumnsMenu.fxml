@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.CustomMenuItem?>
+<?import javafx.scene.control.Menu?>
+
+<Menu mnemonicParsing="false" text="Columns" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.ColumnsMenuController">
+	<items>
+	  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpawnInfo" text="SpawnInfo" textFill="#000000" /> </content> </CustomMenuItem>
+	  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpawnIndex" text="Spawn Index" textFill="#000000" /> </content> </CustomMenuItem>
+      <Menu mnemonicParsing="false" text="PokemonSpec">
+        <items>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecSpecies" text="Species" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecLevel" text="Level" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecGender" text="Gender" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecStatus" text="Status" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecGrowthSize" text="Growth Size" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecNature" text="Nature" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecFormId" text="Form ID" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecPokeRusStage" text="PokeRus Stage" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecRandom" text="Random" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecCured" text="Cured" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecShiny" text="Shiny" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecEgg" text="Egg" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecUntradeable" text="Untradeable" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecUnbreedable" text="Unbreedable" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecIVStats" text="IV Stats" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecEVStats" text="EV Stats" textFill="#000000" /> </content> </CustomMenuItem>
+        </items>
+      </Menu>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuPokemonSpecs" text="PokemonSpecs" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpawnType" text="Spawn Type" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuIntervalType" text="Interval Type" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuRequiredSpace" text="Required Space" textFill="#000000" /> </content> </CustomMenuItem>
+      <Menu mnemonicParsing="false" text="Condition">
+        <items>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionTime" text="Time" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionWeather" text="Weather" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionBiome" text="Biome" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionTemperature" text="Temperature" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionWorld" text="World" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionDimension" text="Dimension" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionRequiredBlock" text="Required Block" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionNearbyBlock" text="Required Near Block" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionVariant" text="Variant" textFill="#000000" /> </content> </CustomMenuItem>
+              <Menu mnemonicParsing="false" text="Position">
+                <items>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionMinX" text="Min X" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionMaxX" text="Max X" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionMinZ" text="Min Z" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionMaxZ" text="Max Z" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionMinY" text="Min Y" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionMaxY" text="Max Y" textFill="#000000" /> </content> </CustomMenuItem>
+                </items>
+              </Menu>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionMinLight" text="Min Light" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionMaxLight" text="Max Light" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionRequiresSky" text="Requires Sky" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionMoonPhase" text="Moon Phase" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuConditionTag" text="Tag" textFill="#000000" /> </content> </CustomMenuItem>
+        </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="AntiCondition">
+        <items>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionTime" text="Time" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionWeather" text="Weather" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionBiome" text="Biome" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionTemperature" text="Temperature" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionWorld" text="World" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionDimension" text="Dimension" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionRequiredBlock" text="Required Block" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionNearbyBlock" text="Required Near Block" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionVariant" text="Variant" textFill="#000000" /> </content> </CustomMenuItem>
+              <Menu mnemonicParsing="false" text="Position">
+                <items>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionMinX" text="Min X" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionMaxX" text="Max X" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionMinZ" text="Min Z" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionMaxZ" text="Max Z" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionMinY" text="Min Y" textFill="#000000" /> </content> </CustomMenuItem>
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionMaxY" text="Max Y" textFill="#000000" /> </content> </CustomMenuItem>
+                </items>
+              </Menu>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionMinLight" text="Min Light" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionMaxLight" text="Max Light" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionRequiresSky" text="Requires Sky" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionMoonPhase" text="Moon Phase" textFill="#000000" /> </content> </CustomMenuItem>
+            <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuAntiConditionTag" text="Tag" textFill="#000000" /> </content> </CustomMenuItem>
+        </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Composite Condition">
+        <items>
+          <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuCompositeConditionConditions" text="Min Light" textFill="#000000" /> </content> </CustomMenuItem>
+          <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuCompositeConditionAntiConditions" text="Max Light" textFill="#000000" /> </content> </CustomMenuItem>
+        </items>
+      </Menu>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuRarity" text="Spawn Rarity" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuRarityMultipliers" text="Rarity Multipliers" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuPercentage" text="Spawn Percentage" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuMinLevel" text="Min Level" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuMaxLevel" text="Max Level" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecificShinyRate" text="Shiny Rate" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecificBossRate" text="Boss Rate" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpecificPokeRusRate" text="PokeRus Rate" textFill="#000000" /> </content> </CustomMenuItem>
+      <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuHeldItems" text="Held Items" textFill="#000000" /> </content> </CustomMenuItem>
+     </items>
+</Menu>

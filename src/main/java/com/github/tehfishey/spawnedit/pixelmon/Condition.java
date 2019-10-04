@@ -1,8 +1,8 @@
 package com.github.tehfishey.spawnedit.pixelmon;
 
-import com.github.tehfishey.spawnedit.pixelmon.Constants.TEMPERATURE;
-import com.github.tehfishey.spawnedit.pixelmon.Constants.TIME;
-import com.github.tehfishey.spawnedit.pixelmon.Constants.WEATHER;
+import com.github.tehfishey.spawnedit.pixelmon.helpers.Enums.TEMPERATURE;
+import com.github.tehfishey.spawnedit.pixelmon.helpers.Enums.TIME;
+import com.github.tehfishey.spawnedit.pixelmon.helpers.Enums.WEATHER;
 
 public class Condition {
 	

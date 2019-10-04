@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.tehfishey.spawnedit.model.SpawnEntry;
+import com.github.tehfishey.spawnedit.model.helpers.Enums.COLUMN_ID;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
 	// Utility class for generating data for TableView display from SpawnEntry domain objects. Each SpawnEntry
@@ -12,14 +13,14 @@ import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
 public class TableEntryFactory {
 
-	public static ArrayList<HashMap<String, Object>> buildEntries(SpawnEntry spawnEntry) {
-		ArrayList<HashMap<String, Object>> tableEntries = new ArrayList<HashMap<String, Object>>();
+	public static ArrayList<HashMap<COLUMN_ID, Object>> buildEntries(SpawnEntry spawnEntry) {
+		ArrayList<HashMap<COLUMN_ID, Object>> tableEntries = new ArrayList<HashMap<COLUMN_ID, Object>>();
 		
-		HashMap<String, Object> tableEntryPrototype = processIndividualValues(spawnEntry);
-		ArrayList<HashMap<String, Object>> arrayValuePermutations = processArrayValues(spawnEntry);
+		HashMap<COLUMN_ID, Object> tableEntryPrototype = processIndividualValues(spawnEntry);
+		ArrayList<HashMap<COLUMN_ID, Object>> arrayValuePermutations = processArrayValues(spawnEntry);
 		
-		for (HashMap<String, Object> arrayValueSet : arrayValuePermutations) {
-			HashMap<String, Object> newEntry = new HashMap<String, Object>(tableEntryPrototype);
+		for (HashMap<COLUMN_ID, Object> arrayValueSet : arrayValuePermutations) {
+			HashMap<COLUMN_ID, Object> newEntry = new HashMap<COLUMN_ID, Object>(tableEntryPrototype);
 			newEntry.putAll(arrayValueSet);
 			tableEntries.add(newEntry);
 		}
@@ -27,119 +28,128 @@ public class TableEntryFactory {
 		return tableEntries;
 	}
 	
-	public static HashMap<String, Object> processIndividualValues(SpawnEntry spawnEntry) {
-		HashMap<String, Object> tableEntryPrototype = new HashMap<String, Object>();
+	public static HashMap<COLUMN_ID, Object> processIndividualValues(SpawnEntry spawnEntry) {
+		HashMap<COLUMN_ID, Object> tableEntryPrototype = new HashMap<COLUMN_ID, Object>();
 		SpawnInfoPokemon spawnInfo = spawnEntry.getSpawnInfo();
 		
-		tableEntryPrototype.computeIfAbsent("spawnSetId", val -> spawnEntry.getSpawnSetId());
-		tableEntryPrototype.computeIfAbsent("spawnSetIndex", val -> spawnEntry.getSpawnSetIndex());
-		tableEntryPrototype.computeIfAbsent("intervalType", val -> spawnInfo.getInterval());
-		tableEntryPrototype.computeIfAbsent("requiredSpace", val -> spawnInfo.getRequiredSpace());
-		tableEntryPrototype.computeIfAbsent("rarity", val -> spawnInfo.getRarity());
-		tableEntryPrototype.computeIfAbsent("percentage", val -> spawnInfo.getPercentage());
-		tableEntryPrototype.computeIfAbsent("minLevel", val -> spawnInfo.getMinLevel());
-		tableEntryPrototype.computeIfAbsent("maxLevel", val -> spawnInfo.getMaxLevel());
-		tableEntryPrototype.computeIfAbsent("specificShinyRate", val -> spawnInfo.getSpawnSpecificShinyRate());
-		tableEntryPrototype.computeIfAbsent("specificBossRate", val ->  spawnInfo.getSpawnSpecificBossRate());
-		tableEntryPrototype.computeIfAbsent("specificPokeRusRate", val -> spawnInfo.getSpawnSpecificPokerusRate());  
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.spawnSetId, val -> spawnEntry.getSpawnSetId());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.spawnSetIndex, val -> spawnEntry.getSpawnSetIndex());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.intervalType, val -> spawnInfo.getInterval());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecs, val -> spawnInfo.getSpecs());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.requiredSpace, val -> spawnInfo.getRequiredSpace());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.rarity, val -> spawnInfo.getRarity());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.rarityMultipliers, val -> spawnInfo.getRarityMultipliers());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.percentage, val -> spawnInfo.getPercentage());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.minLevel, val -> spawnInfo.getMinLevel());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.maxLevel, val -> spawnInfo.getMaxLevel());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.specificShinyRate, val -> spawnInfo.getSpawnSpecificShinyRate());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.specificBossRate, val ->  spawnInfo.getSpawnSpecificBossRate());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.specificPokeRusRate, val -> spawnInfo.getSpawnSpecificPokerusRate());
+		tableEntryPrototype.computeIfAbsent(COLUMN_ID.heldItems, val -> spawnInfo.getHeldItems());
 		
 		if (spawnInfo.getSpec() != null) {
-			tableEntryPrototype.computeIfAbsent("pokemonSpecSpecies", val -> spawnInfo.getSpec().getTypeName());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecLevel", val -> spawnInfo.getSpec().getLevel());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecGender", val -> spawnInfo.getSpec().getGender());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecStatus", val -> spawnInfo.getSpec().getStatus());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecGrowthSize", val -> spawnInfo.getSpec().getGrowth());
-			//tableEntryPrototype.put("pokemonSpecNature", getSpec().getNature());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecFormId", val -> spawnInfo.getSpec().getForm());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecPokeRusStage", val -> spawnInfo.getSpec().getPokerus());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecRandom", val -> spawnInfo.getSpec().isRandom());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecCured", val -> spawnInfo.getSpec().isCured());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecShiny", val -> spawnInfo.getSpec().isShiny());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecEgg", val -> spawnInfo.getSpec().isEgg());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecUntradeable", val -> spawnInfo.getSpec().isUntradeable());
-			tableEntryPrototype.computeIfAbsent("pokemonSpecUnbreedable", val -> spawnInfo.getSpec().isUnbreedable());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecSpecies, val -> spawnInfo.getSpec().getTypeName());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecLevel, val -> spawnInfo.getSpec().getLevel());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecGender, val -> spawnInfo.getSpec().getGender());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecStatus, val -> spawnInfo.getSpec().getStatus());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecGrowthSize, val -> spawnInfo.getSpec().getGrowth());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecNature, val -> spawnInfo.getSpec().getNature());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecFormId, val -> spawnInfo.getSpec().getForm());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecPokeRusStage, val -> spawnInfo.getSpec().getPokerus());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecRandom, val -> spawnInfo.getSpec().isRandom());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecCured, val -> spawnInfo.getSpec().isCured());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecShiny, val -> spawnInfo.getSpec().isShiny());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecEgg, val -> spawnInfo.getSpec().isEgg());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecUntradeable, val -> spawnInfo.getSpec().isUntradeable());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecUnbreedable, val -> spawnInfo.getSpec().isUnbreedable());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecIVStats, val -> spawnInfo.getSpec().isUnbreedable());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.pokemonSpecEVStats, val -> spawnInfo.getSpec().isUnbreedable());
 		} 
 		
 		if (spawnInfo.getCondition() != null) {
-			tableEntryPrototype.computeIfAbsent("conditionMinX", val -> spawnInfo.getCondition().getMinX());
-			tableEntryPrototype.computeIfAbsent("conditionMaxX", val -> spawnInfo.getCondition().getMaxX());
-			tableEntryPrototype.computeIfAbsent("conditionMinZ", val -> spawnInfo.getCondition().getMinZ());
-			tableEntryPrototype.computeIfAbsent("conditionMaxZ", val ->  spawnInfo.getCondition().getMaxZ());
-			tableEntryPrototype.computeIfAbsent("conditionMinY", val -> spawnInfo.getCondition().getMinY());
-			tableEntryPrototype.computeIfAbsent("conditionMaxY", val ->  spawnInfo.getCondition().getMaxY());
-			tableEntryPrototype.computeIfAbsent("conditionMinLight", val -> spawnInfo.getCondition().getMinLightLevel());
-			tableEntryPrototype.computeIfAbsent("conditionMaxLight", val -> spawnInfo.getCondition().getMaxLightLevel());
-			tableEntryPrototype.computeIfAbsent("conditionRequiresSky", val -> spawnInfo.getCondition().isSeesSky());
-			tableEntryPrototype.computeIfAbsent("conditionMoonPhase", val -> spawnInfo.getCondition().getMoonPhase());
-			tableEntryPrototype.computeIfAbsent("conditionTag", val -> spawnInfo.getCondition().getTag());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionMinX, val -> spawnInfo.getCondition().getMinX());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionMaxX, val -> spawnInfo.getCondition().getMaxX());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionMinZ, val -> spawnInfo.getCondition().getMinZ());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionMaxZ, val ->  spawnInfo.getCondition().getMaxZ());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionMinY, val -> spawnInfo.getCondition().getMinY());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionMaxY, val ->  spawnInfo.getCondition().getMaxY());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionMinLight, val -> spawnInfo.getCondition().getMinLightLevel());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionMaxLight, val -> spawnInfo.getCondition().getMaxLightLevel());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionRequiresSky, val -> spawnInfo.getCondition().isSeesSky());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionMoonPhase, val -> spawnInfo.getCondition().getMoonPhase());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.conditionTag, val -> spawnInfo.getCondition().getTag());
 		}
 		
 		if (spawnInfo.getAntiCondition() != null) {
-			tableEntryPrototype.computeIfAbsent("antiConditionMinX", val -> spawnInfo.getAntiCondition().getMinX());
-			tableEntryPrototype.computeIfAbsent("antiConditionMaxX", val -> spawnInfo.getAntiCondition().getMaxX());
-			tableEntryPrototype.computeIfAbsent("antiConditionMinZ", val -> spawnInfo.getAntiCondition().getMinZ());
-			tableEntryPrototype.computeIfAbsent("antiConditionMaxZ", val -> spawnInfo.getAntiCondition().getMaxZ());
-			tableEntryPrototype.computeIfAbsent("antiConditionMinY", val -> spawnInfo.getAntiCondition().getMinY());
-			tableEntryPrototype.computeIfAbsent("antiConditionMaxY", val -> spawnInfo.getAntiCondition().getMaxY());
-			tableEntryPrototype.computeIfAbsent("antiConditionMinLight", val -> spawnInfo.getAntiCondition().getMinLightLevel());
-			tableEntryPrototype.computeIfAbsent("antiConditionMaxLight", val -> spawnInfo.getAntiCondition().getMaxLightLevel());
-			tableEntryPrototype.computeIfAbsent("antiConditionRequiresSky", val -> spawnInfo.getAntiCondition().isSeesSky());
-			tableEntryPrototype.computeIfAbsent("antiConditionMoonPhase", val -> spawnInfo.getAntiCondition().getMoonPhase());
-			tableEntryPrototype.computeIfAbsent("antiConditionTag", val -> spawnInfo.getAntiCondition().getTag());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionMinX, val -> spawnInfo.getAntiCondition().getMinX());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionMaxX, val -> spawnInfo.getAntiCondition().getMaxX());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionMinZ, val -> spawnInfo.getAntiCondition().getMinZ());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionMaxZ, val -> spawnInfo.getAntiCondition().getMaxZ());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionMinY, val -> spawnInfo.getAntiCondition().getMinY());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionMaxY, val -> spawnInfo.getAntiCondition().getMaxY());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionMinLight, val -> spawnInfo.getAntiCondition().getMinLightLevel());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionMaxLight, val -> spawnInfo.getAntiCondition().getMaxLightLevel());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionRequiresSky, val -> spawnInfo.getAntiCondition().isSeesSky());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionMoonPhase, val -> spawnInfo.getAntiCondition().getMoonPhase());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.antiConditionTag, val -> spawnInfo.getAntiCondition().getTag());
+		}
+		if (spawnInfo.getCompositeCondition() != null) {
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.compositeConditionConditions, val -> spawnInfo.getCompositeCondition().getConditions());
+			tableEntryPrototype.computeIfAbsent(COLUMN_ID.compositeConditionAntiConditions, val -> spawnInfo.getCompositeCondition().getAntiConditions());
 		}
 		
 		return tableEntryPrototype;
 	}
 	
-	public static ArrayList<HashMap<String, Object>> processArrayValues(SpawnEntry spawnEntry) {
+	public static ArrayList<HashMap<COLUMN_ID, Object>> processArrayValues(SpawnEntry spawnEntry) {
 		SpawnInfoPokemon spawnInfo = spawnEntry.getSpawnInfo();
 		
-		HashMap<String, Object[]> cellValueArrays = new HashMap<String, Object[]>();
-		ArrayList<HashMap<String, Object>> arrayEntryValues = new ArrayList<HashMap<String, Object>>();
+		HashMap<COLUMN_ID, Object[]> cellValueArrays = new HashMap<COLUMN_ID, Object[]>();
+		ArrayList<HashMap<COLUMN_ID, Object>> arrayEntryValues = new ArrayList<HashMap<COLUMN_ID, Object>>();
 		
-		cellValueArrays.computeIfAbsent("spawnType", val -> spawnInfo.getStringLocationTypes());
+		cellValueArrays.computeIfAbsent(COLUMN_ID.spawnType, val -> spawnInfo.getStringLocationTypes());
 		
 		if (spawnInfo.getCondition() != null) {
-			cellValueArrays.computeIfAbsent("conditionTime", val -> spawnInfo.getCondition().getTimes());
-			cellValueArrays.computeIfAbsent("conditionWeather", val -> spawnInfo.getCondition().getWeathers());
-			cellValueArrays.computeIfAbsent("conditionBiome", val -> spawnInfo.getCondition().getStringBiomes());
-			cellValueArrays.computeIfAbsent("conditionTemperature", val -> spawnInfo.getCondition().getTemperatures());
-			cellValueArrays.computeIfAbsent("conditionWorld", val -> spawnInfo.getCondition().getWorlds());
-			cellValueArrays.computeIfAbsent("conditionDimension", val -> spawnInfo.getCondition().getWorlds());
-			cellValueArrays.computeIfAbsent("conditionRequiredBlock", val -> spawnInfo.getCondition().getBaseBlocks());
-			cellValueArrays.computeIfAbsent("conditionNearbyBlock", val -> spawnInfo.getCondition().getNeededNearbyBlocks());
-			cellValueArrays.computeIfAbsent("conditionVariant", val -> spawnInfo.getCondition().getVariant());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.conditionTime, val -> spawnInfo.getCondition().getTimes());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.conditionWeather, val -> spawnInfo.getCondition().getWeathers());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.conditionBiome, val -> spawnInfo.getCondition().getStringBiomes());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.conditionTemperature, val -> spawnInfo.getCondition().getTemperatures());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.conditionWorld, val -> spawnInfo.getCondition().getWorlds());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.conditionDimension, val -> spawnInfo.getCondition().getWorlds());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.conditionRequiredBlock, val -> spawnInfo.getCondition().getBaseBlocks());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.conditionNearbyBlock, val -> spawnInfo.getCondition().getNeededNearbyBlocks());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.conditionVariant, val -> spawnInfo.getCondition().getVariant());
 		}
 		
 		if (spawnInfo.getAntiCondition() != null) {
-			cellValueArrays.computeIfAbsent("antiConditionTime", val -> spawnInfo.getAntiCondition().getTimes());
-			cellValueArrays.computeIfAbsent("antiConditionWeather", val -> spawnInfo.getAntiCondition().getWeathers());
-			cellValueArrays.computeIfAbsent("antiConditionBiome", val -> spawnInfo.getAntiCondition().getStringBiomes());
-			cellValueArrays.computeIfAbsent("antiConditionTemperature", val -> spawnInfo.getAntiCondition().getTemperatures());
-			cellValueArrays.computeIfAbsent("antiConditionWorld", val -> spawnInfo.getAntiCondition().getWorlds());
-			cellValueArrays.computeIfAbsent("antiConditionDimension", val -> spawnInfo.getAntiCondition().getWorlds());
-			cellValueArrays.computeIfAbsent("antiConditionRequiredBlock", val -> spawnInfo.getAntiCondition().getBaseBlocks());
-			cellValueArrays.computeIfAbsent("antiConditionNearbyBlock", val -> spawnInfo.getAntiCondition().getNeededNearbyBlocks());
-			cellValueArrays.computeIfAbsent("antiConditionVariant", val -> spawnInfo.getAntiCondition().getVariant());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.antiConditionTime, val -> spawnInfo.getAntiCondition().getTimes());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.antiConditionWeather, val -> spawnInfo.getAntiCondition().getWeathers());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.antiConditionBiome, val -> spawnInfo.getAntiCondition().getStringBiomes());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.antiConditionTemperature, val -> spawnInfo.getAntiCondition().getTemperatures());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.antiConditionWorld, val -> spawnInfo.getAntiCondition().getWorlds());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.antiConditionDimension, val -> spawnInfo.getAntiCondition().getWorlds());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.antiConditionRequiredBlock, val -> spawnInfo.getAntiCondition().getBaseBlocks());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.antiConditionNearbyBlock, val -> spawnInfo.getAntiCondition().getNeededNearbyBlocks());
+			cellValueArrays.computeIfAbsent(COLUMN_ID.antiConditionVariant, val -> spawnInfo.getAntiCondition().getVariant());
 		}
 		
-		cartesianProductLoop(cellValueArrays, arrayEntryValues, new HashMap<String, Object>());
+		cartesianProductLoop(cellValueArrays, arrayEntryValues, new HashMap<COLUMN_ID, Object>());
 		
 		return arrayEntryValues;
 	}
 	
-	private static void cartesianProductLoop(HashMap<String, Object[]> arraysInput, ArrayList<HashMap<String, Object>> output, HashMap<String, Object> subOutput) {
+	private static void cartesianProductLoop(HashMap<COLUMN_ID, Object[]> arraysInput, ArrayList<HashMap<COLUMN_ID, Object>> output, HashMap<COLUMN_ID, Object> subOutput) {
 		if (arraysInput.size() == 0) {
 			output.add(subOutput);
 		}
 		else {
-			String key = arraysInput.keySet().iterator().next();
+			COLUMN_ID key = arraysInput.keySet().iterator().next();
 			Object[] currentArray = arraysInput.get(key);
 			
 			for (int i = 0; i < currentArray.length; i++)
 			{
-				HashMap<String, Object> newSubOutput = new HashMap<String, Object>(subOutput);
-				HashMap<String, Object[]> newSubInput = new HashMap<String, Object[]>(arraysInput);
+				HashMap<COLUMN_ID, Object> newSubOutput = new HashMap<COLUMN_ID, Object>(subOutput);
+				HashMap<COLUMN_ID, Object[]> newSubInput = new HashMap<COLUMN_ID, Object[]>(arraysInput);
 				newSubInput.remove(key);
 				newSubOutput.put(key, currentArray[i]);
 				cartesianProductLoop(newSubInput,output,newSubOutput);
