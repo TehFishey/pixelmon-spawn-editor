@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.tehfishey.spawnedit.pixelmon.SpawnSet;
+import com.google.common.io.Files;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
 public class FileManager {
@@ -25,6 +26,21 @@ public class FileManager {
 		directoryMap.put(data.getSetId(), file.getAbsolutePath());
 		
 		ArrayList<SpawnEntry> newEntries = processSpawnSet(data);
+		parent.addSpawnEntries(newEntries);
+	}
+	
+	public void loadDirectory(File directory) {
+		ArrayList<SpawnEntry> newEntries = new ArrayList<SpawnEntry>();
+		
+		for (final File file : directory.listFiles()) {
+	        if (file.isDirectory()) {
+	            loadDirectory(file);
+	        } else if (Files.getFileExtension(file.getName()).equals("json")) {
+	        	SpawnSet data = fileLoader.parse(file);
+	        	directoryMap.put(data.getSetId(), file.getAbsolutePath());
+	        	newEntries.addAll(processSpawnSet(data));
+	        }
+	    }
 		parent.addSpawnEntries(newEntries);
 	}
 	

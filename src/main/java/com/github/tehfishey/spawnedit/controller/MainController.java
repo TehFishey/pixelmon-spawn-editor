@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -21,14 +22,16 @@ public class MainController {
 	private final Model model;
 	private final Desktop desktop;
 	private final FileChooser fileChooser;
+	private final DirectoryChooser directoryChooser;
 	
 	@FXML private AnchorPane root;
-	@FXML private MenuItem menuLoad;
+	@FXML private MenuItem menuLoadFile;
 	
     public MainController(Model model) {
         this.model = model;
         this.desktop = Desktop.getDesktop();
         this.fileChooser = new FileChooser();
+        this.directoryChooser = new DirectoryChooser();
     }
 	
     public void initialize() {
@@ -43,8 +46,12 @@ public class MainController {
 		File file = fileChooser.showOpenDialog(root.getScene().getWindow());
 		if (file != null) model.getFileManager().loadFile(file);
 	}
-
 	
+	public void loadDirectory(ActionEvent event) {
+		File directory = directoryChooser.showDialog(root.getScene().getWindow());
+		if (directory != null) model.getFileManager().loadDirectory(directory);
+	}
+
 	private static void configureFileChooser(final FileChooser fileChooser){                           
         fileChooser.setTitle("Load");
         fileChooser.setInitialDirectory(
