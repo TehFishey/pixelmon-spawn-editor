@@ -3,7 +3,7 @@ package com.github.tehfishey.spawnedit.controller;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import com.github.tehfishey.spawnedit.model.helpers.Enums.COLUMN_ID;
+import com.github.tehfishey.spawnedit.model.Enums.ColumnId;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
@@ -12,7 +12,7 @@ import javafx.scene.control.CheckBox;
 public class ColumnsMenuController {
 	
 	private final ControllerStateManager manager;
-	private HashMap<COLUMN_ID, CheckBox> checkBoxMap;
+	private HashMap<ColumnId, CheckBox> checkBoxMap;
 	
 	@FXML private CheckBox columnMenuSpawnInfo;
 	@FXML private CheckBox columnMenuSpawnIndex;
@@ -96,8 +96,8 @@ public class ColumnsMenuController {
     public void initialize() {
     	checkBoxMap = mapCheckBoxes();
     	
-    	for (Entry<COLUMN_ID, CheckBox> checkBoxEntry : checkBoxMap.entrySet()) {
-    		COLUMN_ID id = checkBoxEntry.getKey();
+    	for (Entry<ColumnId, CheckBox> checkBoxEntry : checkBoxMap.entrySet()) {
+    		ColumnId id = checkBoxEntry.getKey();
     		CheckBox checkBox = checkBoxEntry.getValue();
     		BooleanProperty boundBoolean = manager.getVisibleColumns().get(id);
     		
@@ -106,82 +106,82 @@ public class ColumnsMenuController {
     	}
     }
     
-    private HashMap<COLUMN_ID, CheckBox> mapCheckBoxes() {
-    	HashMap<COLUMN_ID, CheckBox> newMap = new HashMap<COLUMN_ID, CheckBox>();
+    private HashMap<ColumnId, CheckBox> mapCheckBoxes() {
+    	HashMap<ColumnId, CheckBox> newMap = new HashMap<ColumnId, CheckBox>();
     	
-    	newMap.put(COLUMN_ID.spawnSetId, columnMenuSpawnInfo);
-		newMap.put(COLUMN_ID.spawnSetIndex, columnMenuSpawnIndex);
-		newMap.put(COLUMN_ID.pokemonSpecSpecies, columnMenuSpecSpecies);
-		newMap.put(COLUMN_ID.pokemonSpecLevel, columnMenuSpecLevel);
-		newMap.put(COLUMN_ID.pokemonSpecGender, columnMenuSpecGender);
-		newMap.put(COLUMN_ID.pokemonSpecStatus, columnMenuSpecStatus);
-		newMap.put(COLUMN_ID.pokemonSpecGrowthSize, columnMenuSpecGrowthSize);
-		newMap.put(COLUMN_ID.pokemonSpecNature, columnMenuSpecNature);
-		newMap.put(COLUMN_ID.pokemonSpecFormId, columnMenuSpecFormId);
-		newMap.put(COLUMN_ID.pokemonSpecPokeRusStage, columnMenuSpecPokeRusStage);
-		newMap.put(COLUMN_ID.pokemonSpecRandom, columnMenuSpecRandom);
-		newMap.put(COLUMN_ID.pokemonSpecCured, columnMenuSpecCured);
-		newMap.put(COLUMN_ID.pokemonSpecShiny, columnMenuSpecShiny);
-		newMap.put(COLUMN_ID.pokemonSpecEgg, columnMenuSpecEgg);
-		newMap.put(COLUMN_ID.pokemonSpecUntradeable, columnMenuSpecUntradeable);
-		newMap.put(COLUMN_ID.pokemonSpecUnbreedable, columnMenuSpecUnbreedable);
-		newMap.put(COLUMN_ID.pokemonSpecIVStats, columnMenuSpecIVStats);
-		newMap.put(COLUMN_ID.pokemonSpecEVStats, columnMenuSpecEVStats);
-		newMap.put(COLUMN_ID.pokemonSpecs, columnMenuPokemonSpecs);
-		newMap.put(COLUMN_ID.spawnType, columnMenuSpawnType);
-		newMap.put(COLUMN_ID.intervalType, columnMenuIntervalType);
-		newMap.put(COLUMN_ID.requiredSpace, columnMenuRequiredSpace);
-		newMap.put(COLUMN_ID.conditionTime, columnMenuConditionTime);
-		newMap.put(COLUMN_ID.conditionWeather, columnMenuConditionWeather);
-		newMap.put(COLUMN_ID.conditionBiome, columnMenuConditionBiome);
-		newMap.put(COLUMN_ID.conditionTemperature, columnMenuConditionTemperature);
-		newMap.put(COLUMN_ID.conditionWorld, columnMenuConditionWorld);
-		newMap.put(COLUMN_ID.conditionDimension, columnMenuConditionDimension);
-		newMap.put(COLUMN_ID.conditionRequiredBlock, columnMenuConditionRequiredBlock);
-		newMap.put(COLUMN_ID.conditionNearbyBlock, columnMenuConditionNearbyBlock);
-		newMap.put(COLUMN_ID.conditionVariant, columnMenuConditionVariant);
-		newMap.put(COLUMN_ID.conditionMinX, columnMenuConditionMinX);
-		newMap.put(COLUMN_ID.conditionMaxX, columnMenuConditionMaxX);
-		newMap.put(COLUMN_ID.conditionMinZ, columnMenuConditionMinZ);
-		newMap.put(COLUMN_ID.conditionMaxZ, columnMenuConditionMaxZ);
-		newMap.put(COLUMN_ID.conditionMinY, columnMenuConditionMinY);
-		newMap.put(COLUMN_ID.conditionMaxY, columnMenuConditionMaxY);
-		newMap.put(COLUMN_ID.conditionMinLight, columnMenuConditionMinLight);
-		newMap.put(COLUMN_ID.conditionMaxLight, columnMenuConditionMaxLight);
-		newMap.put(COLUMN_ID.conditionRequiresSky, columnMenuConditionRequiresSky);
-		newMap.put(COLUMN_ID.conditionMoonPhase, columnMenuConditionMoonPhase);
-		newMap.put(COLUMN_ID.conditionTag, columnMenuConditionTag);
-		newMap.put(COLUMN_ID.antiConditionTime, columnMenuAntiConditionTime);
-		newMap.put(COLUMN_ID.antiConditionWeather, columnMenuAntiConditionWeather);
-		newMap.put(COLUMN_ID.antiConditionBiome, columnMenuAntiConditionBiome);
-		newMap.put(COLUMN_ID.antiConditionTemperature, columnMenuAntiConditionTemperature);
-		newMap.put(COLUMN_ID.antiConditionWorld, columnMenuAntiConditionWorld);
-		newMap.put(COLUMN_ID.antiConditionDimension, columnMenuAntiConditionDimension);
-		newMap.put(COLUMN_ID.antiConditionRequiredBlock, columnMenuAntiConditionRequiredBlock);
-		newMap.put(COLUMN_ID.antiConditionNearbyBlock, columnMenuAntiConditionNearbyBlock);
-		newMap.put(COLUMN_ID.antiConditionVariant, columnMenuAntiConditionVariant);
-		newMap.put(COLUMN_ID.antiConditionMinX, columnMenuAntiConditionMinX);
-		newMap.put(COLUMN_ID.antiConditionMaxX, columnMenuAntiConditionMaxX);
-		newMap.put(COLUMN_ID.antiConditionMinZ, columnMenuAntiConditionMinZ);
-		newMap.put(COLUMN_ID.antiConditionMaxZ, columnMenuAntiConditionMaxZ);
-		newMap.put(COLUMN_ID.antiConditionMinY, columnMenuAntiConditionMinY);
-		newMap.put(COLUMN_ID.antiConditionMaxY, columnMenuAntiConditionMaxY);
-		newMap.put(COLUMN_ID.antiConditionMinLight, columnMenuAntiConditionMinLight);
-		newMap.put(COLUMN_ID.antiConditionMaxLight, columnMenuAntiConditionMaxLight);
-		newMap.put(COLUMN_ID.antiConditionRequiresSky, columnMenuAntiConditionRequiresSky);
-		newMap.put(COLUMN_ID.antiConditionMoonPhase, columnMenuAntiConditionMoonPhase);
-		newMap.put(COLUMN_ID.antiConditionTag, columnMenuAntiConditionTag);
-		newMap.put(COLUMN_ID.compositeConditionConditions, columnMenuCompositeConditionConditions);
-		newMap.put(COLUMN_ID.compositeConditionAntiConditions, columnMenuCompositeConditionAntiConditions);
-		newMap.put(COLUMN_ID.rarity, columnMenuRarity);
-		newMap.put(COLUMN_ID.rarityMultipliers, columnMenuRarityMultipliers);
-		newMap.put(COLUMN_ID.percentage, columnMenuPercentage);
-		newMap.put(COLUMN_ID.minLevel, columnMenuMinLevel);
-		newMap.put(COLUMN_ID.maxLevel, columnMenuMaxLevel);
-		newMap.put(COLUMN_ID.specificShinyRate, columnMenuSpecificShinyRate);
-		newMap.put(COLUMN_ID.specificBossRate, columnMenuSpecificBossRate);
-		newMap.put(COLUMN_ID.specificPokeRusRate, columnMenuSpecificPokeRusRate);
-		newMap.put(COLUMN_ID.heldItems, columnMenuHeldItems);
+    	newMap.put(ColumnId.spawnSetId, columnMenuSpawnInfo);
+		newMap.put(ColumnId.spawnSetIndex, columnMenuSpawnIndex);
+		newMap.put(ColumnId.pokemonSpecSpecies, columnMenuSpecSpecies);
+		newMap.put(ColumnId.pokemonSpecLevel, columnMenuSpecLevel);
+		newMap.put(ColumnId.pokemonSpecGender, columnMenuSpecGender);
+		newMap.put(ColumnId.pokemonSpecStatus, columnMenuSpecStatus);
+		newMap.put(ColumnId.pokemonSpecGrowthSize, columnMenuSpecGrowthSize);
+		newMap.put(ColumnId.pokemonSpecNature, columnMenuSpecNature);
+		newMap.put(ColumnId.pokemonSpecFormId, columnMenuSpecFormId);
+		newMap.put(ColumnId.pokemonSpecPokeRusStage, columnMenuSpecPokeRusStage);
+		newMap.put(ColumnId.pokemonSpecRandom, columnMenuSpecRandom);
+		newMap.put(ColumnId.pokemonSpecCured, columnMenuSpecCured);
+		newMap.put(ColumnId.pokemonSpecShiny, columnMenuSpecShiny);
+		newMap.put(ColumnId.pokemonSpecEgg, columnMenuSpecEgg);
+		newMap.put(ColumnId.pokemonSpecUntradeable, columnMenuSpecUntradeable);
+		newMap.put(ColumnId.pokemonSpecUnbreedable, columnMenuSpecUnbreedable);
+		newMap.put(ColumnId.pokemonSpecIVStats, columnMenuSpecIVStats);
+		newMap.put(ColumnId.pokemonSpecEVStats, columnMenuSpecEVStats);
+		newMap.put(ColumnId.pokemonSpecs, columnMenuPokemonSpecs);
+		newMap.put(ColumnId.spawnType, columnMenuSpawnType);
+		newMap.put(ColumnId.intervalType, columnMenuIntervalType);
+		newMap.put(ColumnId.requiredSpace, columnMenuRequiredSpace);
+		newMap.put(ColumnId.conditionTime, columnMenuConditionTime);
+		newMap.put(ColumnId.conditionWeather, columnMenuConditionWeather);
+		newMap.put(ColumnId.conditionBiome, columnMenuConditionBiome);
+		newMap.put(ColumnId.conditionTemperature, columnMenuConditionTemperature);
+		newMap.put(ColumnId.conditionWorld, columnMenuConditionWorld);
+		newMap.put(ColumnId.conditionDimension, columnMenuConditionDimension);
+		newMap.put(ColumnId.conditionRequiredBlock, columnMenuConditionRequiredBlock);
+		newMap.put(ColumnId.conditionNearbyBlock, columnMenuConditionNearbyBlock);
+		newMap.put(ColumnId.conditionVariant, columnMenuConditionVariant);
+		newMap.put(ColumnId.conditionMinX, columnMenuConditionMinX);
+		newMap.put(ColumnId.conditionMaxX, columnMenuConditionMaxX);
+		newMap.put(ColumnId.conditionMinZ, columnMenuConditionMinZ);
+		newMap.put(ColumnId.conditionMaxZ, columnMenuConditionMaxZ);
+		newMap.put(ColumnId.conditionMinY, columnMenuConditionMinY);
+		newMap.put(ColumnId.conditionMaxY, columnMenuConditionMaxY);
+		newMap.put(ColumnId.conditionMinLight, columnMenuConditionMinLight);
+		newMap.put(ColumnId.conditionMaxLight, columnMenuConditionMaxLight);
+		newMap.put(ColumnId.conditionRequiresSky, columnMenuConditionRequiresSky);
+		newMap.put(ColumnId.conditionMoonPhase, columnMenuConditionMoonPhase);
+		newMap.put(ColumnId.conditionTag, columnMenuConditionTag);
+		newMap.put(ColumnId.antiConditionTime, columnMenuAntiConditionTime);
+		newMap.put(ColumnId.antiConditionWeather, columnMenuAntiConditionWeather);
+		newMap.put(ColumnId.antiConditionBiome, columnMenuAntiConditionBiome);
+		newMap.put(ColumnId.antiConditionTemperature, columnMenuAntiConditionTemperature);
+		newMap.put(ColumnId.antiConditionWorld, columnMenuAntiConditionWorld);
+		newMap.put(ColumnId.antiConditionDimension, columnMenuAntiConditionDimension);
+		newMap.put(ColumnId.antiConditionRequiredBlock, columnMenuAntiConditionRequiredBlock);
+		newMap.put(ColumnId.antiConditionNearbyBlock, columnMenuAntiConditionNearbyBlock);
+		newMap.put(ColumnId.antiConditionVariant, columnMenuAntiConditionVariant);
+		newMap.put(ColumnId.antiConditionMinX, columnMenuAntiConditionMinX);
+		newMap.put(ColumnId.antiConditionMaxX, columnMenuAntiConditionMaxX);
+		newMap.put(ColumnId.antiConditionMinZ, columnMenuAntiConditionMinZ);
+		newMap.put(ColumnId.antiConditionMaxZ, columnMenuAntiConditionMaxZ);
+		newMap.put(ColumnId.antiConditionMinY, columnMenuAntiConditionMinY);
+		newMap.put(ColumnId.antiConditionMaxY, columnMenuAntiConditionMaxY);
+		newMap.put(ColumnId.antiConditionMinLight, columnMenuAntiConditionMinLight);
+		newMap.put(ColumnId.antiConditionMaxLight, columnMenuAntiConditionMaxLight);
+		newMap.put(ColumnId.antiConditionRequiresSky, columnMenuAntiConditionRequiresSky);
+		newMap.put(ColumnId.antiConditionMoonPhase, columnMenuAntiConditionMoonPhase);
+		newMap.put(ColumnId.antiConditionTag, columnMenuAntiConditionTag);
+		newMap.put(ColumnId.compositeConditionConditions, columnMenuCompositeConditionConditions);
+		newMap.put(ColumnId.compositeConditionAntiConditions, columnMenuCompositeConditionAntiConditions);
+		newMap.put(ColumnId.rarity, columnMenuRarity);
+		newMap.put(ColumnId.rarityMultipliers, columnMenuRarityMultipliers);
+		newMap.put(ColumnId.percentage, columnMenuPercentage);
+		newMap.put(ColumnId.minLevel, columnMenuMinLevel);
+		newMap.put(ColumnId.maxLevel, columnMenuMaxLevel);
+		newMap.put(ColumnId.specificShinyRate, columnMenuSpecificShinyRate);
+		newMap.put(ColumnId.specificBossRate, columnMenuSpecificBossRate);
+		newMap.put(ColumnId.specificPokeRusRate, columnMenuSpecificPokeRusRate);
+		newMap.put(ColumnId.heldItems, columnMenuHeldItems);
 		
 		return newMap;
     }

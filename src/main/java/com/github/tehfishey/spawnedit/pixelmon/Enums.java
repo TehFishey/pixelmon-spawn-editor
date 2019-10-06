@@ -1,10 +1,10 @@
-package com.github.tehfishey.spawnedit.pixelmon.helpers;
+package com.github.tehfishey.spawnedit.pixelmon;
 
 public class Enums {
 	
 	private Enums() {}
 	
-	public static enum TIME {
+	public static enum Time {
 		DAWN("DAWN"),
 		MORNING("MORNING"),
 		DAY("DAY"),
@@ -16,7 +16,7 @@ public class Enums {
 		
 		private String time;
 		
-		TIME(String time) {
+		Time(String time) {
 			this.time = time;
 		}
 		
@@ -25,14 +25,14 @@ public class Enums {
 		}
 	}
 	
-	public static enum WEATHER {
-		CLEAN("CLEAN"),
+	public static enum Weather {
+		CLEAR("CLEAR"),
 		RAIN("RAIN"),
 		STORM("STORM");
 		
 		private String weather;
 				
-		WEATHER(String weather) {
+		Weather(String weather) {
 			this.weather = weather;
 		}
 				
@@ -41,7 +41,7 @@ public class Enums {
 		}		
 	}
 	
-	public static enum TEMPERATURE {
+	public static enum Temperature {
 		OCEAN("OCEAN"),
 		COLD("COLD"),
 		MEDIUM("MEDIUM"),
@@ -49,7 +49,7 @@ public class Enums {
 		
 		private String temperature;
 		
-		TEMPERATURE(String temperature) {
+		Temperature(String temperature) {
 			this.temperature = temperature;
 		}
 				
@@ -58,13 +58,13 @@ public class Enums {
 		}	
 	}
 
-	public static enum GENDER {
+	public static enum Gender {
 		MALE("male"),
 		FEMALE("female");
 		
 		private String gender;
 		
-		GENDER(String gender) {
+		Gender(String gender) {
 			this.gender = gender;
 		}
 				
@@ -73,7 +73,66 @@ public class Enums {
 		}	
 	}
 	
-	public static enum STATUS {
+	public static enum Growth {
+		PYGMY("Pygmy"),
+		RUNT("Runt"),
+		SMALL("Small"),
+		ORDINARY("Orginary"),
+		HUGE("Huge"),
+		GIANT("Giant"),
+		ENORMOUS("Enormous"),
+		GINOURMOUS("Ginormous"),
+		MICROSCOPIC("Microscopic");
+		
+		private String growth;
+		
+		Growth(String growth) {
+			this.growth = growth;
+		}
+		
+		public String getGrowth() {
+			return growth;
+		}
+	}
+	
+	public static enum Boss {
+		NOTBOSS("NotBoss"),
+		UNCOMMON("Uncommon"),
+		RARE("Rare"),
+		LEGENDARY("Legendary"),
+		ULTIMATE("Ultimate"),
+		EQUAL("Equal");
+		
+		private String bossType;
+		
+		Boss(String bossType) {
+			this.bossType = bossType;
+		}
+		
+		public String getBossType() {
+			return bossType;
+		}
+	}
+	
+	public static enum PokeRusType {
+		UNINFECTED("UNINFECTED"),
+		A("A"),
+		B("B"),
+		C("C"),
+		D("D");
+		
+		private String stage;
+		
+		PokeRusType(String stage) {
+			this.stage = stage;
+		}
+		
+		public String getPokeRusType() {
+			return stage;
+		}
+	}
+	
+	public static enum Status {
 		SLEEP("sleep"),
 		BURNE("burn"),
 		PARALYSIS("paralysis"),
@@ -83,7 +142,7 @@ public class Enums {
 		
 		private String status;
 		
-		STATUS(String status) {
+		Status(String status) {
 			this.status = status;
 		}
 				
@@ -92,7 +151,7 @@ public class Enums {
 		}	
 	}
 	
-	public static enum NATURE {
+	public static enum Nature {
 		ADAMANT("adamant"),
 		BASHFUL("bashful"),
 		BOLD("bold"),
@@ -121,7 +180,7 @@ public class Enums {
 		
 		private String nature;
 		
-		NATURE(String nature) {
+		Nature(String nature) {
 			this.nature = nature;
 		}
 				
@@ -130,7 +189,7 @@ public class Enums {
 		}	
 	}
 	
-	public static enum ABILITY {
+	public static enum Ability {
 		ADAPTABILITY("Adaptability"),
 		AERILATE("Aerilate"),
 		AFTERMATH("Aftermath"),
@@ -364,7 +423,7 @@ public class Enums {
 		
 		private String ability;
 		
-		ABILITY(String ability) {
+		Ability(String ability) {
 			this.ability = ability;
 		}
 				

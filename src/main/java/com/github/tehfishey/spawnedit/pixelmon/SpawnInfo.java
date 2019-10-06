@@ -5,13 +5,13 @@ public class SpawnInfo {
 	String interval;
 	String tags[];
 	Condition condition;
-	Condition antiCondition;
+	Condition anticondition;
 	CompositeCondition compositeCondition;
 	RarityMultiplier rarityMultipliers[];
-	int requiredSpace;
+	Integer requiredSpace;
 	String stringLocationTypes[];
-	float rarity;
-	float percentage;
+	Float rarity;
+	Float percentage;
 	
 	public String getTypeID() { return typeID; }
 	public void setTypeID(String typeID) { this.typeID = typeID; }
@@ -25,8 +25,8 @@ public class SpawnInfo {
 	public Condition getCondition() { return condition; }
 	public void setCondition(Condition condition) { this.condition = condition; }
 	
-	public Condition getAntiCondition() { return antiCondition; }
-	public void setAntiCondition(Condition antiCondition) { this.antiCondition = antiCondition; }
+	public Condition getAntiCondition() { return anticondition; }
+	public void setAntiCondition(Condition antiCondition) { this.anticondition = antiCondition; }
 	
 	public CompositeCondition getCompositeCondition() { return compositeCondition; }
 	public void setCompositeCondition(CompositeCondition compositeCondition) { this.compositeCondition = compositeCondition; }
@@ -34,15 +34,15 @@ public class SpawnInfo {
 	public RarityMultiplier[] getRarityMultipliers() { return rarityMultipliers; }
 	public void setRarityMultipliers(RarityMultiplier[] rarityMultipliers) { this.rarityMultipliers = rarityMultipliers; }
 	
-	public int getRequiredSpace() { return requiredSpace; }
+	public Integer getRequiredSpace() { return requiredSpace; }
 	public void setRequiredSpace(int requiredSpace) { this.requiredSpace = requiredSpace; }
 	
 	public String[] getStringLocationTypes() { return stringLocationTypes; }
 	public void setStringLocationTypes(String[] stringLocationTypes) { this.stringLocationTypes = stringLocationTypes; }
 	
-	public float getRarity() { return rarity; }
+	public Float getRarity() { return rarity; }
 	public void setRarity(float rarity) { this.rarity = rarity; }
 	
-	public float getPercentage() { return percentage; }
+	public Float getPercentage() { return percentage; }
 	public void setPercentage(float percentage) { this.percentage = percentage; }
 }

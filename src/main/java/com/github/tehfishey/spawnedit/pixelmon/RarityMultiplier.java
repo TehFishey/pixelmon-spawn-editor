@@ -1,11 +1,11 @@
 package com.github.tehfishey.spawnedit.pixelmon;
 
 public class RarityMultiplier {
-	float multiplier;
+	Float multiplier;
 	Condition condition;
 	Condition antiCondition;
 	
-	public float getMultiplier() { return multiplier; }
+	public Float getMultiplier() { return multiplier; }
 	public void setMultiplier(float multiplier) { this.multiplier = multiplier; }
 	
 	public Condition getCondition() { return condition; }

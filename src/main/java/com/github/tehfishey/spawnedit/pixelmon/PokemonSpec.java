@@ -1,77 +1,81 @@
 package com.github.tehfishey.spawnedit.pixelmon;
 
-import com.github.tehfishey.spawnedit.pixelmon.helpers.Enums.ABILITY;
-import com.github.tehfishey.spawnedit.pixelmon.helpers.Enums.GENDER;
-import com.github.tehfishey.spawnedit.pixelmon.helpers.Enums.NATURE;
-import com.github.tehfishey.spawnedit.pixelmon.helpers.Enums.STATUS;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Ability;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Boss;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Gender;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Growth;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Nature;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.PokeRusType;
 
 public class PokemonSpec {
 	
 	String name;
-	int level;
-	GENDER gender;
-	boolean shiny;
-	float growth;
-	NATURE nature;
-	ABILITY ability;
-	//BOSS boss;
+	Integer level;
+	Gender gender;
+	Growth growth;
+	Nature nature;
+	Ability ability;
+	Boss boss;
 	//BALL ball;
-	int form;
-	char pokerus;
-	boolean cured;
-	boolean egg;
-	boolean random;
-	boolean untradeable;
-	boolean unbreedable;
-	STATUS status;
-	int iv[];
-	int ev[];
+	Integer form;
+	PokeRusType pokerusType;
+	Boolean pokerusSpread;
+	Boolean shiny;
+	Boolean cured;
+	Boolean egg;
+	ExtraSpecValue[] extraSpecs;
+	//Boolean random;
+	//Boolean untradeable;
+	//Boolean unbreedable;
+	//Status status;
+	//Integer iv[];
+	//Integer ev[];
 	
 	public String getTypeName() { return name; }
 	public void setTypeName(String typeName) { this.name = typeName; }
 	
-	public int getLevel() { return level; }
+	public Integer getLevel() { return level; }
 	public void setLevel(int level) { this.level = level; }
 	
-	public GENDER getGender() { return gender; }
-	public void setGender(GENDER gender) { this.gender = gender; }
+	public Gender getGender() { return gender; }
+	public void setGender(Gender gender) { this.gender = gender; }
 	
-	public boolean isShiny() { return shiny; }
+	public Boolean isShiny() { return shiny; }
 	public void setShiny(boolean shiny) { this.shiny = shiny; }
 	
-	public float getGrowth() { return growth; }
-	public void setGrowth(float growth) { this.growth = growth; }
+	public Growth getGrowth() { return growth; }
+	public void setGrowth(Growth growth) { this.growth = growth; }
 	
-	public NATURE getNature() { return nature; }
-	public void setNature(NATURE nature) { this.nature = nature; }
+	public Nature getNature() { return nature; }
+	public void setNature(Nature nature) { this.nature = nature; }
 	
-	public int getForm() { return form; }
+	public Integer getForm() { return form; }
 	public void setForm(int form) { this.form = form; }
 	
-	public char getPokerus() { return pokerus; }
-	public void setPokerus(char pokerus) { this.pokerus = pokerus; }
+	public PokeRusType getPokerus() { return pokerusType; }
+	public void setPokerus(PokeRusType pokerus) { this.pokerusType = pokerus; }
 	
-	public boolean isCured() { return cured; }
+	public Boolean isCured() { return cured; }
 	public void setCured(boolean cured) { this.cured = cured; }
 	
-	public boolean isEgg() { return egg; }
+	public Boolean isEgg() { return egg; }
 	public void setEgg(boolean egg) { this.egg = egg; }
 	
-	public boolean isRandom() { return random; }
-	public void setRandom(boolean random) { this.random = random; }
+	//public Boolean isRandom() { return random; }
+	//public void setRandom(boolean random) { this.random = random; }
 	
-	public boolean isUntradeable() { return untradeable; }
-	public void setUntradeable(boolean untradeable) { this.untradeable = untradeable; }
+	//public Boolean isUntradeable() { return untradeable; }
+	//public void setUntradeable(boolean untradeable) { this.untradeable = untradeable; }
 	
-	public boolean isUnbreedable() { return unbreedable; }
-	public void setUnbreedable(boolean unbreedable) { this.unbreedable = unbreedable; }
+	//public Boolean isUnbreedable() { return unbreedable; }
+	//public void setUnbreedable(boolean unbreedable) { this.unbreedable = unbreedable; }
 	
-	public STATUS getStatus() { return status; }
-	public void setStatus(STATUS status) { this.status = status; }
+	//public Status getStatus() { return status; }
+	//public void setStatus(Status status) { this.status = status; }
 	
-	public int[] getIv() { return iv; }
-	public void setIv(int[] iv) { this.iv = iv; }
+	//public Integer[] getIv() { return iv; }
+	//public void setIv(Integer[] iv) { this.iv = iv; }
 	
-	public int[] getEv() { return ev; }
-	public void setEv(int[] ev) { this.ev = ev; }
+	//public Integer[] getEv() { return ev; }
+	//public void setEv(Integer[] ev) { this.ev = ev; }
 }
