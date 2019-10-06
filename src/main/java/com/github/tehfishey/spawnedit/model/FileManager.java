@@ -3,6 +3,7 @@ package com.github.tehfishey.spawnedit.model;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.github.tehfishey.spawnedit.pixelmon.SpawnSet;
 import com.google.common.io.Files;
@@ -24,6 +25,30 @@ public class FileManager {
 		this.pathMap = new HashMap<String, String>();
 		this.fileLoader = new FileLoader();
 		this.fileSaver = new FileSaver();
+	}
+	
+	public void saveAll() {
+		ArrayList<SpawnEntry> entries = parent.getSpawnEntries();
+		ArrayList<SpawnSet> output = new ArrayList<SpawnSet>();
+
+		for (Entry<String, String> pathMapEntry : pathMap.entrySet()) {
+			String setId = pathMapEntry.getKey();
+			SpawnSet newSet = new SpawnSet();
+			newSet.setSetId(setId);
+			newSet.setSpawnInfos(new ArrayList<SpawnInfoPokemon>());
+			System.out.println("Creating SpawnSet for ID: " + setId);
+			
+			for (SpawnEntry entry : entries) {
+				if (entry.getSpawnSetId().equals(setId)) {
+					newSet.getSpawnInfos().add(entry.getSpawnSetIndex(), entry.getSpawnInfo());
+					System.out.println("Adding SpawnInfo (" + entry.getSpawnInfo().toString() + ") to SpawnSet with ID: " + setId);
+				}
+			}
+			
+			output.add(newSet);
+		}
+
+		fileSaver.saveMultipleFiles(output, pathMap);
 	}
 	
 	public void loadFile(File file) {
@@ -53,8 +78,8 @@ public class FileManager {
 		ArrayList<SpawnEntry> newEntries = new ArrayList<SpawnEntry>();
 		String SpawnSetId = data.getSetId();
 		
-		for (int i = 0; i < data.getSpawnInfos().length; i++) {
-			SpawnInfoPokemon spawnInfo = data.getSpawnInfos()[i];
+		for (int i = 0; i < data.getSpawnInfos().size(); i++) {
+			SpawnInfoPokemon spawnInfo = data.getSpawnInfos().get(i);
 			newEntries.add(new SpawnEntry(SpawnSetId, i, spawnInfo));
 		}
 		

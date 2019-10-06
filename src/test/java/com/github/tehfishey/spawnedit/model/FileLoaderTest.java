@@ -17,7 +17,7 @@ public class FileLoaderTest {
 		
 		SpawnSet test = fileLoader.parse(file);
 		
-		assertEquals(5, test.getSpawnInfos()[0].getMinLevel());
+		assertEquals((Integer) 5, test.getSpawnInfos().get(0).getMinLevel());
 	}
 	
 	@Test
@@ -28,7 +28,7 @@ public class FileLoaderTest {
 		SpawnSet test = fileLoader.parse(file);
 		
 		assertEquals("Abra",test.getSetId());
-		assertEquals(5, test.getSpawnInfos()[0].getMinLevel());
+		assertEquals((Integer) 5, test.getSpawnInfos().get(0).getMinLevel());
 	}
 
 }

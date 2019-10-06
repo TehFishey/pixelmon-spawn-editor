@@ -44,6 +44,10 @@ public class MainController {
 		File directory = directoryChooser.showDialog(root.getScene().getWindow());
 		if (directory != null) model.getFileManager().loadDirectory(directory);
 	}
+	
+	public void saveAll(ActionEvent event) {
+		model.getFileManager().saveAll();
+	}
 
 	private static void configureFileChooser(final FileChooser fileChooser){                           
         fileChooser.setTitle("Load File");
