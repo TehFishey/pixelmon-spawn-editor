@@ -2,7 +2,7 @@ package com.github.tehfishey.spawnedit.controller;
 
 import java.util.HashMap;
 
-import com.github.tehfishey.spawnedit.model.Enums.ColumnId;
+import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

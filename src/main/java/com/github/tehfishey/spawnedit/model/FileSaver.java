@@ -29,10 +29,8 @@ public class FileSaver {
 				if (file.getSetId() == fileId) {
 					try {
 						FileWriter writer = new FileWriter(pathEntry.getValue());
-						System.out.println("Saving SpawnSet (" + file.toString() + ") to file path: " + pathEntry.getValue());
 						writer.write(printer.toJson(file));
-						writer.close();
-						  
+						writer.close();	  
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

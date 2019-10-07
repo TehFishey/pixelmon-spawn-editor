@@ -1,9 +1,10 @@
-package com.github.tehfishey.spawnedit.controller;
+package com.github.tehfishey.spawnedit.controller.menus;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import com.github.tehfishey.spawnedit.model.Enums.ColumnId;
+import com.github.tehfishey.spawnedit.controller.ControllerStateManager;
+import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;

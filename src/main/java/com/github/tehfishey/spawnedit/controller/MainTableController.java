@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 import com.github.tehfishey.spawnedit.model.Model;
 import com.github.tehfishey.spawnedit.model.SpawnEntry;
-import com.github.tehfishey.spawnedit.model.Enums.ColumnId;
+import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

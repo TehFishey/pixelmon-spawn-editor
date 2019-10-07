@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.tehfishey.spawnedit.model.SpawnEntry;
-import com.github.tehfishey.spawnedit.model.Enums.ColumnId;
+import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
 	// Utility class that generates data for TableView display from SpawnEntry domain objects. Each SpawnEntry

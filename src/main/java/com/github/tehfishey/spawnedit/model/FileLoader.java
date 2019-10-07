@@ -32,13 +32,18 @@ public class FileLoader {
 		parser = builder.create();
 	}
 	
-	public SpawnSet parse(File file) {
+	public SpawnSet parse(File file) throws IOException, JsonParseException {
 		try (Reader reader = new FileReader(file)) {
-			SpawnSet spawnSet = parser.fromJson(reader, SpawnSet.class);
-			return spawnSet;
+			try {
+				SpawnSet spawnSet = parser.fromJson(reader, SpawnSet.class);
+				return spawnSet;
+			} catch (JsonParseException e) {
+				System.out.println(e.getMessage() + "\n@ Filepath: " + file.getAbsolutePath());
+				throw e;
+			}
 		} catch (IOException e) {
-            e.printStackTrace();
-            return new SpawnSet();
+			System.out.println(e.getMessage() + "\n@ Filepath: " + file.getAbsolutePath());
+            throw e;
         }
 	}	
 	
