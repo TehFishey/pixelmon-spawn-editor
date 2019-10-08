@@ -3,7 +3,7 @@ package com.github.tehfishey.spawnedit.controller.menus;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import com.github.tehfishey.spawnedit.controller.ControllerStateManager;
+import com.github.tehfishey.spawnedit.controller.ControllerManager;
 import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 
 import javafx.beans.property.BooleanProperty;
@@ -12,7 +12,7 @@ import javafx.scene.control.CheckBox;
 
 public class ColumnsMenuController {
 	
-	private final ControllerStateManager manager;
+	private final ControllerManager manager;
 	private HashMap<ColumnId, CheckBox> checkBoxMap;
 	
 	@FXML private CheckBox columnMenuSpawnInfo;
@@ -90,7 +90,7 @@ public class ColumnsMenuController {
 	@FXML private CheckBox columnMenuHeldItems;
 	
 	
-    public ColumnsMenuController(ControllerStateManager manager) {
+    public ColumnsMenuController(ControllerManager manager) {
     	this.manager = manager;
     }
     

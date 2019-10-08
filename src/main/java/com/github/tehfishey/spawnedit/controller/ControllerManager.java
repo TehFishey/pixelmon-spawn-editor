@@ -6,17 +6,22 @@ import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.layout.AnchorPane;
 
-public class ControllerStateManager {
+public class ControllerManager {
 
 	private final HashMap<ColumnId, BooleanProperty> visibleColumns;
+	private AnchorPane root;
 	
-	public ControllerStateManager() {
+	public ControllerManager() {
 		this.visibleColumns = new HashMap<ColumnId, BooleanProperty>();
 		createVisibleTableDefaults(visibleColumns);
 	}
 	
 	public HashMap<ColumnId, BooleanProperty> getVisibleColumns() { return visibleColumns; }
+	
+	public AnchorPane getRoot() { return root; }
+	public void setRoot(AnchorPane root) { this.root = root; }
 	
 	private void createVisibleTableDefaults(HashMap<ColumnId, BooleanProperty> visibleColumns) {
 		

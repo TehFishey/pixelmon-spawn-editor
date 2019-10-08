@@ -4,7 +4,7 @@
 <?import javafx.scene.control.CustomMenuItem?>
 <?import javafx.scene.control.Menu?>
 
-<Menu mnemonicParsing="false" text="Columns" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.menus.ColumnsMenuController">
+<Menu fx:id="columnsMenu" mnemonicParsing="false" text="Columns" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.menus.ColumnsMenuController">
 	<items>
 	  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpawnInfo" text="SpawnInfo" textFill="#000000" /> </content> </CustomMenuItem>
 	  <CustomMenuItem hideOnClick="false" mnemonicParsing="false"> <content> <CheckBox fx:id="columnMenuSpawnIndex" text="Spawn Index" textFill="#000000" /> </content> </CustomMenuItem>

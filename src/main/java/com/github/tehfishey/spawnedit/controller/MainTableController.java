@@ -26,7 +26,7 @@ import javafx.util.StringConverter;
 
 public class MainTableController implements Initializable {
 	
-	private final ControllerStateManager manager;
+	private final ControllerManager manager;
 	private final Model model;
 	private final PropertyChangeListener modelListener;
 	private HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, String>> columnMap;
@@ -108,7 +108,7 @@ public class MainTableController implements Initializable {
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> specificPokeRusRate;    
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> heldItems; 
     
-    public MainTableController(ControllerStateManager manager, Model model) {
+    public MainTableController(ControllerManager manager, Model model) {
         this.manager = manager;
     	this.model = model;
         this.modelListener = new ModelUpdateListener(this);

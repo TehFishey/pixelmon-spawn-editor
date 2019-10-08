@@ -21,74 +21,18 @@ import com.google.gson.JsonParseException;
 
 public class MainController {
 	private final Model model;
-	private final ControllerStateManager manager;
-	private final FileChooser fileChooser;
-	private final DirectoryChooser directoryChooser;
+	private final ControllerManager manager;
 	
 	@FXML private AnchorPane root;
 	
-    public MainController(ControllerStateManager manager, Model model) {
+    public MainController(ControllerManager manager, Model model) {
     	this.manager = manager;
         this.model = model;
-        this.fileChooser = new FileChooser();
-        this.directoryChooser = new DirectoryChooser();
     }
 	
     public void initialize() {
+    	manager.setRoot(root);
     }
     
-	public void exit(ActionEvent event) {
-		 java.lang.System.exit(0);
-	}
 	
-	public void loadFile(ActionEvent event) {
-		configureFileChooser(fileChooser);
-		File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-		if (file != null)  
-			try { 
-				model.getFileManager().loadFile(file); 
-			} catch (BatchIOException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptionPaths(), ExceptionType.BatchIOException);
-				alert.show();
-			} catch (BatchJsonException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getErrorPaths(), ExceptionType.BatchJsonException);
-				alert.show();
-			}
-	}
-	
-	public void loadDirectory(ActionEvent event) {
-		configureDirectoryChooser(directoryChooser);
-		File directory = directoryChooser.showDialog(root.getScene().getWindow());
-		if (directory != null) 
-			try { 
-				model.getFileManager().loadDirectory(directory); 
-			} catch (BatchIOException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptionPaths(), ExceptionType.BatchIOException);
-				alert.show();
-			} catch (BatchJsonException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getErrorPaths(), ExceptionType.BatchJsonException);
-				alert.show();
-			}
-	}
-	
-	public void saveAll(ActionEvent event) {
-		model.getFileManager().saveAll();
-	}
-
-	private static void configureFileChooser(final FileChooser fileChooser){                           
-        fileChooser.setTitle("Load File");
-        fileChooser.setInitialDirectory(
-            new File(System.getProperty("user.home"))
-        ); 
-        fileChooser.getExtensionFilters().addAll(
-        		new FileChooser.ExtensionFilter("JSON", "*.json")
-            );
-	}
-	
-	private static void configureDirectoryChooser(final DirectoryChooser directoryChooser){                           
-		directoryChooser.setTitle("Load Directory");
-		directoryChooser.setInitialDirectory(
-            new File(System.getProperty("user.home"))
-        );
-	}
 }

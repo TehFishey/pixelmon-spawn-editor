@@ -2,7 +2,7 @@ package com.github.tehfishey.spawnedit;
 
 import java.lang.reflect.Constructor;
 
-import com.github.tehfishey.spawnedit.controller.ControllerStateManager;
+import com.github.tehfishey.spawnedit.controller.ControllerManager;
 import com.github.tehfishey.spawnedit.model.Model;
 
 import javafx.application.Application;
@@ -21,17 +21,17 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
        
     	final Model model = new Model();
-    	final ControllerStateManager manager = new ControllerStateManager();
+    	final ControllerManager manager = new ControllerManager();
     	
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getClassLoader().getResource("fxml/Main.fxml"));
     	loader.setControllerFactory((Class<?> type) -> {
             try {
                 for (Constructor<?> c : type.getConstructors()) {
-                	if (c.getParameterCount() == 2 && c.getParameterTypes()[0] == ControllerStateManager.class && c.getParameterTypes()[1] == Model.class) {
+                	if (c.getParameterCount() == 2 && c.getParameterTypes()[0] == ControllerManager.class && c.getParameterTypes()[1] == Model.class) {
                         return c.newInstance(manager, model);
                 	}
-                    else if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == ControllerStateManager.class)
+                    else if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == ControllerManager.class)
                         return c.newInstance(manager);
 
                 }
