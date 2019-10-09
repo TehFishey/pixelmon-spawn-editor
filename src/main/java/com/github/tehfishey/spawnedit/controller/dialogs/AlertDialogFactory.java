@@ -16,7 +16,12 @@ public class AlertDialogFactory {
 		BatchJsonException;
 	}
 	
-	public static Alert createLoadAlert(ArrayList<Path> filePaths, ExceptionType exceptionType) {
+	public static enum SaveType {
+		SaveAll,
+		SaveDirectory
+	}
+	
+	public static Alert loadExceptionAlert(ArrayList<Path> filePaths, ExceptionType exceptionType) {
 		String bodyText = new String();
 		String header = new String();
 		String descriptionText = new String();
@@ -40,7 +45,7 @@ public class AlertDialogFactory {
 		return newAlert;
 	}
 	
-	public static Alert createSaveAlert(ArrayList<Path> filePaths, ExceptionType exceptionType) {
+	public static Alert saveExceptionAlert(ArrayList<Path> filePaths, ExceptionType exceptionType) {
 		String bodyText = new String();
 		String header = new String();
 		String descriptionText = new String();
@@ -55,7 +60,26 @@ public class AlertDialogFactory {
 		bodyText = descriptionText + fileNameText;
 		
 		Alert newAlert = new Alert(AlertType.WARNING, bodyText, ButtonType.OK);
-		newAlert.setTitle("Load Error");
+		newAlert.setTitle("Save Error");
+		newAlert.setHeaderText(header);
+		return newAlert;
+	}
+	
+	public static Alert saveWarningAlert(SaveType type) {
+		String bodyText = new String();
+		String header = new String();
+		
+		if (type.equals(SaveType.SaveAll)) {
+			header = "Save All";
+			bodyText = "This action will permanently overwrite all files currently open in Pixelmon Spawn Editor. Do you wish to continue?";
+		}
+		else if (type.equals(SaveType.SaveDirectory)) {
+			header = "Save to Directory";
+			bodyText = "This action can potentially overwrite files in the selected directory or its sub-directories. Do you wish to continue?";
+		}
+
+		Alert newAlert = new Alert(AlertType.CONFIRMATION, bodyText, ButtonType.YES, ButtonType.CANCEL);
+		newAlert.setTitle("Confirm Save All");
 		newAlert.setHeaderText(header);
 		return newAlert;
 	}

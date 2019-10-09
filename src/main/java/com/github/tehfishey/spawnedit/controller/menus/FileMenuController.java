@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import com.github.tehfishey.spawnedit.controller.ControllerManager;
 import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory;
 import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.ExceptionType;
+import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.SaveType;
 import com.github.tehfishey.spawnedit.model.Model;
 import com.github.tehfishey.spawnedit.model.exceptions.BatchIOException;
 import com.github.tehfishey.spawnedit.model.exceptions.BatchJsonException;
@@ -17,6 +18,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Menu;
 import javafx.stage.DirectoryChooser;
@@ -52,10 +54,10 @@ public class FileMenuController {
 			try { 
 				model.getFileManager().loadFile(file); 
 			} catch (BatchIOException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
+				Alert alert = AlertDialogFactory.loadExceptionAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
 				alert.show();
 			} catch (BatchJsonException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptedPaths(), ExceptionType.BatchJsonException);
+				Alert alert = AlertDialogFactory.loadExceptionAlert(e.getExceptedPaths(), ExceptionType.BatchJsonException);
 				alert.show();
 			}
 		fileChooser.setInitialDirectory(file.getParent().toFile());
@@ -68,10 +70,10 @@ public class FileMenuController {
 			try { 
 				model.getFileManager().loadDirectory(directory); 
 			} catch (BatchIOException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
+				Alert alert = AlertDialogFactory.loadExceptionAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
 				alert.show();
 			} catch (BatchJsonException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptedPaths(), ExceptionType.BatchJsonException);
+				Alert alert = AlertDialogFactory.loadExceptionAlert(e.getExceptedPaths(), ExceptionType.BatchJsonException);
 				alert.show();
 			}
 		fileChooser.setInitialDirectory(directory.getParent().toFile());
@@ -79,26 +81,37 @@ public class FileMenuController {
 	}
 	
 	public void saveAllFiles(ActionEvent event) {
-		try {
-			model.getFileManager().saveAllToMap();
-		} catch (BatchIOException e) {
-			Alert alert = AlertDialogFactory.createSaveAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
-			alert.show();
-		}
+		Alert confirmation = AlertDialogFactory.saveWarningAlert(SaveType.SaveAll);
+		confirmation.showAndWait();
 		
+		if (confirmation.getResult() == ButtonType.YES) {
+			try {
+				model.getFileManager().saveAllToMap();
+			} catch (BatchIOException e) {
+				Alert alert = AlertDialogFactory.saveExceptionAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
+				alert.show();
+			}	
+		}
 	}
 	
 	public void saveToDirectory(ActionEvent event) {
 		Path directory = directoryChooser.showDialog(manager.getRoot().getScene().getWindow()).toPath();
-		if (directory != null) 
-			try { 
-				model.getFileManager().saveAllToDirectory(directory); 
-			} catch (BatchIOException e) {
-				Alert alert = AlertDialogFactory.createSaveAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
-				alert.show();
-			} 
+		
+		if (directory != null)  {
+			Alert confirmation = AlertDialogFactory.saveWarningAlert(SaveType.SaveAll);
+			confirmation.showAndWait();
+			
+			if (confirmation.getResult() == ButtonType.YES) {
+				try { 
+					model.getFileManager().saveAllToDirectory(directory); 
+				} catch (BatchIOException e) {
+					Alert alert = AlertDialogFactory.saveExceptionAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
+					alert.show();
+				}
+			}
 		fileChooser.setInitialDirectory(directory.getParent().toFile());
 		directoryChooser.setInitialDirectory(directory.getParent().toFile());
+		}
 	}
 
 	private static void configureFileChoosers(final FileChooser fileChooser, final DirectoryChooser directoryChooser) {                           
