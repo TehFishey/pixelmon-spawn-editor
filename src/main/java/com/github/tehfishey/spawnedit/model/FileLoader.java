@@ -1,10 +1,10 @@
 package com.github.tehfishey.spawnedit.model;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -32,17 +32,17 @@ public class FileLoader {
 		parser = builder.create();
 	}
 	
-	public SpawnSet parse(File file) throws IOException, JsonParseException {
-		try (Reader reader = new FileReader(file)) {
+	public SpawnSet parse(Path file) throws IOException, JsonParseException {
+		try (BufferedReader reader = Files.newBufferedReader(file)) {
 			try {
 				SpawnSet spawnSet = parser.fromJson(reader, SpawnSet.class);
 				return spawnSet;
 			} catch (JsonParseException e) {
-				System.out.println(e.getMessage() + "\n@ Filepath: " + file.getAbsolutePath());
+				System.out.println(e.getMessage() + "\nJsonParseException @ Filepath: " + file.toString());
 				throw e;
 			}
 		} catch (IOException e) {
-			System.out.println(e.getMessage() + "\n@ Filepath: " + file.getAbsolutePath());
+			System.out.println(e.getMessage() + "\nIOException @ Filepath: " + file.toString());
             throw e;
         }
 	}	

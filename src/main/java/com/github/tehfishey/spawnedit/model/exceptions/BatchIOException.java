@@ -1,25 +1,26 @@
 package com.github.tehfishey.spawnedit.model.exceptions;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BatchIOException extends Exception {
 	private static final long serialVersionUID = 1L;
-	final HashMap<String, IOException> exceptionFileNameMap;
+	final HashMap<Path, IOException> exceptedFilePathsMap;
 	
-	public BatchIOException(String message, HashMap<String, IOException> exceptionFileNameMap) {
+	public BatchIOException(String message, HashMap<Path, IOException> exceptedFilePathsMap) {
 		super(message);
-		this.exceptionFileNameMap = exceptionFileNameMap;
+		this.exceptedFilePathsMap = exceptedFilePathsMap;
 	}
 	
-	public BatchIOException(HashMap<String, IOException> exceptionFileNameMap) {
-		this.exceptionFileNameMap = exceptionFileNameMap;
+	public BatchIOException(HashMap<Path, IOException> exceptedFilePathsMap) {
+		this.exceptedFilePathsMap = exceptedFilePathsMap;
 	}
 	
-	public ArrayList<String> getExceptionPaths() {
-		ArrayList<String> output = new ArrayList<String>();
-		for (String fileName : exceptionFileNameMap.keySet()) output.add(fileName);
+	public ArrayList<Path> getExceptedPaths() {
+		ArrayList<Path> output = new ArrayList<Path>();
+		for (Path filePath : exceptedFilePathsMap.keySet()) output.add(filePath);
 		return output;
 	}
 }

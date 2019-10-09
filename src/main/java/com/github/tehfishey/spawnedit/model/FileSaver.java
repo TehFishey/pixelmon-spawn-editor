@@ -1,10 +1,8 @@
 package com.github.tehfishey.spawnedit.model;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import com.github.tehfishey.spawnedit.pixelmon.SpawnSet;
 import com.google.gson.Gson;
@@ -21,20 +19,17 @@ public class FileSaver {
 		printer = new GsonBuilder().create();
 	}
 	
-	public void saveMultipleFiles(ArrayList<SpawnSet> spawnSets, HashMap<String, String> pathMap) {
-		for (Entry<String, String> pathEntry : pathMap.entrySet()) {
-			String fileId = pathEntry.getKey();
-			
-			for (SpawnSet file : spawnSets) {
-				if (file.getSetId() == fileId) {
-					try {
-						FileWriter writer = new FileWriter(pathEntry.getValue());
-						writer.write(printer.toJson(file));
-						writer.close();	  
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+	public void saveSpawnSetToPath(SpawnSet spawnSet, Path filePath) throws IOException {
+		String content = printer.toJson(spawnSet);
+		try {
+			Files.write(filePath, content.getBytes());
+		} catch (IOException e) {
+			try {
+				Files.createDirectories(filePath.getParent());
+				Files.write(filePath, content.getBytes());
+			} catch (IOException ex) {
+				System.out.println(ex.getMessage() + "\nIOException @ Filepath: " + filePath.toString());
+				throw e;
 			}
 		}
 	}

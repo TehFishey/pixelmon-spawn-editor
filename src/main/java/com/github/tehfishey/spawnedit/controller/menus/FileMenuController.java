@@ -1,6 +1,7 @@
 package com.github.tehfishey.spawnedit.controller.menus;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -46,40 +47,58 @@ public class FileMenuController {
 	}
 	
 	public void loadFile(ActionEvent event) {
-		File file = fileChooser.showOpenDialog(manager.getRoot().getScene().getWindow());
+		Path file = fileChooser.showOpenDialog(manager.getRoot().getScene().getWindow()).toPath();
 		if (file != null)  
 			try { 
 				model.getFileManager().loadFile(file); 
 			} catch (BatchIOException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptionPaths(), ExceptionType.BatchIOException);
+				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
 				alert.show();
 			} catch (BatchJsonException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getErrorPaths(), ExceptionType.BatchJsonException);
+				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptedPaths(), ExceptionType.BatchJsonException);
 				alert.show();
 			}
-		fileChooser.setInitialDirectory(file.getParentFile());
-		directoryChooser.setInitialDirectory(file.getParentFile());
+		fileChooser.setInitialDirectory(file.getParent().toFile());
+		directoryChooser.setInitialDirectory(file.getParent().toFile());
 	}
 	
 	public void loadDirectory(ActionEvent event) {
-		
-		File directory = directoryChooser.showDialog(manager.getRoot().getScene().getWindow());
+		Path directory = directoryChooser.showDialog(manager.getRoot().getScene().getWindow()).toPath();
 		if (directory != null) 
 			try { 
 				model.getFileManager().loadDirectory(directory); 
 			} catch (BatchIOException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptionPaths(), ExceptionType.BatchIOException);
+				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
 				alert.show();
 			} catch (BatchJsonException e) {
-				Alert alert = AlertDialogFactory.createLoadAlert(e.getErrorPaths(), ExceptionType.BatchJsonException);
+				Alert alert = AlertDialogFactory.createLoadAlert(e.getExceptedPaths(), ExceptionType.BatchJsonException);
 				alert.show();
 			}
-		fileChooser.setInitialDirectory(directory.getParentFile());
-		directoryChooser.setInitialDirectory(directory.getParentFile());
+		fileChooser.setInitialDirectory(directory.getParent().toFile());
+		directoryChooser.setInitialDirectory(directory.getParent().toFile());
 	}
 	
-	public void saveAll(ActionEvent event) {
-		model.getFileManager().saveAll();
+	public void saveAllFiles(ActionEvent event) {
+		try {
+			model.getFileManager().saveAllToMap();
+		} catch (BatchIOException e) {
+			Alert alert = AlertDialogFactory.createSaveAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
+			alert.show();
+		}
+		
+	}
+	
+	public void saveToDirectory(ActionEvent event) {
+		Path directory = directoryChooser.showDialog(manager.getRoot().getScene().getWindow()).toPath();
+		if (directory != null) 
+			try { 
+				model.getFileManager().saveAllToDirectory(directory); 
+			} catch (BatchIOException e) {
+				Alert alert = AlertDialogFactory.createSaveAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
+				alert.show();
+			} 
+		fileChooser.setInitialDirectory(directory.getParent().toFile());
+		directoryChooser.setInitialDirectory(directory.getParent().toFile());
 	}
 
 	private static void configureFileChoosers(final FileChooser fileChooser, final DirectoryChooser directoryChooser) {                           

@@ -7,7 +7,8 @@
   <items>
     <MenuItem fx:id="menuLoadFile" mnemonicParsing="false" onAction="#loadFile" text="Load File" />
     <MenuItem fx:id="menuLoadDirectory" mnemonicParsing="false" onAction="#loadDirectory" text="Load Directory" />
-    <MenuItem fx:id="menuSaveAll" mnemonicParsing="false" onAction="#saveAll" text="Save All" />
+    <MenuItem fx:id="menuSave" mnemonicParsing="false" onAction="#saveAllFiles" text="Save" />
+    <MenuItem fx:id="menuSaveTo" mnemonicParsing="false" onAction="#saveToDirectory" text="Save to Directory" />
     <MenuItem fx:id="menuExit" mnemonicParsing="false" onAction="#exit" text="Exit" />
   </items>
 </Menu>

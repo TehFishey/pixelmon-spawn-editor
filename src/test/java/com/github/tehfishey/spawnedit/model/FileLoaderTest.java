@@ -12,7 +12,7 @@ import com.google.gson.JsonParseException;
 
 public class FileLoaderTest {
 
-	@Test
+/*	@Test
 	public void testSetId() {
 		FileLoader fileLoader = new FileLoader();
 		File file = new File("src/test/resources/json/Abra.set.json");
@@ -38,5 +38,6 @@ public class FileLoaderTest {
 		catch (IOException e) { e.printStackTrace(); } 
 		catch (JsonParseException e) { e.printStackTrace(); }
 	}
+*/
 
 }
