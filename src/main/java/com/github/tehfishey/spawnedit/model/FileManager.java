@@ -60,6 +60,8 @@ public class FileManager {
 			Path newPath = root.resolve(rootRecord.relativize(pathRecord));
 			try {
 				fileSaver.saveSpawnSetToPath(set, newPath);
+				pathMap.replace(set.getSetId(), newPath);
+				rootMap.replace(set.getSetId(), root);
 			} catch (IOException e) {
         		ioExceptions.put(newPath,e);
         		continue;
