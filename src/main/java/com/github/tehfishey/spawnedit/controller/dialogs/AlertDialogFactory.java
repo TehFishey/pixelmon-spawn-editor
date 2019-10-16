@@ -69,13 +69,9 @@ public class AlertDialogFactory {
 		String bodyText = new String();
 		String header = new String();
 		
-		if (type.equals(SaveType.SaveAll)) {
-			header = "Save All";
-			bodyText = "This action will permanently overwrite all files currently open in Pixelmon Spawn Editor. Do you wish to continue?";
-		}
-		else if (type.equals(SaveType.SaveDirectory)) {
+		if (type.equals(SaveType.SaveDirectory)) {
 			header = "Save to Directory";
-			bodyText = "This action can potentially overwrite files in the selected directory or its sub-directories. Do you wish to continue?";
+			bodyText = "You are about to save all loaded files to the current selected directory or its sub-directories. If the directory is already populated, multiple files may be overwritten. Do you wish to continue?";
 		}
 
 		Alert newAlert = new Alert(AlertType.CONFIRMATION, bodyText, ButtonType.YES, ButtonType.CANCEL);

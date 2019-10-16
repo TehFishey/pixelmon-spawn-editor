@@ -80,7 +80,7 @@ public class FileMenuController {
 		directoryChooser.setInitialDirectory(directory.getParent().toFile());
 	}
 	
-	public void saveAllFiles(ActionEvent event) {
+	/*public void saveAllFiles(ActionEvent event) {
 		Alert confirmation = AlertDialogFactory.saveWarningAlert(SaveType.SaveAll);
 		confirmation.showAndWait();
 		
@@ -92,7 +92,7 @@ public class FileMenuController {
 				alert.show();
 			}	
 		}
-	}
+	}*/
 	
 	public void saveToDirectory(ActionEvent event) {
 		Path directory = directoryChooser.showDialog(manager.getRoot().getScene().getWindow()).toPath();
@@ -103,7 +103,7 @@ public class FileMenuController {
 			
 			if (confirmation.getResult() == ButtonType.YES) {
 				try { 
-					model.getFileManager().saveAllToDirectory(directory); 
+					model.getFileManager().saveAllToRoot(directory); 
 				} catch (BatchIOException e) {
 					Alert alert = AlertDialogFactory.saveExceptionAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
 					alert.show();

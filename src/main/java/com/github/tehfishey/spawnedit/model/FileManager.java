@@ -21,25 +21,23 @@ import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
 public class FileManager {
 	private final Model parent;
-	private final HashMap<String, Path> pathMap;
-	private final HashMap<String, Path> rootMap;
 	private final FileLoader fileLoader;
 	private final FileSaver fileSaver;
 	
+	
 	public FileManager(Model parent) {
 		this.parent = parent;
-		this.pathMap = new HashMap<String, Path>();
-		this.rootMap = new HashMap<String, Path>();
 		this.fileLoader = new FileLoader();
-		this.fileSaver = new FileSaver();
+		this.fileSaver = new FileSaver();		
 	}
 	
+	/*
 	public void saveAllToMap() throws BatchIOException {
 		ArrayList<SpawnSet> output = processSpawnEntries(parent.getSpawnEntries());
 		HashMap<Path,IOException> ioExceptions = new HashMap<Path,IOException>();
 		
 		for (SpawnSet set : output) {
-			Path path = pathMap.get(set.getSetId());
+			Path path = spawnPaths.get(set.getSetId());
 			try {
 				fileSaver.saveSpawnSetToPath(set, path);
 			} catch (IOException e) {
@@ -49,19 +47,19 @@ public class FileManager {
 		}
 		if (!ioExceptions.isEmpty()) throw new BatchIOException("IOExceptions occured during saving...", ioExceptions);
 	}
+	*/
 	
-	public void saveAllToDirectory(Path root) throws BatchIOException {
+	public void saveAllToRoot(Path root) throws BatchIOException {
 		ArrayList<SpawnSet> output = processSpawnEntries(parent.getSpawnEntries());
 		HashMap<Path,IOException> ioExceptions = new HashMap<Path,IOException>();
+		HashMap<String, Path> spawnPaths = parent.getSpawnPaths();
 		
 		for (SpawnSet set : output) {
-			Path pathRecord = pathMap.get(set.getSetId());
-			Path rootRecord = rootMap.get(set.getSetId());
-			Path newPath = root.resolve(rootRecord.relativize(pathRecord));
+			Path pathRecord = spawnPaths.get(set.getSetId());
+			Path newPath = root.resolve(pathRecord);
 			try {
 				fileSaver.saveSpawnSetToPath(set, newPath);
-				pathMap.replace(set.getSetId(), newPath);
-				rootMap.replace(set.getSetId(), root);
+				spawnPaths.replace(set.getSetId(), newPath);
 			} catch (IOException e) {
         		ioExceptions.put(newPath,e);
         		continue;
@@ -71,20 +69,20 @@ public class FileManager {
 	}
 	
 	public void loadFile(Path file) throws BatchIOException, BatchJsonException {
+		Path root = file.getParent();
 		try {
 			SpawnSet data = fileLoader.parse(file);
-			pathMap.put(data.getSetId(), file);
-			rootMap.put(data.getSetId(), file.getParent());
+			parent.addSpawnPath(data.getSetId(), root.relativize(file));
 			ArrayList<SpawnEntry> newEntries = processSpawnSet(data);
 			parent.addSpawnEntries(newEntries);
 		} catch (IOException e) {
-			HashMap<Path, IOException> pathMap = new HashMap<Path, IOException>();
-			pathMap.put(file, e);
-			throw new BatchIOException(pathMap);
+			HashMap<Path, IOException> exceptedPathMap = new HashMap<Path, IOException>();
+			exceptedPathMap.put(file, e);
+			throw new BatchIOException(exceptedPathMap);
 		} catch (JsonParseException e) {
-			HashMap<Path, JsonParseException> pathMap = new HashMap<Path, JsonParseException>();
-			pathMap.put(file, e);
-			throw new BatchJsonException(pathMap);
+			HashMap<Path, JsonParseException> exceptedPathMap = new HashMap<Path, JsonParseException>();
+			exceptedPathMap.put(file, e);
+			throw new BatchJsonException(exceptedPathMap);
 		}
 	}
 	
@@ -94,17 +92,16 @@ public class FileManager {
 		HashMap<Path,JsonParseException> jsonExceptions = new HashMap<Path,JsonParseException>();
 		
 		try (Stream<Path> paths = Files.walk(root)) {
-			paths.filter(f -> f.toString().endsWith(".json"))
-				.forEach(f -> {
+			paths.filter(file -> file.toString().endsWith(".json"))
+				.forEach(file -> {
 					try {
-						SpawnSet data = fileLoader.parse(f);
-						pathMap.put(data.getSetId(), f);
-						rootMap.put(data.getSetId(), root);
+						SpawnSet data = fileLoader.parse(file);
+						parent.addSpawnPath(data.getSetId(), root.relativize(file));
 						newEntries.addAll(processSpawnSet(data));
 					} catch (IOException e) {
-			        	ioExceptions.put(f.getFileName(),e);
+			        	ioExceptions.put(file.getFileName(),e);
 			    	} catch (JsonParseException e) {
-			       		jsonExceptions.put(f.getFileName(),e);
+			       		jsonExceptions.put(file.getFileName(),e);
 			    	}
 				});
 		} catch (IOException e) {
