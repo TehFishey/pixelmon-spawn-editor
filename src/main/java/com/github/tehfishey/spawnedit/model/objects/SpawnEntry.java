@@ -1,4 +1,4 @@
-package com.github.tehfishey.spawnedit.model;
+package com.github.tehfishey.spawnedit.model.objects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
