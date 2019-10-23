@@ -55,6 +55,7 @@ public class FileManager {
 			parent.addSpawnPath(data.getSetId(), root.relativize(file));
 			ArrayList<SpawnEntry> newEntries = processSpawnSet(data);
 			parent.addSpawnEntries(newEntries);
+			parent.notifyListeners("spawnFilesUpdated", null, null);
 		} catch (IOException e) {
 			HashMap<Path, IOException> exceptedPathMap = new HashMap<Path, IOException>();
 			exceptedPathMap.put(file, e);
@@ -89,6 +90,7 @@ public class FileManager {
 		}
 
 		parent.addSpawnEntries(newEntries);
+		parent.notifyListeners("spawnFilesUpdated", null, null);
 		if (!ioExceptions.isEmpty()) throw new BatchIOException("IOExceptions occured during loading...", ioExceptions);
 		if (!jsonExceptions.isEmpty()) throw new BatchJsonException("JsonParseExceptions occured during loading...", jsonExceptions);
 	}

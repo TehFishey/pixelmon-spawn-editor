@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class PathTreeNode {
+import com.google.common.collect.Iterables;
+
+public class PathTreeNode implements Iterable<PathTreeNode> {
 	private final NodeType nodeType;
 	private String fileId;
 	private Path localPath;
@@ -119,6 +121,11 @@ public class PathTreeNode {
 		}
 	}
 	
+	@Override
+	public Iterator<PathTreeNode> iterator() {
+		return Iterables.concat(getChildren()).iterator();
+	}
+	
 	private PathTreeNode(NodeType type, Path localPath, PathTreeNode parent) {
 		this.nodeType = type;
 		this.localPath = localPath;
@@ -152,4 +159,6 @@ public class PathTreeNode {
 		if (nodeType != NodeType.Root)
 			parent.walkPathUpwards(pathList);
 	}
+
+	
 }

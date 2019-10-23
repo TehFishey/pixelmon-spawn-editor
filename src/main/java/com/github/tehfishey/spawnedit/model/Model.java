@@ -31,19 +31,21 @@ public class Model {
 
 	public void addSpawnPath(String key, Path path) {
 		this.filePathTree.put(path, key);
-		updateListenerSupport.firePropertyChange("spawnPathsChanged", null, filePathTree);
 	}
 	
 	public void addSpawnEntries(ArrayList<SpawnEntry> spawnEntries) { 
 		this.spawnEntryCache.addAll(spawnEntries); 
-		updateListenerSupport.firePropertyChange("spawnEntriesAdded", null, spawnEntries);
+		notifyListeners("spawnEntriesAdded", null, spawnEntries);
 	}
 	
 	public void removeSpawnEntries(ArrayList<SpawnEntry> spawnEntries) { 
 		this.spawnEntryCache.removeAll(spawnEntries); 
-		updateListenerSupport.firePropertyChange("spawnEntriesRemoved", null, spawnEntries);
+		notifyListeners("spawnEntriesRemoved", null, spawnEntries);
 	}
 	
+	public void notifyListeners(String propertyName, Object value1, Object value2) {
+		updateListenerSupport.firePropertyChange(propertyName, value1, value2);
+	}
 	
 	public void registerListener(PropertyChangeListener listener) {
 		updateListenerSupport.addPropertyChangeListener(listener);

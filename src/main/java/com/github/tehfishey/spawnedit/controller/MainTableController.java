@@ -9,8 +9,8 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import com.github.tehfishey.spawnedit.model.Model;
-import com.github.tehfishey.spawnedit.model.SpawnEntry;
 import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
+import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -111,8 +111,21 @@ public class MainTableController implements Initializable {
     public MainTableController(ControllerManager manager, Model model) {
         this.manager = manager;
     	this.model = model;
-        this.modelListener = new ModelUpdateListener(this);
         this.dataList = FXCollections.observableArrayList();
+        this.modelListener = new PropertyChangeListener() {
+        	@Override
+        	@SuppressWarnings("unchecked")
+        	public void propertyChange(PropertyChangeEvent evt) {
+        		switch (evt.getPropertyName()) {
+        		case "spawnEntriesAdded" :
+        			addModelData(dataList, (ArrayList<SpawnEntry>) evt.getNewValue());
+        			break;
+        		case "spawnEntriesRemoved" :
+        			removeModelData(dataList, (ArrayList<SpawnEntry>) evt.getNewValue());
+        			break;
+        		}
+        	}
+        };
         model.registerListener(modelListener);
     }
 
@@ -273,30 +286,4 @@ public class MainTableController implements Initializable {
 
 		return newMap;
 	}
-	
-	private class ModelUpdateListener implements PropertyChangeListener {
-
-		private final MainTableController parent;
-		
-		ModelUpdateListener(MainTableController parent) {
-			this.parent = parent;
-		}
-		
-		@Override
-		@SuppressWarnings("unchecked")
-		public void propertyChange(PropertyChangeEvent evt) {
-			String propertyName = evt.getPropertyName();
-			
-			switch (propertyName) {
-				case "spawnEntriesAdded" :
-					parent.addModelData(dataList, (ArrayList<SpawnEntry>) evt.getNewValue());
-					break;
-				case "spawnEntriesRemoved" :
-					parent.removeModelData(dataList, (ArrayList<SpawnEntry>) evt.getNewValue());
-					break;
-			}
-		}
-		
-	}
-	
 }

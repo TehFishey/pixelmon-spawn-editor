@@ -98,7 +98,7 @@ public class FileMenuController {
 		Path directory = directoryChooser.showDialog(manager.getRoot().getScene().getWindow()).toPath();
 		
 		if (directory != null)  {
-			Alert confirmation = AlertDialogFactory.saveWarningAlert(SaveType.SaveAll);
+			Alert confirmation = AlertDialogFactory.saveWarningAlert(SaveType.SaveDirectory);
 			confirmation.showAndWait();
 			
 			if (confirmation.getResult() == ButtonType.YES) {
