@@ -16,7 +16,7 @@ public class FileSaver {
 		GsonBuilder builder = new GsonBuilder();
 		builder.setPrettyPrinting();
 		
-		printer = new GsonBuilder().create();
+		printer = builder.create();
 	}
 	
 	public void saveSpawnSetToPath(SpawnSet spawnSet, Path filePath) throws IOException {

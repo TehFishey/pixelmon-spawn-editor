@@ -3,6 +3,7 @@ package com.github.tehfishey.spawnedit.model.objects;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class PathTreeNode {
@@ -26,11 +27,16 @@ public class PathTreeNode {
 	
 	public NodeType getNodeType() { return this.nodeType; }
 	public String getFileId() { return this.fileId; }
-	public void setFileId(String fileId) { this.fileId = fileId; }
 	public PathTreeNode getParent() { return parent; }
 	public Path getLocalPath() { return localPath; }
 	public Path getAbsolutePath() { return absolutePath; }
 	public ArrayList<PathTreeNode> getChildren() { return children; }
+	
+	public void setFileId(String fileId) { this.fileId = fileId; }
+	public void setLocalPath(Path localPath) {
+		this.localPath = localPath;
+		updateAbsolutePaths();
+	}
 	
 	public PathTreeNode newChildDirectory(Path localPath) {
 		PathTreeNode child = new PathTreeNode(NodeType.Directory, localPath, this);
@@ -45,16 +51,7 @@ public class PathTreeNode {
 		return child;
 	}
 	
-	public void migrate(PathTreeNode newParent) {
-		if ((nodeType != NodeType.Root) && (newParent.getNodeType() != NodeType.File)) {
-			parent.getChildren().remove(this);
-			this.parent = newParent;
-			parent.getChildren().add(this);
-			updateAbsolutePaths();
-		}
-	}
-	
-	public void buildChildrenFromFile(Path filePath, String fileId) {
+	public void put(Path filePath, String fileId) {
 		if (nodeType != NodeType.File) {
 			Iterator<Path> it = filePath.iterator();
 			PathTreeNode position = this;
@@ -78,6 +75,50 @@ public class PathTreeNode {
 		}
 	}
 	
+	public PathTreeNode get(String fileId) {
+		if ((this.nodeType == NodeType.File) && (this.fileId == fileId)) return this;
+		for (PathTreeNode child : children) {
+			if ((child.getNodeType() == NodeType.File) && (child.getFileId() == fileId)) {
+				return child;
+			}
+			else {
+				PathTreeNode iterOutput;
+				iterOutput = child.get(fileId);
+				if (!(iterOutput == null))
+					return iterOutput;
+			}
+		}
+		return null;
+	}
+	
+	public void migrate(PathTreeNode newParent) {
+		if ((nodeType != NodeType.Root) && (newParent.getNodeType() != NodeType.File)) {
+			parent.getChildren().remove(this);
+			this.parent = newParent;
+			parent.getChildren().add(this);
+			updateAbsolutePaths();
+		}
+	}
+	
+	public HashMap<String, Path> toHashMap() {
+		HashMap<String, Path> output = new HashMap<String, Path>();
+		if (this.nodeType == NodeType.File) {
+			output.put(this.fileId, this.getAbsolutePath());
+			return output;
+		}
+		else {
+			for (PathTreeNode child : children) {
+				if (child.getNodeType() == NodeType.File) 
+					output.put(child.fileId, child.getAbsolutePath());
+				else {
+					output.putAll(child.toHashMap());
+				}
+			}
+			
+			return output;
+		}
+	}
+	
 	private PathTreeNode(NodeType type, Path localPath, PathTreeNode parent) {
 		this.nodeType = type;
 		this.localPath = localPath;
@@ -98,7 +139,7 @@ public class PathTreeNode {
 		
 		pathList.add(localPath);
 		if (nodeType != NodeType.Root)
-			parent.getPathRecursively(pathList);
+			parent.walkPathUpwards(pathList);
 		
 		for (int i = pathList.size() - 1; i >= 0; i--)
 			absolutePath = absolutePath.resolve(pathList.get(i));
@@ -106,9 +147,9 @@ public class PathTreeNode {
 		this.absolutePath = absolutePath;
 	}
 	
-	private void getPathRecursively(ArrayList<Path> pathList) {
+	private void walkPathUpwards(ArrayList<Path> pathList) {
 		pathList.add(localPath);
 		if (nodeType != NodeType.Root)
-			parent.getPathRecursively(pathList);
+			parent.walkPathUpwards(pathList);
 	}
 }

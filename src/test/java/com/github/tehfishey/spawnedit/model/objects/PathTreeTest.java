@@ -2,7 +2,9 @@ package com.github.tehfishey.spawnedit.model.objects;
 
 import static org.junit.Assert.*;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -12,9 +14,9 @@ public class PathTreeTest {
 	public void testTreePathAddition() {
 		PathTreeNode tree = PathTreeNode.newPathTree();
 		
-		tree.buildChildrenFromFile(Paths.get("foo/bar.file"), "bar");
-		tree.buildChildrenFromFile(Paths.get("foo/fie/fee/fum.jpeg"), "fum");
-		tree.buildChildrenFromFile(Paths.get("one/fish/two/fish.exe"), "fish");
+		tree.put(Paths.get("foo/bar.file"), "bar");
+		tree.put(Paths.get("foo/fie/fee/fum.jpeg"), "fum");
+		tree.put(Paths.get("one/fish/two/fish.exe"), "fish");
 		
 		assertEquals(2, tree.getChildren().size());
 	}
@@ -23,7 +25,7 @@ public class PathTreeTest {
 	public void testAbsoluteFilePaths() {
 		PathTreeNode tree = PathTreeNode.newPathTree();
 		
-		tree.buildChildrenFromFile(Paths.get("foo/b/a/r.file"), "r");
+		tree.put(Paths.get("foo/b/a/r.file"), "r");
 		PathTreeNode fooNode = tree.getChildren().get(0);
 		PathTreeNode bNode = fooNode.getChildren().get(0);
 		PathTreeNode aNode = bNode.getChildren().get(0);
@@ -35,8 +37,8 @@ public class PathTreeTest {
 	public void testFileMigration() {
 		PathTreeNode tree = PathTreeNode.newPathTree();
 	
-		tree.buildChildrenFromFile(Paths.get("foo/bar.file"), "bar");
-		tree.buildChildrenFromFile(Paths.get("fee/fie/foe.jpeg"), "foe");
+		tree.put(Paths.get("foo/bar.file"), "bar");
+		tree.put(Paths.get("fee/fie/foe.jpeg"), "foe");
 	
 		PathTreeNode fooNode = tree.getChildren().get(0);
 		PathTreeNode barNode = fooNode.getChildren().get(0);
@@ -54,8 +56,8 @@ public class PathTreeTest {
 	public void testDirectoryMigration() {
 		PathTreeNode tree = PathTreeNode.newPathTree();
 		
-		tree.buildChildrenFromFile(Paths.get("foo/bar.file"), "bar");
-		tree.buildChildrenFromFile(Paths.get("fee/fie/foe.jpeg"), "foe");
+		tree.put(Paths.get("foo/bar.file"), "bar");
+		tree.put(Paths.get("fee/fie/foe.jpeg"), "foe");
 		
 		PathTreeNode fooNode = tree.getChildren().get(0);
 		PathTreeNode barNode = fooNode.getChildren().get(0);
@@ -70,4 +72,29 @@ public class PathTreeTest {
 		assertEquals(Paths.get("fee/fie/foo/bar.file"), barNode.getAbsolutePath());
 	}
 	
+	@Test
+	public void testGetNodeByFileId() {
+		PathTreeNode tree = PathTreeNode.newPathTree();
+		
+		tree.put(Paths.get("foo/bar.file"), "bar");
+		tree.put(Paths.get("foo/fie/fee/fum.jpeg"), "fum");
+		tree.put(Paths.get("one/fish/two/fish.exe"), "fish");
+		
+		assertEquals(Paths.get("one/fish/two/fish.exe"), tree.get("fish").getAbsolutePath());
+	}
+	
+	@Test
+	public void testToHashMap() {
+		PathTreeNode tree = PathTreeNode.newPathTree();
+		
+		tree.put(Paths.get("foo/bar.file"), "bar");
+		tree.put(Paths.get("foo/fie/fee/fum.jpeg"), "fum");
+		tree.put(Paths.get("one/fish/two/fish.exe"), "fish");
+		
+		HashMap<String, Path> testMap = tree.toHashMap();
+		
+		assertEquals(Paths.get("one/fish/two/fish.exe"), testMap.get("fish"));
+		assertEquals(Paths.get("foo/fie/fee/fum.jpeg"), testMap.get("fum"));
+		assertEquals(Paths.get("foo/bar.file"), testMap.get("bar"));
+	}
 }

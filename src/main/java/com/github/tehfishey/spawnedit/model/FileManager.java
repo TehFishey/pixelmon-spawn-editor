@@ -12,12 +12,10 @@ import com.github.tehfishey.spawnedit.pixelmon.SpawnSet;
 import com.google.gson.JsonParseException;
 import com.github.tehfishey.spawnedit.model.exceptions.BatchIOException;
 import com.github.tehfishey.spawnedit.model.exceptions.BatchJsonException;
+import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
-	// Component of Model class, responsible for handling data io by serializing & deserializing .json files formatted 
-	// to Pixelmon's own specifications. When loading, SpawnInfo objects are unwrapped from SpawnSet objects (which each represent
-	// a parsed data file) and wrapped into SpawnEnry objects within the model. Saving involves the reverse, with output
-	// being written according to a stored path map.
+	
 
 public class FileManager {
 	private final Model parent;
@@ -30,36 +28,18 @@ public class FileManager {
 		this.fileLoader = new FileLoader();
 		this.fileSaver = new FileSaver();		
 	}
-	
-	/*
-	public void saveAllToMap() throws BatchIOException {
-		ArrayList<SpawnSet> output = processSpawnEntries(parent.getSpawnEntries());
-		HashMap<Path,IOException> ioExceptions = new HashMap<Path,IOException>();
-		
-		for (SpawnSet set : output) {
-			Path path = spawnPaths.get(set.getSetId());
-			try {
-				fileSaver.saveSpawnSetToPath(set, path);
-			} catch (IOException e) {
-        		ioExceptions.put(path,e);
-        		continue;
-			}
-		}
-		if (!ioExceptions.isEmpty()) throw new BatchIOException("IOExceptions occured during saving...", ioExceptions);
-	}
-	*/
-	
+
 	public void saveAllToRoot(Path root) throws BatchIOException {
 		ArrayList<SpawnSet> output = processSpawnEntries(parent.getSpawnEntries());
 		HashMap<Path,IOException> ioExceptions = new HashMap<Path,IOException>();
-		HashMap<String, Path> spawnPaths = parent.getSpawnPaths();
+		HashMap<String, Path> savePaths = parent.getFilePathTree().toHashMap();
 		
 		for (SpawnSet set : output) {
-			Path pathRecord = spawnPaths.get(set.getSetId());
+			Path pathRecord = savePaths.get(set.getSetId());
 			Path newPath = root.resolve(pathRecord);
 			try {
 				fileSaver.saveSpawnSetToPath(set, newPath);
-				spawnPaths.replace(set.getSetId(), newPath);
+				savePaths.replace(set.getSetId(), newPath);
 			} catch (IOException e) {
         		ioExceptions.put(newPath,e);
         		continue;
