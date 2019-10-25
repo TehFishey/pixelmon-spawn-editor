@@ -5,6 +5,9 @@ import java.beans.PropertyChangeListener;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import com.github.tehfishey.spawnedit.model.Model;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
@@ -12,8 +15,14 @@ import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode.NodeType;
 
 import javafx.event.EventHandler;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.util.Callback;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -25,6 +34,7 @@ public class MainTreeController {
 	private final Model model;
 	private final ControllerManager manager;
 	private final PropertyChangeListener modelListener;
+	private final CustomDragboard dragboard;
 	private PathTreeNode pathTreeRoot;
 	private TreeItem<PathTreeNode> treeViewRoot;
 	
@@ -35,6 +45,7 @@ public class MainTreeController {
 	    this.model = model;
 	    this.pathTreeRoot = model.getFilePathTree();
 	    this.treeViewRoot = nodeToTreeItem(pathTreeRoot);
+	    this.dragboard = new CustomDragboard();
 	    this.modelListener = new PropertyChangeListener() {
         	@Override
         	public void propertyChange(PropertyChangeEvent evt) {
@@ -75,70 +86,125 @@ public class MainTreeController {
 	}
 	
 	private final class TreeCellFactory extends TreeCell<PathTreeNode> {
-	        private TextField textField;
+
+		public TreeCellFactory() {
+			setOnDragEntered(e -> {
+	            System.out.println(" Entered ");
+	            e.consume();
+	        });
+			setOnDragDetected((MouseEvent event) -> { dragDetected(event, this, fileTreeView); });
+			setOnDragOver((DragEvent event) -> { dragOver(event, this, fileTreeView); });
+			setOnDragDropped((DragEvent event) -> { dragDropped(event, this, fileTreeView); });
+	        setOnDragDone(e -> { e.consume(); });
+	        setOnDragExited(e -> { e.consume(); });
+			
+		}
 	 
-	        public TreeCellFactory() { }
-	 
-	        @Override
-	        public void startEdit() {
-	            super.startEdit();
-	 
-	            if (textField == null) {
-	                createTextField();
-	            }
-	            setText(null);
-	            textField.selectAll();
+		private void dragDetected(MouseEvent event, TreeCell<PathTreeNode> treeCell, TreeView<PathTreeNode> treeView) {
+			// JavaFX's in-built dragboard works by serializing & deserializing objects; we can't use it to copy our model references. 
+		    // It must be initialized for the drag event to execute, so we pass it a dummy value and store the reference in a variable.
+			TreeItem<PathTreeNode> draggedTreeItem = treeCell.getTreeItem();
+			PathTreeNode draggedModelItem = draggedTreeItem.getValue();
+		    if (draggedModelItem.getNodeType() == NodeType.Root) return;
+
+		    Dragboard db = treeCell.startDragAndDrop(TransferMode.MOVE);
+		    ClipboardContent content = new ClipboardContent();
+		    content.putString(draggedTreeItem.toString());
+		    db.setContent(content);
+		    db.setDragView(treeCell.snapshot(null, null));
+		    dragboard.setTreeItem(draggedTreeItem);
+		    dragboard.setModelItem(draggedModelItem);
+		    
+		    event.consume();
+		}
+		
+		private void dragOver(DragEvent event, TreeCell<PathTreeNode> treeCell, TreeView<PathTreeNode> treeView) {
+			
+			if (!dragboard.hasItems()) return;
+		    TreeItem<PathTreeNode> draggedTreeItem = dragboard.getTreeItem();
+		    TreeItem<PathTreeNode> thisItem = treeCell.getTreeItem();
+		    
+		    
+		    if (draggedTreeItem == null || thisItem == null || thisItem == draggedTreeItem) 
+		    	return;
+		    else if (draggedTreeItem.getValue().getNodeType() == NodeType.Root) {
+		    	dragboard.clear();
+		    	return;
+		    }
+		    else
+		    	 event.acceptTransferModes(TransferMode.MOVE);
+
+		    event.consume();
+		}
+		
+		private void dragDropped(DragEvent event, TreeCell<PathTreeNode> treeCell, TreeView<PathTreeNode> treeView) {
+	        boolean success = false;
+	        if (!dragboard.hasItems()) return;
+	        
+	        TreeItem<PathTreeNode> draggedTreeItem = dragboard.getTreeItem();
+	        PathTreeNode draggedModelItem = dragboard.getModelItem();
+	        TreeItem<PathTreeNode> draggedItemParent = draggedTreeItem.getParent();
+	        TreeItem<PathTreeNode> dropTarget = treeCell.getTreeItem();
+	        
+	        if (!Objects.equals(draggedItemParent, dropTarget)) {
+	        	draggedItemParent.getChildren().remove(draggedTreeItem);
+	        	
+	        	if (dropTarget.getValue().getNodeType() == NodeType.File) {
+	        		int indexInParent = dropTarget.getParent().getChildren().indexOf(dropTarget);
+	        		dropTarget.getParent().getChildren().add(indexInParent + 1, draggedTreeItem);
+	        		draggedModelItem.migrate(dropTarget.getParent().getValue());
+	        	}
+	        	else {
+	        		int childSize = dropTarget.getChildren().size();
+	        		dropTarget.getChildren().add(childSize, draggedTreeItem);
+	        		draggedModelItem.migrate(dropTarget.getValue());
+	        	}
+	            success = true;
+	            treeView.getSelectionModel().select(draggedTreeItem);
 	        }
-	 
-	        @Override
-	        public void cancelEdit() {
-	            super.cancelEdit();
-	            setText((String) getString());
-	            setGraphic(getTreeItem().getGraphic());
-	        }
-	 
-	        @Override
-	        public void updateItem(PathTreeNode item, boolean empty) {
-	            super.updateItem(item, empty);
-	 
-	            if (empty) {
-	                setText(null);
-	                setGraphic(null);
-	            } else {
-	                if (isEditing()) {
-	                    if (textField != null) {
-	                        textField.setText(getString());
-	                    }
-	                    setText(null);
-	                    setGraphic(textField);
-	                } else {
-	                    setText(getString());
-	                    setGraphic(getTreeItem().getGraphic());
-	                }
-	            }
-	        }
-	 
-	        private void createTextField() {
-	            textField = new TextField(getString());
-	            textField.setOnKeyReleased(new EventHandler<KeyEvent>() {
-	 
-	                @Override
-	                public void handle(KeyEvent t) {
-	                    if (t.getCode() == KeyCode.ENTER) {
-	                        PathTreeNode update = getItem();
-	                        update.setLocalPath(Paths.get(textField.getText()));
-	                    	commitEdit(update);
-	                    } else if (t.getCode() == KeyCode.ESCAPE) {
-	                        cancelEdit();
-	                    }
-	                }
-	            });
-	        }
-	 
-	        private String getString() {
-	            return getItem() == null ? "" : getItem().getLocalPath().toString();
-	        }
+
+	        dragboard.clear();
+	        event.setDropCompleted(success);
+	        event.consume();
 	    }
+		
+		@Override
+		public void updateItem(PathTreeNode item, boolean empty) {
+			super.updateItem(item, empty);
+	 
+			if (empty) {
+				setText(null);
+				setGraphic(null);
+			} else {
+				setText(getString());
+				setGraphic(getTreeItem().getGraphic());
+			}
+		}
+
+		private String getString() {
+			return getItem() == null ? "" : getItem().getLocalPath().toString();
+		}
+	}
+	
+	private class CustomDragboard {
+		TreeItem<PathTreeNode> draggedTreeItem;
+		PathTreeNode draggedModelItem;
+		
+		public TreeItem<PathTreeNode> getTreeItem() { return draggedTreeItem; }
+		public void setTreeItem(TreeItem<PathTreeNode> draggedTreeItem) { this.draggedTreeItem = draggedTreeItem; }
+		public PathTreeNode getModelItem() { return draggedModelItem; }
+		public void setModelItem(PathTreeNode draggedModelItem) { this.draggedModelItem = draggedModelItem; }
+		
+		public boolean hasItems() {
+			return (!(draggedTreeItem == null) && !(draggedModelItem == null));
+		}
+		
+		public void clear() {
+			draggedTreeItem = null;
+			draggedModelItem = null;
+		}
+		
+	}
 }
 
 
