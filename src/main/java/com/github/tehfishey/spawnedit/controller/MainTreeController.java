@@ -2,35 +2,14 @@ package com.github.tehfishey.spawnedit.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.nio.file.Path;
-import java.util.Objects;
 
-import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory;
-import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.ExceptionType;
-import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.SaveType;
 import com.github.tehfishey.spawnedit.controller.helpers.TreeDragboard;
 import com.github.tehfishey.spawnedit.controller.helpers.TreeCellFactory;
 import com.github.tehfishey.spawnedit.model.Model;
-import com.github.tehfishey.spawnedit.model.exceptions.BatchIOException;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
-import com.github.tehfishey.spawnedit.model.objects.PathTreeNode.NodeType;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
-import javafx.stage.DirectoryChooser;
 import javafx.util.Callback;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -57,7 +36,6 @@ public class MainTreeController {
         		switch (evt.getPropertyName()) {
         		case "fileTreeUpdated" :
         			treeViewRoot = populateTree(pathTreeRoot, treeViewRoot);
-        			System.out.println("populating...");
         		}
         	}
         };

@@ -1,16 +1,20 @@
 package com.github.tehfishey.spawnedit.controller.helpers;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Optional;
 
 import com.github.tehfishey.spawnedit.controller.ControllerManager;
 import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory;
+import com.github.tehfishey.spawnedit.controller.dialogs.TextDialogFactory;
 import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.ExceptionType;
 import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.SaveType;
 import com.github.tehfishey.spawnedit.model.Model;
 import com.github.tehfishey.spawnedit.model.exceptions.BatchIOException;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode.NodeType;
+import com.google.common.io.Files;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -19,6 +23,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -145,25 +150,49 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 	}
 	
 	private void renameItem() {
-		// Open dialog window prompting new name, return string for name
-			// pass in GetItem.getLocalPath.ToString; if NodeType is File, cut the .json from the end
-		// if NodeType is File and new path doesn't end in .json, append .json to the end of new path
-		// set local path = new name
-		// recalculate paths
-		// (be sure to include input validation for characters in dialog.
+		NodeType nodeType = getTreeItem().getValue().getNodeType();
+		String name = getTreeItem().getValue().getLocalPath().toString();
+		if (nodeType == NodeType.File) name = Files.getNameWithoutExtension(name);
+		
+		TextInputDialog dialog = TextDialogFactory.nameInputDialog(nodeType, name);
+		Optional<String> newName = dialog.showAndWait();
+		if (!newName.isEmpty()) name = newName.get();
+		if (nodeType == NodeType.File) name += ".json";
+		
+		getTreeItem().getValue().setLocalPath(Paths.get(name));
+		this.updateItem(getTreeItem().getValue(), false);
 	}
 	
 	private void newDirectory() {
-		// open dialog window prompting new name, return string for name
-		// create new directory at parent with local path = string
+		PathTreeNode parentNode = getTreeItem().getValue();
+		PathTreeNode newNode;
+		TreeItem<PathTreeNode> newItem;
+		
+		TextInputDialog dialog = TextDialogFactory.nameInputDialog(NodeType.Directory, "");
+		Optional<String> name = dialog.showAndWait();
+		if (name.isEmpty()) return;
+		
+		newNode = parentNode.newChildDirectory(Paths.get(name.get()));
+		newItem = new TreeItem<PathTreeNode>(newNode);
+		newItem.setExpanded(true);
+		this.getTreeItem().getChildren().add(newItem);
 	}
 	
 	private void newFile() {
-		// open dialog window prompting new name, return string for name
-		// create new file at parent with local path = string
+		PathTreeNode parentNode = getTreeItem().getValue();
+		PathTreeNode newNode;
+		TreeItem<PathTreeNode> newItem;
+		
+		TextInputDialog dialog = TextDialogFactory.nameInputDialog(NodeType.File, "");
+		Optional<String> name = dialog.showAndWait();
+		if (name.isEmpty()) return;
+		
+		newNode = parentNode.newChildFile(Paths.get(name.get() + ".json"), name.get());
+		newItem = new TreeItem<PathTreeNode>(newNode);
+		this.getTreeItem().getChildren().add(newItem);
 	}
 	
-	private ContextMenu buildContextMenu() {
+	private ContextMenu buildContextMenu(NodeType type) {
 		MenuItem newDirectory = new MenuItem("Directory");
 		MenuItem newFile = new MenuItem("File");
 		MenuItem rename = new MenuItem("Rename");
@@ -187,10 +216,12 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
             public void handle(Event t) { closeItem(); }
         });
 		
-		if (getItem().getNodeType() == NodeType.File)
+		if (type == NodeType.File)
 			return new ContextMenu(rename, save, close);
-		else
+		else if (type == NodeType.Directory)
 			return new ContextMenu(newItem, rename, save, close);
+		else
+			return new ContextMenu(newItem);
 	}
 	
 	@Override
@@ -203,8 +234,7 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 		} else {
 			setText(getString());
 			setGraphic(getTreeItem().getGraphic());
-			if (item.getNodeType() == NodeType.Directory) setContextMenu(buildContextMenu());
-			else if (item.getNodeType() == NodeType.File) setContextMenu(buildContextMenu());
+			setContextMenu(buildContextMenu(getTreeItem().getValue().getNodeType()));
 		}
 	}
 
