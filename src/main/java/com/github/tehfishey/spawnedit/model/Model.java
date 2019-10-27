@@ -6,15 +6,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
+import com.github.tehfishey.spawnedit.model.objects.PathTreeNode.NodeType;
 import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 
 public class Model {
 	private final FileManager fileManager;
 	private final PropertyChangeSupport updateListenerSupport;
 	private final ArrayList<SpawnEntry> spawnEntryCache;
-	private final PathTreeNode filePathTree;
-	private Path spawnPathRoot;
-	
+	private final PathTreeNode filePathTree;	
 	
 	public Model() {
 		fileManager = new FileManager(this);
@@ -26,11 +25,25 @@ public class Model {
 	public FileManager getFileManager() { return fileManager; }
 	public ArrayList<SpawnEntry> getSpawnEntries() { return spawnEntryCache; }
 	public PathTreeNode getFilePathTree() { return filePathTree; }
-	public Path getSpawnPathRoot() { return spawnPathRoot; }
-	public void setSpawnPathRoot(Path spawnPathRoot) { this.spawnPathRoot = spawnPathRoot; }
 
 	public void addSpawnPath(String key, Path path) {
 		this.filePathTree.put(path, key);
+	}
+	public void removeSpawnPath(PathTreeNode node) {
+		ArrayList<SpawnEntry> removalList = new ArrayList<SpawnEntry>();
+		
+		for (PathTreeNode subNode : node) {
+			if (subNode.getNodeType() == NodeType.File) {
+				for (SpawnEntry entry : spawnEntryCache) {
+					if (entry.getSpawnSetId() == subNode.getFileId())
+						removalList.add(entry);
+				}
+			}
+		}
+
+		PathTreeNode.remove(node);
+		this.removeSpawnEntries(removalList);
+		notifyListeners("fileTreeUpdated", null, null);
 	}
 	
 	public void addSpawnEntries(ArrayList<SpawnEntry> spawnEntries) { 

@@ -9,4 +9,4 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<TreeView fx:id="fileTreeView" maxWidth="-Infinity" prefHeight="575.0" prefWidth="235.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.MainTreeController" />
+<TreeView fx:id="fileTreeView" prefHeight="575.0" prefWidth="235.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.tehfishey.spawnedit.controller.MainTreeController" />

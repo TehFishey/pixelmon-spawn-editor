@@ -1,5 +1,6 @@
 package com.github.tehfishey.spawnedit.controller;
 
+import java.io.File;
 import java.util.HashMap;
 
 import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
@@ -7,21 +8,40 @@ import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 public class ControllerManager {
 
 	private final HashMap<ColumnId, BooleanProperty> visibleColumns;
+	private final FileChooser fileChooser;
+	private final DirectoryChooser directoryChooser;
 	private AnchorPane root;
 	
 	public ControllerManager() {
 		this.visibleColumns = new HashMap<ColumnId, BooleanProperty>();
+		this.fileChooser = new FileChooser();
+		this.directoryChooser = new DirectoryChooser();
 		createVisibleTableDefaults(visibleColumns);
+		configureFileChoosers(fileChooser, directoryChooser);
 	}
 	
 	public HashMap<ColumnId, BooleanProperty> getVisibleColumns() { return visibleColumns; }
-	
+	public FileChooser getFileChooser() { return fileChooser; }
+	public DirectoryChooser getDirectoryChooser() { return directoryChooser; }
 	public AnchorPane getRoot() { return root; }
 	public void setRoot(AnchorPane root) { this.root = root; }
+	public void setChooserDirectory(File directory) {
+		fileChooser.setInitialDirectory(directory);
+		directoryChooser.setInitialDirectory(directory);
+	}
+	
+	private static void configureFileChoosers(final FileChooser fileChooser, final DirectoryChooser directoryChooser) {
+	       fileChooser.setInitialDirectory( new File(System.getProperty("user.home"))); 
+	       fileChooser.getExtensionFilters().addAll( new FileChooser.ExtensionFilter("JSON", "*.json"));
+	       
+	       directoryChooser.setInitialDirectory(new File(System.getProperty("user.home"))); 
+	}
 	
 	private void createVisibleTableDefaults(HashMap<ColumnId, BooleanProperty> visibleColumns) {
 		

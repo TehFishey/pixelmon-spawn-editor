@@ -2,30 +2,33 @@ package com.github.tehfishey.spawnedit.controller;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
+import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory;
+import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.ExceptionType;
+import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.SaveType;
 import com.github.tehfishey.spawnedit.model.Model;
+import com.github.tehfishey.spawnedit.model.exceptions.BatchIOException;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
-import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode.NodeType;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.stage.DirectoryChooser;
 import javafx.util.Callback;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -50,8 +53,9 @@ public class MainTreeController {
         	@Override
         	public void propertyChange(PropertyChangeEvent evt) {
         		switch (evt.getPropertyName()) {
-        		case "spawnFilesUpdated" :
+        		case "fileTreeUpdated" :
         			treeViewRoot = populateTree(pathTreeRoot, treeViewRoot);
+        			System.out.println("populating...");
         		}
         	}
         };
@@ -77,6 +81,8 @@ public class MainTreeController {
 	}
 	
 	private TreeItem<PathTreeNode> populateTree(PathTreeNode rootNode, TreeItem<PathTreeNode> rootItem) {
+		rootItem.getChildren().removeAll(rootItem.getChildren());
+		
 		for (PathTreeNode node : rootNode.getChildren()) {
 			TreeItem<PathTreeNode> item = nodeToTreeItem(node);
 			populateTree(node, item);
@@ -88,16 +94,9 @@ public class MainTreeController {
 	private final class TreeCellFactory extends TreeCell<PathTreeNode> {
 
 		public TreeCellFactory() {
-			setOnDragEntered(e -> {
-	            System.out.println(" Entered ");
-	            e.consume();
-	        });
 			setOnDragDetected((MouseEvent event) -> { dragDetected(event, this, fileTreeView); });
 			setOnDragOver((DragEvent event) -> { dragOver(event, this, fileTreeView); });
 			setOnDragDropped((DragEvent event) -> { dragDropped(event, this, fileTreeView); });
-	        setOnDragDone(e -> { e.consume(); });
-	        setOnDragExited(e -> { e.consume(); });
-			
 		}
 	 
 		private void dragDetected(MouseEvent event, TreeCell<PathTreeNode> treeCell, TreeView<PathTreeNode> treeView) {
@@ -119,8 +118,8 @@ public class MainTreeController {
 		}
 		
 		private void dragOver(DragEvent event, TreeCell<PathTreeNode> treeCell, TreeView<PathTreeNode> treeView) {
-			
 			if (!dragboard.hasItems()) return;
+			
 		    TreeItem<PathTreeNode> draggedTreeItem = dragboard.getTreeItem();
 		    TreeItem<PathTreeNode> thisItem = treeCell.getTreeItem();
 		    
@@ -168,6 +167,86 @@ public class MainTreeController {
 	        event.consume();
 	    }
 		
+		private void saveItem() {
+			PathTreeNode node = getTreeItem().getValue();
+			if (node.getNodeType() == NodeType.Root) return;
+			
+			DirectoryChooser directoryChooser = manager.getDirectoryChooser();
+			directoryChooser.setTitle("Save");
+    		Path directory = directoryChooser.showDialog(manager.getRoot().getScene().getWindow()).toPath();
+    		
+    		if (directory != null)  {
+    			Alert confirmation = AlertDialogFactory.saveWarningAlert(node.getNodeType() == NodeType.Directory ? SaveType.SaveDirectory : SaveType.SaveFile );
+    			confirmation.showAndWait();
+    			
+    			if (confirmation.getResult() == ButtonType.YES) {
+    				try { 
+    					model.getFileManager().saveFile(directory, node); 
+    				} catch (BatchIOException e) {
+    					Alert alert = AlertDialogFactory.saveExceptionAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
+    					alert.show();
+    				}
+    			}
+    		manager.setChooserDirectory(directory.getParent().toFile());
+    		}
+        }
+
+		private void closeItem() {
+			Alert confirmation = AlertDialogFactory.closeWarningAlert();
+			confirmation.showAndWait();
+			if (confirmation.getResult() == ButtonType.YES)
+				model.removeSpawnPath(getTreeItem().getValue());
+		}
+		
+		private void renameItem() {
+			// Open dialog window prompting new name, return string for name
+				// pass in GetItem.getLocalPath.ToString; if NodeType is File, cut the .json from the end
+			// if NodeType is File and new path doesn't end in .json, append .json to the end of new path
+			// set local path = new name
+			// recalculate paths
+			// (be sure to include input validation for characters in dialog.
+		}
+		
+		private void newDirectory() {
+			// open dialog window prompting new name, return string for name
+			// create new directory at parent with local path = string
+		}
+		
+		private void newFile() {
+			// open dialog window prompting new name, return string for name
+			// create new file at parent with local path = string
+		}
+		
+		private ContextMenu buildContextMenu() {
+			MenuItem newDirectory = new MenuItem("Directory");
+			MenuItem newFile = new MenuItem("File");
+			MenuItem rename = new MenuItem("Rename");
+			MenuItem save = new MenuItem("Save");
+			MenuItem close = new MenuItem("Close");
+			Menu newItem = new Menu("New...", null, newFile, newDirectory);
+			
+			newDirectory.setOnAction(new EventHandler() {
+	            public void handle(Event t) { newDirectory(); }
+	        });
+			newFile.setOnAction(new EventHandler() {
+	            public void handle(Event t) { newFile(); }
+	        });
+			rename.setOnAction(new EventHandler() {
+	            public void handle(Event t) { renameItem(); }
+	        });
+			save.setOnAction(new EventHandler() {
+	            public void handle(Event t) { saveItem(); }
+	        });
+			close.setOnAction(new EventHandler() {
+	            public void handle(Event t) { closeItem(); }
+	        });
+			
+			if (getItem().getNodeType() == NodeType.File)
+				return new ContextMenu(rename, save, close);
+			else
+				return new ContextMenu(newItem, rename, save, close);
+		}
+		
 		@Override
 		public void updateItem(PathTreeNode item, boolean empty) {
 			super.updateItem(item, empty);
@@ -178,11 +257,15 @@ public class MainTreeController {
 			} else {
 				setText(getString());
 				setGraphic(getTreeItem().getGraphic());
+				if (item.getNodeType() == NodeType.Directory) setContextMenu(buildContextMenu());
+				else if (item.getNodeType() == NodeType.File) setContextMenu(buildContextMenu());
 			}
 		}
 
 		private String getString() {
-			return getItem() == null ? "" : getItem().getLocalPath().toString();
+			if (getItem() == null) return "";
+			else if (getItem().getNodeType() == NodeType.Root) return "Directory Tree";
+			else return getItem().getLocalPath().toString();
 		}
 	}
 	
@@ -206,112 +289,3 @@ public class MainTreeController {
 		
 	}
 }
-
-
-	/*
-	public class CopyOfTreeViewSample extends Application {
-
-	    private TreeView<Path> treeView;
-
-	    public static void main(String[] args) {
-	        launch(args);
-	    }
-
-	    @Override
-	    public void start(Stage stage) {
-	        stage.setTitle("Sample");
-	        stage.setWidth(300);
-	        stage.setHeight(500);
-
-	        VBox vbox = new VBox();
-	        vbox.setPadding(new Insets(20));
-
-	        TreeItem<Path> root = new SimpleFileTreeItem(
-	                Paths.get(System.getProperty("user.home")));
-	        root.setExpanded(true);
-	        treeView = new TreeView<Path>(root);
-
-	        treeView.setCellFactory(treeView -> new TreeCell<Path>() {
-	            @Override
-	            public void updateItem(Path path, boolean empty) {
-	                super.updateItem(path, empty);
-	                if (empty) {
-	                    setText(null);
-	                } else {
-	                    setText(path.getFileName().toString());
-	                }
-	            }
-	        });
-
-	        Button b = new Button("Change");
-	        b.disableProperty().bind(Bindings.isNull(treeView.getSelectionModel().selectedItemProperty()));
-
-	        b.setOnAction(event ->  {
-	            Path selectedPath = treeView.getSelectionModel().getSelectedItem().getValue() ;
-	            // do something with selectedPath...
-	            System.out.println(selectedPath);
-	        });
-
-	        vbox.getChildren().addAll(treeView, b);
-	        vbox.setSpacing(10);
-
-	        Scene scene = new Scene(vbox);
-
-	        stage.setScene(scene);
-	        stage.show();
-	    }
-
-	    public class SimpleFileTreeItem extends TreeItem<Path> {
-
-	        private boolean isFirstTimeChildren = true;
-	        private boolean isFirstTimeLeaf = true;
-	        private boolean isLeaf;
-
-	        public boolean isDirectory() {
-	            return Files.isDirectory(getValue());
-	        }
-
-
-	        public SimpleFileTreeItem(Path f) {
-	            super(f);
-	        }
-
-	        @Override
-	        public ObservableList<TreeItem<Path>> getChildren() {
-	            if (isFirstTimeChildren) {
-	                isFirstTimeChildren = false;
-
-	                super.getChildren().setAll(buildChildren());
-	            }
-	            return super.getChildren();
-	        }
-
-	        @Override
-	        public boolean isLeaf() {
-	            if (isFirstTimeLeaf) {
-	                isFirstTimeLeaf = false;
-	                isLeaf = Files.exists(getValue()) && ! Files.isDirectory(getValue());
-	            }
-	            return isLeaf;
-	        }
-
-
-	        private ObservableList<TreeItem<Path>> buildChildren() {
-	            if (Files.isDirectory(getValue())) {
-	                try {
-
-	                    return Files.list(getValue())
-	                            .map(SimpleFileTreeItem::new)
-	                            .collect(Collectors.toCollection(() -> FXCollections.observableArrayList()));
-
-	                } catch (IOException e) {
-	                    e.printStackTrace();
-	                    return FXCollections.emptyObservableList();
-	                } 
-	            }
-
-	            return FXCollections.emptyObservableList();
-	        }
-	    }
-	}
-	*/

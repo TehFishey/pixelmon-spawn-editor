@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.Test;
@@ -97,4 +98,21 @@ public class PathTreeTest {
 		assertEquals(Paths.get("foo/fie/fee/fum.jpeg"), testMap.get("fum"));
 		assertEquals(Paths.get("foo/bar.file"), testMap.get("bar"));
 	}
+	
+	@Test
+	public void testIteratior() {
+		PathTreeNode tree = PathTreeNode.newPathTree();
+		ArrayList<PathTreeNode> subNodes = new ArrayList<PathTreeNode>();
+		
+		tree.put(Paths.get("foo/bar.file"), "bar");
+		tree.put(Paths.get("foo/fie/fee/fum.jpeg"), "fum");
+		
+		for (PathTreeNode subNode : tree) {
+			subNodes.add(subNode);
+		}
+		
+		assertEquals(6, subNodes.size());
+	}
+	
+	
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 
 public class PathTreeNode implements Iterable<PathTreeNode> {
 	private final NodeType nodeType;
@@ -25,6 +26,19 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 	public static PathTreeNode newPathTree() {
 		PathTreeNode tree = new PathTreeNode(NodeType.Root, Paths.get(""), null);
 		return tree;
+	}
+	
+	public static void remove(PathTreeNode node) {
+		ArrayList<PathTreeNode> removalList = new ArrayList<PathTreeNode>();
+		
+		if (node.getNodeType() != NodeType.Root) 
+			removalList.add(node);
+		
+		for (PathTreeNode subNode : node) 
+			removalList.add(subNode);
+			
+		for (PathTreeNode removalNode : removalList) 
+			removalNode.getParent().getChildren().remove(removalNode);
 	}
 	
 	public NodeType getNodeType() { return this.nodeType; }
@@ -93,6 +107,23 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 		return null;
 	}
 	
+	/*public void removeFile(String fileId) {
+		ArrayList<PathTreeNode> removalCache = new ArrayList<PathTreeNode>();
+		
+		if ((this.nodeType == NodeType.File) && (this.fileId == fileId)) 
+			this.getParent().getChildren().remove(this);
+		
+		for (PathTreeNode child : children) {
+			if ((child.nodeType == NodeType.File) && (child.getFileId() == fileId)) {
+				removalCache.add(child);
+			}
+			else if (!(child.nodeType == NodeType.File)) {
+				child.removeFile(fileId);
+			}
+		}
+		children.removeAll(removalCache);
+	} */
+	
 	public void migrate(PathTreeNode newParent) {
 		if ((nodeType != NodeType.Root) && (newParent.getNodeType() != NodeType.File)) {
 			parent.getChildren().remove(this);
@@ -100,6 +131,21 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 			parent.getChildren().add(this);
 			updateAbsolutePaths();
 		}
+	}
+	
+	public boolean containsId(String fileId) {
+		if ((this.nodeType == NodeType.File) && (this.fileId == fileId)) 
+			return true;
+		for (PathTreeNode child : children) {
+			if ((child.nodeType == NodeType.File) && (child.getFileId() == fileId)) {
+				return true;
+			}
+			else if (!(child.nodeType == NodeType.File)) {
+				if (child.containsId(fileId))
+					return true;
+			}
+		}
+		return false;
 	}
 	
 	public HashMap<String, Path> toHashMap() {
@@ -123,8 +169,26 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 	
 	@Override
 	public Iterator<PathTreeNode> iterator() {
-		return Iterables.concat(getChildren()).iterator();
+		final ArrayList<PathTreeNode> iterList = new ArrayList<PathTreeNode>();
+		iterList.add(this);
+
+        return new Iterator<PathTreeNode>() {
+            @Override
+            public boolean hasNext() {
+                return !iterList.isEmpty();
+            }
+
+            @Override
+            public PathTreeNode next() {
+            	PathTreeNode node = iterList.get(0);
+            	iterList.remove(0);
+            	iterList.addAll(0, node.getChildren());
+                return node;
+            }
+        };
+
 	}
+	
 	
 	private PathTreeNode(NodeType type, Path localPath, PathTreeNode parent) {
 		this.nodeType = type;

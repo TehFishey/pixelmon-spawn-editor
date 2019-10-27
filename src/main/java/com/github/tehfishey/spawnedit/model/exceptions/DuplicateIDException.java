@@ -1,0 +1,19 @@
+package com.github.tehfishey.spawnedit.model.exceptions;
+
+public class DuplicateIDException extends Exception {
+	private static final long serialVersionUID = 1L;
+	final String fileId;
+	
+	public DuplicateIDException(String message, String fileId) {
+		super(message);
+		this.fileId = fileId;
+	}
+	
+	public DuplicateIDException(String fileId) {
+		this.fileId = fileId;
+	}
+	
+	public String getDuplicateString() {
+		return this.fileId;
+	}
+}
