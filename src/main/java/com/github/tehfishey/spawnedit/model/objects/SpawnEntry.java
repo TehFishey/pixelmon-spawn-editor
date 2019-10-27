@@ -3,7 +3,7 @@ package com.github.tehfishey.spawnedit.model.objects;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.tehfishey.spawnedit.model.helpers.TableEntryFactory;
+import com.github.tehfishey.spawnedit.controller.helpers.TableEntryFactory;
 import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 

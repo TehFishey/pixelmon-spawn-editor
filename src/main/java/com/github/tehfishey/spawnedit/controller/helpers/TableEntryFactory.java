@@ -1,8 +1,9 @@
-package com.github.tehfishey.spawnedit.model.helpers;
+package com.github.tehfishey.spawnedit.controller.helpers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.github.tehfishey.spawnedit.model.helpers.Enums;
 import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
