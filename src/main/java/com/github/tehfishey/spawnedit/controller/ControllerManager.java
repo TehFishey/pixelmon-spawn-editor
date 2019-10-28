@@ -3,6 +3,7 @@ package com.github.tehfishey.spawnedit.controller;
 import java.io.File;
 import java.util.HashMap;
 
+import com.github.tehfishey.spawnedit.controller.commands.Command;
 import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 
 import javafx.beans.property.BooleanProperty;
@@ -16,12 +17,14 @@ public class ControllerManager {
 	private final HashMap<ColumnId, BooleanProperty> visibleColumns;
 	private final FileChooser fileChooser;
 	private final DirectoryChooser directoryChooser;
+	private final CommandManager commandManager;
 	private AnchorPane root;
 	
 	public ControllerManager() {
 		this.visibleColumns = new HashMap<ColumnId, BooleanProperty>();
 		this.fileChooser = new FileChooser();
 		this.directoryChooser = new DirectoryChooser();
+		this.commandManager = new CommandManager();
 		createVisibleTableDefaults(visibleColumns);
 		configureFileChoosers(fileChooser, directoryChooser);
 	}
@@ -34,6 +37,10 @@ public class ControllerManager {
 	public void setChooserDirectory(File directory) {
 		fileChooser.setInitialDirectory(directory);
 		directoryChooser.setInitialDirectory(directory);
+	}
+	
+	public void execute(Command cmd) {
+		commandManager.execute(cmd);
 	}
 	
 	private static void configureFileChoosers(final FileChooser fileChooser, final DirectoryChooser directoryChooser) {

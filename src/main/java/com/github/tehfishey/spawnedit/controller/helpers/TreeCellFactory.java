@@ -1,28 +1,22 @@
 package com.github.tehfishey.spawnedit.controller.helpers;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
-import java.util.Optional;
 
 import com.github.tehfishey.spawnedit.controller.ControllerManager;
-import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory;
-import com.github.tehfishey.spawnedit.controller.dialogs.TextDialogFactory;
-import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.ExceptionType;
-import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.SaveType;
+import com.github.tehfishey.spawnedit.controller.commands.PathTreeCloseFile;
+import com.github.tehfishey.spawnedit.controller.commands.PathTreeMigrate;
+import com.github.tehfishey.spawnedit.controller.commands.PathTreeNewDirectory;
+import com.github.tehfishey.spawnedit.controller.commands.PathTreeNewFile;
+import com.github.tehfishey.spawnedit.controller.commands.PathTreeRename;
+import com.github.tehfishey.spawnedit.controller.commands.PathTreeSaveFile;
 import com.github.tehfishey.spawnedit.model.Model;
-import com.github.tehfishey.spawnedit.model.exceptions.BatchIOException;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
-import com.google.common.io.Files;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -31,7 +25,6 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.stage.DirectoryChooser;
 
 public class TreeCellFactory extends TreeCell<PathTreeNode> {
 	ControllerManager manager;
@@ -87,30 +80,10 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 	}
 	
 	private void dragDropped(DragEvent event, TreeCell<PathTreeNode> treeCell, TreeView<PathTreeNode> treeView) {
-        boolean success = false;
+        Boolean success = false;
         if (!dragboard.hasItems()) return;
         
-        TreeItem<PathTreeNode> draggedTreeItem = dragboard.getTreeItem();
-        PathTreeNode draggedModelItem = dragboard.getModelItem();
-        TreeItem<PathTreeNode> draggedItemParent = draggedTreeItem.getParent();
-        TreeItem<PathTreeNode> dropTarget = treeCell.getTreeItem();
-        
-        if (!Objects.equals(draggedItemParent, dropTarget)) {
-        	draggedItemParent.getChildren().remove(draggedTreeItem);
-        	
-        	if (dropTarget.getValue().isFile()) {
-        		int indexInParent = dropTarget.getParent().getChildren().indexOf(dropTarget);
-        		dropTarget.getParent().getChildren().add(indexInParent + 1, draggedTreeItem);
-        		draggedModelItem.migrate(dropTarget.getParent().getValue());
-        	}
-        	else {
-        		int childSize = dropTarget.getChildren().size();
-        		dropTarget.getChildren().add(childSize, draggedTreeItem);
-        		draggedModelItem.migrate(dropTarget.getValue());
-        	}
-            success = true;
-            treeView.getSelectionModel().select(draggedTreeItem);
-        }
+        manager.execute(new PathTreeMigrate(treeView, dragboard.getTreeItem(), treeCell.getTreeItem(), success));
 
         dragboard.clear();
         event.setDropCompleted(success);
@@ -118,77 +91,23 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
     }
 	
 	private void saveItem() {
-		PathTreeNode node = getItem();
-		if (node.isRoot()) return;
-		
-		DirectoryChooser directoryChooser = manager.getDirectoryChooser();
-		directoryChooser.setTitle("Save");
-		Path directory = directoryChooser.showDialog(manager.getRoot().getScene().getWindow()).toPath();
-		
-		if (directory != null)  {
-			Alert confirmation = AlertDialogFactory.saveWarningAlert(node.isDirectory() ? SaveType.SaveDirectory : SaveType.SaveFile );
-			confirmation.showAndWait();
-			
-			if (confirmation.getResult() == ButtonType.YES) {
-				try { 
-					model.getFileManager().saveFile(directory, node); 
-				} catch (BatchIOException e) {
-					Alert alert = AlertDialogFactory.saveExceptionAlert(e.getExceptedPaths(), ExceptionType.BatchIOException);
-					alert.show();
-				}
-			}
-		manager.setChooserDirectory(directory.getParent().toFile());
-		}
+		manager.execute(new PathTreeSaveFile(model, manager, getItem()));
     }
 
 	private void closeItem() {
-		Alert confirmation = AlertDialogFactory.closeWarningAlert();
-		confirmation.showAndWait();
-		if (confirmation.getResult() == ButtonType.YES)
-			model.removeSpawnPath(getTreeItem().getValue());
+		manager.execute(new PathTreeCloseFile(model, getTreeItem()));
 	}
 	
 	private void renameItem() {
-		PathTreeNode node = getItem();
-		String name = node.getLocalPath().toString();
-		if (node.isFile()) name = Files.getNameWithoutExtension(name);
-		
-		TextInputDialog dialog = TextDialogFactory.nameInputDialog(node.isDirectory(), name);
-		Optional<String> newName = dialog.showAndWait();
-		if (!newName.isEmpty()) name = newName.get();
-		if (node.isFile()) name += ".json";
-		
-		node.setLocalPath(Paths.get(name));
-		this.updateItem(node, false);
+		manager.execute(new PathTreeRename(this, getItem()));
 	}
 	
 	private void newDirectory() {
-		PathTreeNode parentNode = getTreeItem().getValue();
-		PathTreeNode newNode;
-		TreeItem<PathTreeNode> newItem;
-		
-		TextInputDialog dialog = TextDialogFactory.nameInputDialog(true, "");
-		Optional<String> name = dialog.showAndWait();
-		if (name.isEmpty()) return;
-		
-		newNode = parentNode.newChildDirectory(Paths.get(name.get()));
-		newItem = new TreeItem<PathTreeNode>(newNode);
-		newItem.setExpanded(true);
-		this.getTreeItem().getChildren().add(newItem);
+		manager.execute(new PathTreeNewDirectory(getTreeItem()));
 	}
 	
 	private void newFile() {
-		PathTreeNode parentNode = getTreeItem().getValue();
-		PathTreeNode newNode;
-		TreeItem<PathTreeNode> newItem;
-		
-		TextInputDialog dialog = TextDialogFactory.nameInputDialog(false, "");
-		Optional<String> name = dialog.showAndWait();
-		if (name.isEmpty()) return;
-		
-		newNode = parentNode.newChildFile(Paths.get(name.get() + ".json"), name.get());
-		newItem = new TreeItem<PathTreeNode>(newNode);
-		this.getTreeItem().getChildren().add(newItem);
+		manager.execute(new PathTreeNewFile(getTreeItem()));
 	}
 	
 	private ContextMenu buildContextMenu() {
