@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
-import com.github.tehfishey.spawnedit.model.objects.PathTreeNode.NodeType;
 import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 
 public class Model {
@@ -16,10 +15,10 @@ public class Model {
 	private final PathTreeNode filePathTree;	
 	
 	public Model() {
-		fileManager = new FileManager(this);
-		updateListenerSupport = new PropertyChangeSupport(this);
 		spawnEntryCache = new ArrayList<SpawnEntry>();
 		filePathTree = PathTreeNode.newPathTree();
+		fileManager = new FileManager(this);
+		updateListenerSupport = new PropertyChangeSupport(this);
 	}
 	
 	public FileManager getFileManager() { return fileManager; }
@@ -33,7 +32,7 @@ public class Model {
 		ArrayList<SpawnEntry> removalList = new ArrayList<SpawnEntry>();
 		
 		for (PathTreeNode subNode : node) {
-			if (subNode.getNodeType() == NodeType.File) {
+			if (subNode.isFile()) {
 				for (SpawnEntry entry : spawnEntryCache) {
 					if (entry.getSpawnSetId() == subNode.getFileId())
 						removalList.add(entry);

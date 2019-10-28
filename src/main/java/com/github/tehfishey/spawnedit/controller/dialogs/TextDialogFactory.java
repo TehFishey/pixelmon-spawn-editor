@@ -1,22 +1,19 @@
 package com.github.tehfishey.spawnedit.controller.dialogs;
 
-import com.github.tehfishey.spawnedit.model.objects.PathTreeNode.NodeType;
-
 import javafx.scene.control.TextInputDialog;
 
 public class TextDialogFactory {
 
 	private TextDialogFactory() {}
 	
-	public static TextInputDialog nameInputDialog(NodeType type, String defaultInput) {
+	public static TextInputDialog nameInputDialog(boolean isDirectory, String defaultInput) {
 		String title = new String();
 		String header = new String();
 		
-		if (type == NodeType.Directory) {
+		if (isDirectory) {
 			title = "Name Directory";
 			header = "Enter Directory Name";
-		}
-		else if (type == NodeType.File) {
+		} else {
 			title = "Name File";
 			header = "Enter File Name";
 		}

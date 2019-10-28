@@ -3,7 +3,6 @@ package com.github.tehfishey.spawnedit.model;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Stream;
@@ -18,18 +17,17 @@ import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
 import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
-	
-
 public class FileManager {
 	private final Model parent;
 	private final FileLoader fileLoader;
 	private final FileSaver fileSaver;
-	
+	private PathTreeNode pathTreeRoot;
 	
 	public FileManager(Model parent) {
 		this.parent = parent;
 		this.fileLoader = new FileLoader();
-		this.fileSaver = new FileSaver();		
+		this.fileSaver = new FileSaver();
+		this.pathTreeRoot = parent.getFilePathTree();
 	}
 
 	public void saveFile(Path root, PathTreeNode file) throws BatchIOException {
@@ -56,7 +54,7 @@ public class FileManager {
 	public void saveAll(Path root) throws BatchIOException {
 		ArrayList<SpawnSet> output = processSpawnEntries(parent.getSpawnEntries());
 		HashMap<Path,IOException> ioExceptions = new HashMap<Path,IOException>();
-		HashMap<String, Path> savePaths = parent.getFilePathTree().toHashMap();
+		HashMap<String, Path> savePaths = pathTreeRoot.toHashMap();
 		
 		for (SpawnSet set : output) {
 			Path pathRecord = savePaths.get(set.getSetId());
@@ -71,22 +69,21 @@ public class FileManager {
 		}
 		if (!ioExceptions.isEmpty()) throw new BatchIOException("IOExceptions occured during saving...", ioExceptions);
 	}
-	
-	
-	
+
 	public void loadFile(Path file) throws BatchIOException, BatchJsonException, BatchDuplicateIDException {
 		Path root = file.getParent();
 		try {
 			SpawnSet data = fileLoader.parse(file);
-			if (parent.getFilePathTree().containsId(data.getSetId())) {
-				DuplicateIDException e = new DuplicateIDException("Model already contains a file with id " + data.getSetId(), data.getSetId());
+			String setId = data.getSetId();
+			if (containsSetId(pathTreeRoot, setId)) {
+				DuplicateIDException e = new DuplicateIDException("Model already contains a file with id " + setId, setId);
 				HashMap<Path, DuplicateIDException> exceptedPathMap = new HashMap<Path, DuplicateIDException>();
 				exceptedPathMap.put(file,  e);
 				throw new BatchDuplicateIDException(exceptedPathMap);
 			}
 			else {
 				ArrayList<SpawnEntry> newEntries = processSpawnSet(data);
-				parent.addSpawnPath(data.getSetId(), root.relativize(file));
+				parent.addSpawnPath(setId, root.relativize(file));
 				parent.addSpawnEntries(newEntries);
 				parent.notifyListeners("fileTreeUpdated", null, null);
 			}
@@ -112,12 +109,13 @@ public class FileManager {
 				.forEach(file -> {
 					try {
 						SpawnSet data = fileLoader.parse(file);
-						if (parent.getFilePathTree().containsId(data.getSetId())) {
-							DuplicateIDException e = new DuplicateIDException(data.getSetId());
+						String setId = data.getSetId();
+						if (containsSetId(pathTreeRoot, setId)) {
+							DuplicateIDException e = new DuplicateIDException(setId);
 							idExceptions.put(file.getFileName(), e);
 						}
 						else {
-							parent.addSpawnPath(data.getSetId(), root.relativize(file));
+							parent.addSpawnPath(setId, root.relativize(file));
 							newEntries.addAll(processSpawnSet(data));
 						}
 					} catch (IOException e) {
@@ -139,11 +137,11 @@ public class FileManager {
 	
 	private ArrayList<SpawnEntry> processSpawnSet(SpawnSet data) {
 		ArrayList<SpawnEntry> newEntries = new ArrayList<SpawnEntry>();
-		String SpawnSetId = data.getSetId();
+		String setId = data.getSetId();
 		
 		for (int i = 0; i < data.getSpawnInfos().size(); i++) {
 			SpawnInfoPokemon spawnInfo = data.getSpawnInfos().get(i);
-			newEntries.add(new SpawnEntry(SpawnSetId, i, spawnInfo));
+			newEntries.add(new SpawnEntry(setId, i, spawnInfo));
 		}
 		
 		return newEntries;
@@ -172,5 +170,14 @@ public class FileManager {
 		}
 		
 		return newSets;
+	}
+
+	private boolean containsSetId(PathTreeNode tree, String setId) {
+		for (PathTreeNode node : tree) {
+			System.out.println("Comparing " + node.getFileId() + " to " + setId);
+			if ((node.isFile()) && (node.getFileId().equals(setId)))
+				return true;
+		}
+		return false;
 	}
 }

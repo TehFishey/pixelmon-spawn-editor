@@ -114,5 +114,16 @@ public class PathTreeTest {
 		assertEquals(6, subNodes.size());
 	}
 	
+	@Test
+	public void testIteratiorOnEmpty() {
+		PathTreeNode tree = PathTreeNode.newPathTree();
+		ArrayList<PathTreeNode> subNodes = new ArrayList<PathTreeNode>();
+		
+		for (PathTreeNode subNode : tree) {
+			subNodes.add(subNode);
+		}
+		
+		assertEquals(tree, subNodes.get(0));
+	}
 	
 }

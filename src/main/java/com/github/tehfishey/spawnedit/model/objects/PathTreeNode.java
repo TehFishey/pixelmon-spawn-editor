@@ -17,7 +17,7 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 	private PathTreeNode parent;
 	private ArrayList<PathTreeNode> children;
 	
-	public static enum NodeType {
+	private static enum NodeType {
 		Root,
 		Directory,
 		File
@@ -30,10 +30,7 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 	
 	public static void remove(PathTreeNode node) {
 		ArrayList<PathTreeNode> removalList = new ArrayList<PathTreeNode>();
-		
-		if (node.getNodeType() != NodeType.Root) 
-			removalList.add(node);
-		
+	
 		for (PathTreeNode subNode : node) 
 			removalList.add(subNode);
 			
@@ -41,12 +38,14 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 			removalNode.getParent().getChildren().remove(removalNode);
 	}
 	
-	public NodeType getNodeType() { return this.nodeType; }
 	public String getFileId() { return this.fileId; }
 	public PathTreeNode getParent() { return parent; }
 	public Path getLocalPath() { return localPath; }
 	public Path getAbsolutePath() { return absolutePath; }
 	public ArrayList<PathTreeNode> getChildren() { return children; }
+	public boolean isRoot() {return (nodeType == NodeType.Root); }
+	public boolean isDirectory() {return (nodeType == NodeType.Directory); }
+	public boolean isFile() {return (nodeType == NodeType.File); }
 	
 	public void setFileId(String fileId) { this.fileId = fileId; }
 	public void setLocalPath(Path localPath) {
@@ -92,9 +91,9 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 	}
 	
 	public PathTreeNode get(String fileId) {
-		if ((this.nodeType == NodeType.File) && (this.fileId == fileId)) return this;
+		if ((this.isFile()) && (this.fileId == fileId)) return this;
 		for (PathTreeNode child : children) {
-			if ((child.getNodeType() == NodeType.File) && (child.getFileId() == fileId)) {
+			if ((child.isFile()) && (child.getFileId() == fileId)) {
 				return child;
 			}
 			else {
@@ -107,25 +106,8 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 		return null;
 	}
 	
-	/*public void removeFile(String fileId) {
-		ArrayList<PathTreeNode> removalCache = new ArrayList<PathTreeNode>();
-		
-		if ((this.nodeType == NodeType.File) && (this.fileId == fileId)) 
-			this.getParent().getChildren().remove(this);
-		
-		for (PathTreeNode child : children) {
-			if ((child.nodeType == NodeType.File) && (child.getFileId() == fileId)) {
-				removalCache.add(child);
-			}
-			else if (!(child.nodeType == NodeType.File)) {
-				child.removeFile(fileId);
-			}
-		}
-		children.removeAll(removalCache);
-	} */
-	
 	public void migrate(PathTreeNode newParent) {
-		if ((nodeType != NodeType.Root) && (newParent.getNodeType() != NodeType.File)) {
+		if (!this.isRoot() && !newParent.isFile()) {
 			parent.getChildren().remove(this);
 			this.parent = newParent;
 			parent.getChildren().add(this);
@@ -133,30 +115,15 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 		}
 	}
 	
-	public boolean containsId(String fileId) {
-		if ((this.nodeType == NodeType.File) && (this.fileId == fileId)) 
-			return true;
-		for (PathTreeNode child : children) {
-			if ((child.nodeType == NodeType.File) && (child.getFileId() == fileId)) {
-				return true;
-			}
-			else if (!(child.nodeType == NodeType.File)) {
-				if (child.containsId(fileId))
-					return true;
-			}
-		}
-		return false;
-	}
-	
 	public HashMap<String, Path> toHashMap() {
 		HashMap<String, Path> output = new HashMap<String, Path>();
-		if (this.nodeType == NodeType.File) {
+		if (this.isFile()) {
 			output.put(this.fileId, this.getAbsolutePath());
 			return output;
 		}
 		else {
 			for (PathTreeNode child : children) {
-				if (child.getNodeType() == NodeType.File) 
+				if (child.isFile()) 
 					output.put(child.fileId, child.getAbsolutePath());
 				else {
 					output.putAll(child.toHashMap());
@@ -189,7 +156,6 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 
 	}
 	
-	
 	private PathTreeNode(NodeType type, Path localPath, PathTreeNode parent) {
 		this.nodeType = type;
 		this.localPath = localPath;
@@ -199,7 +165,7 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 	}
 	
 	private void updateAbsolutePaths() {
-		if (nodeType != NodeType.File) {
+		if (!this.isFile()) {
 			for (PathTreeNode child : children) {
 				child.updateAbsolutePaths();
 			}
@@ -209,7 +175,7 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 		Path absolutePath = Paths.get("");
 		
 		pathList.add(localPath);
-		if (nodeType != NodeType.Root)
+		if (!this.isRoot())
 			parent.walkPathUpwards(pathList);
 		
 		for (int i = pathList.size() - 1; i >= 0; i--)
@@ -220,7 +186,7 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 	
 	private void walkPathUpwards(ArrayList<Path> pathList) {
 		pathList.add(localPath);
-		if (nodeType != NodeType.Root)
+		if (!this.isRoot())
 			parent.walkPathUpwards(pathList);
 	}
 

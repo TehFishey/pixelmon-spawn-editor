@@ -13,7 +13,6 @@ import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.Save
 import com.github.tehfishey.spawnedit.model.Model;
 import com.github.tehfishey.spawnedit.model.exceptions.BatchIOException;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
-import com.github.tehfishey.spawnedit.model.objects.PathTreeNode.NodeType;
 import com.google.common.io.Files;
 
 import javafx.event.Event;
@@ -55,7 +54,7 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 	    // It must be initialized for the drag event to execute, so we pass it a dummy value and store the reference in a variable.
 		TreeItem<PathTreeNode> draggedTreeItem = treeCell.getTreeItem();
 		PathTreeNode draggedModelItem = draggedTreeItem.getValue();
-	    if (draggedModelItem.getNodeType() == NodeType.Root) return;
+	    if (draggedModelItem.isRoot()) return;
 
 	    Dragboard db = treeCell.startDragAndDrop(TransferMode.MOVE);
 	    ClipboardContent content = new ClipboardContent();
@@ -77,7 +76,7 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 	    
 	    if (draggedTreeItem == null || thisItem == null || thisItem == draggedTreeItem) 
 	    	return;
-	    else if (draggedTreeItem.getValue().getNodeType() == NodeType.Root) {
+	    else if (draggedTreeItem.getValue().isRoot()) {
 	    	dragboard.clear();
 	    	return;
 	    }
@@ -99,7 +98,7 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
         if (!Objects.equals(draggedItemParent, dropTarget)) {
         	draggedItemParent.getChildren().remove(draggedTreeItem);
         	
-        	if (dropTarget.getValue().getNodeType() == NodeType.File) {
+        	if (dropTarget.getValue().isFile()) {
         		int indexInParent = dropTarget.getParent().getChildren().indexOf(dropTarget);
         		dropTarget.getParent().getChildren().add(indexInParent + 1, draggedTreeItem);
         		draggedModelItem.migrate(dropTarget.getParent().getValue());
@@ -119,15 +118,15 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
     }
 	
 	private void saveItem() {
-		PathTreeNode node = getTreeItem().getValue();
-		if (node.getNodeType() == NodeType.Root) return;
+		PathTreeNode node = getItem();
+		if (node.isRoot()) return;
 		
 		DirectoryChooser directoryChooser = manager.getDirectoryChooser();
 		directoryChooser.setTitle("Save");
 		Path directory = directoryChooser.showDialog(manager.getRoot().getScene().getWindow()).toPath();
 		
 		if (directory != null)  {
-			Alert confirmation = AlertDialogFactory.saveWarningAlert(node.getNodeType() == NodeType.Directory ? SaveType.SaveDirectory : SaveType.SaveFile );
+			Alert confirmation = AlertDialogFactory.saveWarningAlert(node.isDirectory() ? SaveType.SaveDirectory : SaveType.SaveFile );
 			confirmation.showAndWait();
 			
 			if (confirmation.getResult() == ButtonType.YES) {
@@ -150,17 +149,17 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 	}
 	
 	private void renameItem() {
-		NodeType nodeType = getTreeItem().getValue().getNodeType();
-		String name = getTreeItem().getValue().getLocalPath().toString();
-		if (nodeType == NodeType.File) name = Files.getNameWithoutExtension(name);
+		PathTreeNode node = getItem();
+		String name = node.getLocalPath().toString();
+		if (node.isFile()) name = Files.getNameWithoutExtension(name);
 		
-		TextInputDialog dialog = TextDialogFactory.nameInputDialog(nodeType, name);
+		TextInputDialog dialog = TextDialogFactory.nameInputDialog(node.isDirectory(), name);
 		Optional<String> newName = dialog.showAndWait();
 		if (!newName.isEmpty()) name = newName.get();
-		if (nodeType == NodeType.File) name += ".json";
+		if (node.isFile()) name += ".json";
 		
-		getTreeItem().getValue().setLocalPath(Paths.get(name));
-		this.updateItem(getTreeItem().getValue(), false);
+		node.setLocalPath(Paths.get(name));
+		this.updateItem(node, false);
 	}
 	
 	private void newDirectory() {
@@ -168,7 +167,7 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 		PathTreeNode newNode;
 		TreeItem<PathTreeNode> newItem;
 		
-		TextInputDialog dialog = TextDialogFactory.nameInputDialog(NodeType.Directory, "");
+		TextInputDialog dialog = TextDialogFactory.nameInputDialog(true, "");
 		Optional<String> name = dialog.showAndWait();
 		if (name.isEmpty()) return;
 		
@@ -183,7 +182,7 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 		PathTreeNode newNode;
 		TreeItem<PathTreeNode> newItem;
 		
-		TextInputDialog dialog = TextDialogFactory.nameInputDialog(NodeType.File, "");
+		TextInputDialog dialog = TextDialogFactory.nameInputDialog(false, "");
 		Optional<String> name = dialog.showAndWait();
 		if (name.isEmpty()) return;
 		
@@ -192,7 +191,7 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 		this.getTreeItem().getChildren().add(newItem);
 	}
 	
-	private ContextMenu buildContextMenu(NodeType type) {
+	private ContextMenu buildContextMenu() {
 		MenuItem newDirectory = new MenuItem("Directory");
 		MenuItem newFile = new MenuItem("File");
 		MenuItem rename = new MenuItem("Rename");
@@ -216,9 +215,9 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
             public void handle(Event t) { closeItem(); }
         });
 		
-		if (type == NodeType.File)
+		if (getItem().isFile())
 			return new ContextMenu(rename, save, close);
-		else if (type == NodeType.Directory)
+		else if (getItem().isDirectory())
 			return new ContextMenu(newItem, rename, save, close);
 		else
 			return new ContextMenu(newItem);
@@ -234,13 +233,13 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 		} else {
 			setText(getString());
 			setGraphic(getTreeItem().getGraphic());
-			setContextMenu(buildContextMenu(getTreeItem().getValue().getNodeType()));
+			setContextMenu(buildContextMenu());
 		}
 	}
 
 	private String getString() {
 		if (getItem() == null) return "";
-		else if (getItem().getNodeType() == NodeType.Root) return "Directory Tree";
+		else if (getItem().isRoot()) return "Directory Tree";
 		else return getItem().getLocalPath().toString();
 	}
 }
