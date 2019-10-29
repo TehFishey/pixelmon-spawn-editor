@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
+import com.github.tehfishey.spawnedit.controller.commands.FileMenuLoadFile;
 import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory;
 import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory.ExceptionType;
 import com.github.tehfishey.spawnedit.model.Model;
@@ -34,5 +35,10 @@ public class MainController {
     	manager.setRoot(root);
     }
     
-	
+    public void undo() {
+		manager.undo();
+	}
+    public void redo() {
+		manager.undo();
+	}
 }

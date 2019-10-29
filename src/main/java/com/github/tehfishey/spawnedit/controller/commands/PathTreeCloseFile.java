@@ -1,22 +1,29 @@
 package com.github.tehfishey.spawnedit.controller.commands;
 
+import java.util.ArrayList;
+
 import com.github.tehfishey.spawnedit.controller.dialogs.AlertDialogFactory;
 import com.github.tehfishey.spawnedit.model.Model;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
+import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TreeItem;
 
 public class PathTreeCloseFile extends Command {
 
 	Model model;
-	TreeItem<PathTreeNode> item;
+	PathTreeNode item;
+	PathTreeNode itemParent;
+	Integer itemIndex;
+	ArrayList<SpawnEntry> associatedEntries;
 	
-	public PathTreeCloseFile(Model model, TreeItem<PathTreeNode> item) {
-		canUndo = false;
+	public PathTreeCloseFile(Model model, PathTreeNode item) {
+		canUndo = true;
 		this.model = model;
 		this.item = item;
+		this.itemParent = this.item.getParent();
+		this.itemIndex = itemParent.getChildren().indexOf(this.item);
 	}
 	
 	@Override
@@ -24,19 +31,22 @@ public class PathTreeCloseFile extends Command {
 		Alert confirmation = AlertDialogFactory.closeWarningAlert();
 		confirmation.showAndWait();
 		if (confirmation.getResult() == ButtonType.YES)
-			model.removeSpawnPath(item.getValue());
+			associatedEntries = model.removeSpawnPath(item);
 	}
 
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
-		
+		model.addSpawnEntries(associatedEntries);
+		itemParent.getChildren().add(itemIndex, item);
+		// LOL seriously, this is the best way you can think of to do this? What a mess.
+		model.notifyListeners("fileTreeUpdated", null, null);
 	}
 
 	@Override
 	public void redo() {
-		// TODO Auto-generated method stub
-		
+		model.removeSpawnEntries(associatedEntries);
+		itemParent.getChildren().remove(item);
+		model.notifyListeners("fileTreeUpdated", null, null);
 	}
 
 }

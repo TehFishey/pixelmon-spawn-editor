@@ -28,16 +28,6 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 		return tree;
 	}
 	
-	public static void remove(PathTreeNode node) {
-		ArrayList<PathTreeNode> removalList = new ArrayList<PathTreeNode>();
-	
-		for (PathTreeNode subNode : node) 
-			removalList.add(subNode);
-			
-		for (PathTreeNode removalNode : removalList) 
-			removalNode.getParent().getChildren().remove(removalNode);
-	}
-	
 	public String getFileId() { return this.fileId; }
 	public PathTreeNode getParent() { return parent; }
 	public Path getLocalPath() { return localPath; }
@@ -115,6 +105,22 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 		}
 	}
 	
+	public boolean contains(PathTreeNode node) {
+		if (this.equals(node)) return true;
+		
+		if (!this.isFile()) {
+			for (PathTreeNode subNode : this)
+				if (subNode.equals(node)) return true;
+		}
+		
+		return false;
+		
+	}
+	
+	public void remove() {
+		this.getParent().getChildren().remove(this);
+	}
+	
 	public HashMap<String, Path> toHashMap() {
 		HashMap<String, Path> output = new HashMap<String, Path>();
 		if (this.isFile()) {
@@ -165,12 +171,6 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 	}
 	
 	private void updateAbsolutePaths() {
-		if (!this.isFile()) {
-			for (PathTreeNode child : children) {
-				child.updateAbsolutePaths();
-			}
-		}
-		
 		ArrayList<Path> pathList = new ArrayList<Path>();
 		Path absolutePath = Paths.get("");
 		
@@ -182,6 +182,12 @@ public class PathTreeNode implements Iterable<PathTreeNode> {
 			absolutePath = absolutePath.resolve(pathList.get(i));
 		
 		this.absolutePath = absolutePath;
+		
+		if (!this.isFile()) {
+			for (PathTreeNode child : children) {
+				child.updateAbsolutePaths();
+			}
+		}
 	}
 	
 	private void walkPathUpwards(ArrayList<Path> pathList) {

@@ -18,6 +18,7 @@ public class PathTreeMigrate extends Command {
 	Boolean success;
 	
 	public PathTreeMigrate(TreeView<PathTreeNode> treeView, TreeItem<PathTreeNode> draggedItem, TreeItem<PathTreeNode> dropTarget, Boolean success) {
+		canUndo = true;
 		this.treeView = treeView;
 		this.draggedItem = draggedItem;
 		this.oldParent = draggedItem.getParent();
@@ -41,7 +42,7 @@ public class PathTreeMigrate extends Command {
         	}
         	else {
         		newIndex = newParent.getChildren().size();
-        		newParent.getChildren().add(oldIndex, draggedItem);
+        		newParent.getChildren().add(newIndex, draggedItem);
         		draggedModelItem.migrate(newParent.getValue());
         	}
             success = true;

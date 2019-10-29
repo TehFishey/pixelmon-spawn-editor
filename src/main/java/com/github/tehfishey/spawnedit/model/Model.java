@@ -28,7 +28,7 @@ public class Model {
 	public void addSpawnPath(String key, Path path) {
 		this.filePathTree.put(path, key);
 	}
-	public void removeSpawnPath(PathTreeNode node) {
+	public ArrayList<SpawnEntry> removeSpawnPath(PathTreeNode node) {
 		ArrayList<SpawnEntry> removalList = new ArrayList<SpawnEntry>();
 		
 		for (PathTreeNode subNode : node) {
@@ -40,9 +40,10 @@ public class Model {
 			}
 		}
 
-		PathTreeNode.remove(node);
+		node.remove();
 		this.removeSpawnEntries(removalList);
 		notifyListeners("fileTreeUpdated", null, null);
+		return removalList;
 	}
 	
 	public void addSpawnEntries(ArrayList<SpawnEntry> spawnEntries) { 

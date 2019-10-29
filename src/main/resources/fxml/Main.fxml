@@ -15,6 +15,12 @@
               <menus>
 				<fx:include fx:id="fileMenu" source="FileMenu.fxml" />
                 <fx:include fx:id="columnsMenu" source="ColumnsMenu.fxml" />
+                  <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                      <MenuItem fx:id="menuUndo" onAction="#undo" mnemonicParsing="false" text="Undo" />
+                      <MenuItem fx:id="menuRedo" onAction="#redo" mnemonicParsing="false" text="Redo" />
+                    </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />

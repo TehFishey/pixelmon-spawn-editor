@@ -39,9 +39,9 @@ public class ControllerManager {
 		directoryChooser.setInitialDirectory(directory);
 	}
 	
-	public void execute(Command cmd) {
-		commandManager.execute(cmd);
-	}
+	public void execute(Command cmd) { commandManager.execute(cmd); }
+	public void undo() { commandManager.executeUndo(); }
+	public void redo() { commandManager.executeRedo(); }
 	
 	private static void configureFileChoosers(final FileChooser fileChooser, final DirectoryChooser directoryChooser) {
 	       fileChooser.setInitialDirectory( new File(System.getProperty("user.home"))); 

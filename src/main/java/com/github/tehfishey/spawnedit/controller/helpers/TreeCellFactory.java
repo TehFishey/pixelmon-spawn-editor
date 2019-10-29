@@ -80,11 +80,13 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
 	}
 	
 	private void dragDropped(DragEvent event, TreeCell<PathTreeNode> treeCell, TreeView<PathTreeNode> treeView) {
-        Boolean success = false;
+		
+		Boolean success = false;
         if (!dragboard.hasItems()) return;
         
-        manager.execute(new PathTreeMigrate(treeView, dragboard.getTreeItem(), treeCell.getTreeItem(), success));
-
+        if (!dragboard.getModelItem().contains(treeCell.getItem()))
+        	manager.execute(new PathTreeMigrate(treeView, dragboard.getTreeItem(), treeCell.getTreeItem(), success));
+        
         dragboard.clear();
         event.setDropCompleted(success);
         event.consume();
@@ -95,7 +97,7 @@ public class TreeCellFactory extends TreeCell<PathTreeNode> {
     }
 
 	private void closeItem() {
-		manager.execute(new PathTreeCloseFile(model, getTreeItem()));
+		manager.execute(new PathTreeCloseFile(model, getItem()));
 	}
 	
 	private void renameItem() {

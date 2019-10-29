@@ -115,15 +115,14 @@ public class PathTreeTest {
 	}
 	
 	@Test
-	public void testIteratiorOnEmpty() {
+	public void testContains() {
 		PathTreeNode tree = PathTreeNode.newPathTree();
-		ArrayList<PathTreeNode> subNodes = new ArrayList<PathTreeNode>();
+		tree.put(Paths.get("foo/belly/bar.file"), "bar");
 		
-		for (PathTreeNode subNode : tree) {
-			subNodes.add(subNode);
-		}
+		PathTreeNode fooNode = tree.getChildren().get(0);
+		PathTreeNode barNode = fooNode.getChildren().get(0).getChildren().get(0);
 		
-		assertEquals(tree, subNodes.get(0));
+		assertEquals(true, fooNode.contains(barNode));
 	}
 	
 }

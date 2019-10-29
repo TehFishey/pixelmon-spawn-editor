@@ -1,40 +1,34 @@
 package com.github.tehfishey.spawnedit.controller;
 
-import java.util.Stack;
-
 import com.github.tehfishey.spawnedit.controller.commands.Command;
+import com.google.common.collect.EvictingQueue;
 
 public class CommandManager {
-	private Stack<Command> undoStack;
-	private Stack<Command> redoStack;
+	private EvictingQueue<Command> undoStack;
+	private EvictingQueue<Command> redoStack;
 	
 	public CommandManager() {
-		this.undoStack = new Stack<Command>();
-		this.redoStack = new Stack<Command>();
+		this.undoStack = EvictingQueue.create(15);
+		this.redoStack = EvictingQueue.create(15);
 	}
 	
 	public void execute(Command cmd) {
 		cmd.execute();
-		
+		redoStack.clear();
 		if (cmd.canUndo()) undoStack.add(cmd);
-		else { 
-			undoStack.clear(); 
-			redoStack.clear();
-		}
 	}
 	
 	public void executeUndo() {
 		if (undoStack.isEmpty()) return;
-		Command cmd = undoStack.get(undoStack.size()-1);
+		Command cmd = undoStack.remove();
 		
 		cmd.undo();
-		undoStack.remove(cmd);
 		redoStack.add(cmd);
 	}
 	
 	public void executeRedo() {
 		if (redoStack.isEmpty()) return;
-		Command cmd = redoStack.get(redoStack.size()-1);
+		Command cmd = redoStack.remove();
 		
 		cmd.undo();
 		redoStack.remove(cmd);

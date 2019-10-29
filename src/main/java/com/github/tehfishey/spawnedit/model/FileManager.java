@@ -174,7 +174,6 @@ public class FileManager {
 
 	private boolean containsSetId(PathTreeNode tree, String setId) {
 		for (PathTreeNode node : tree) {
-			System.out.println("Comparing " + node.getFileId() + " to " + setId);
 			if ((node.isFile()) && (node.getFileId().equals(setId)))
 				return true;
 		}
