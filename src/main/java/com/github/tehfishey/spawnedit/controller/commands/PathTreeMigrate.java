@@ -66,6 +66,7 @@ public class PathTreeMigrate extends Command {
 		oldParent.getChildren().remove(draggedItem);
 		newParent.getChildren().add(newIndex, draggedItem);
 		draggedModelItem.migrate(newParent.getValue());
+		System.out.println("redo: moving " + draggedItem.getValue().toString() + " from " + oldParent.getValue().toString() + " to " + newParent.getValue().toString()); 
 	}
 
 }

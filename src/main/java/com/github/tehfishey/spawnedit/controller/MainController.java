@@ -39,6 +39,6 @@ public class MainController {
 		manager.undo();
 	}
     public void redo() {
-		manager.undo();
+		manager.redo();
 	}
 }

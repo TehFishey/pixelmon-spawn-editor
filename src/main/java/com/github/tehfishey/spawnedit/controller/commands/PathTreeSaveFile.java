@@ -23,6 +23,7 @@ public class PathTreeSaveFile extends Command {
 	public PathTreeSaveFile(Model model, ControllerManager manager, PathTreeNode node) {
 		canUndo = false;
 		this.model = model;
+		this.manager = manager;
 		this.node = node;
 	}
 	

@@ -1,37 +1,59 @@
 package com.github.tehfishey.spawnedit.controller;
 
+import java.util.ArrayDeque;
+
 import com.github.tehfishey.spawnedit.controller.commands.Command;
-import com.google.common.collect.EvictingQueue;
 
 public class CommandManager {
-	private EvictingQueue<Command> undoStack;
-	private EvictingQueue<Command> redoStack;
+	private LimitedStack<Command> undoStack;
+	private LimitedStack<Command> redoStack;
 	
 	public CommandManager() {
-		this.undoStack = EvictingQueue.create(15);
-		this.redoStack = EvictingQueue.create(15);
+		this.undoStack = new LimitedStack<Command>(15);
+		this.redoStack = new LimitedStack<Command>(15);
 	}
 	
 	public void execute(Command cmd) {
 		cmd.execute();
 		redoStack.clear();
-		if (cmd.canUndo()) undoStack.add(cmd);
+		if (cmd.canUndo()) undoStack.addLast(cmd);
 	}
 	
 	public void executeUndo() {
 		if (undoStack.isEmpty()) return;
-		Command cmd = undoStack.remove();
+		Command cmd = undoStack.removeLast();
 		
 		cmd.undo();
-		redoStack.add(cmd);
+		redoStack.addLast(cmd);
 	}
 	
 	public void executeRedo() {
 		if (redoStack.isEmpty()) return;
-		Command cmd = redoStack.remove();
+		Command cmd = redoStack.removeLast();
 		
-		cmd.undo();
-		redoStack.remove(cmd);
-		undoStack.add(cmd);
+		cmd.redo();
+		undoStack.addLast(cmd);
+	}
+	
+	private class LimitedStack<E> extends ArrayDeque<E> {
+		private final int maxSize;
+		
+		public LimitedStack(int size) {
+			maxSize = size;
+		}
+
+		@Override
+		public void addLast(E e) {
+			if (this.size() >= maxSize) this.removeFirst();
+			super.addLast(e);
+		}
+		
+		@Override
+		public boolean offerLast(E e) {
+			if (this.size() >= maxSize) this.removeFirst();
+			return super.offerLast(e);
+		}
+		
+		
 	}
 }
