@@ -11,6 +11,13 @@ import java.util.ResourceBundle;
 import com.github.tehfishey.spawnedit.model.Model;
 import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Gender;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Growth;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Nature;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.PokeRusType;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Temperature;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Time;
+import com.github.tehfishey.spawnedit.pixelmon.Enums.Weather;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,84 +36,91 @@ public class MainTableController implements Initializable {
 	private final ControllerManager manager;
 	private final Model model;
 	private final PropertyChangeListener modelListener;
-	private HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, String>> columnMap;
+	private HashMap<ColumnId, TableColumn<?,?>> columnMap;
+	
+	private HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, String>> stringColumns;
+	private HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, Integer>> integerColumns;
+	private HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, Boolean>> booleanColumns;
+	private HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, Float>> floatColumns;
+	private HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, Object>> enumColumns;
+	private HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, Object>> classColumns;
 	private final ObservableList<HashMap<ColumnId, Object>> dataList;
 	
 	@FXML private TableView<HashMap<ColumnId, Object>> tableView;
 	
 	@FXML private TableColumn<HashMap<ColumnId, Object>, String> spawnSetId;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> spawnSetIndex;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> spawnSetIndex;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecSpecies;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecLevel;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecGender;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> pokemonSpecLevel;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Gender> pokemonSpecGender;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecStatus;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecGrowthSize;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecNature;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecFormId;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecPokeRusStage;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecRandom;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecCured;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecShiny;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecEgg;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecUntradeable;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecUnbreedable;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecIVStats;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecEVStats;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> pokemonSpecs;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Growth> pokemonSpecGrowthSize;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Nature> pokemonSpecNature;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> pokemonSpecFormId;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, PokeRusType> pokemonSpecPokeRusStage;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Boolean> pokemonSpecRandom;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Boolean> pokemonSpecCured;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Boolean> pokemonSpecShiny;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Boolean> pokemonSpecEgg;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Boolean> pokemonSpecUntradeable;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Boolean> pokemonSpecUnbreedable;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, ?> pokemonSpecIVStats;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, ?> pokemonSpecEVStats;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, ?> pokemonSpecs;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> spawnType;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> intervalType;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> requiredSpace;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionTime;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionWeather;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionBiome;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionTemperature;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionWorld;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionDimension;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Time> conditionTime;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Weather> conditionWeather;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, ?> conditionBiome;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Temperature> conditionTemperature;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionWorld;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionDimension;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionRequiredBlock;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionNearbyBlock;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionVariant;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionMinX;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionMaxX;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionMinZ;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionMaxZ;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionMinY;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionMaxY;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionMinLight;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionMaxLight;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionRequiresSky;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionMoonPhase;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionMinX;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionMaxX;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionMinZ;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionMaxZ;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionMinY;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionMaxY;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionMinLight;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionMaxLight;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Boolean> conditionRequiresSky;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> conditionMoonPhase;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> conditionTag;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionTime;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionWeather;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionBiome;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionTemperature;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionWorld;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionDimension;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Time> antiConditionTime;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Weather> antiConditionWeather;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, ?> antiConditionBiome;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Temperature> antiConditionTemperature;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionWorld;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionDimension;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionRequiredBlock;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionNearbyBlock;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionVariant;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionMinX;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionMaxX;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionMinZ;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionMaxZ;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionMinY;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionMaxY;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionMinLight;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionMaxLight;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionRequiresSky;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionMoonPhase;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionMinX;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionMaxX;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionMinZ;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionMaxZ;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionMinY;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionMaxY;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionMinLight;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionMaxLight;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Boolean> antiConditionRequiresSky;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> antiConditionMoonPhase;
     @FXML private TableColumn<HashMap<ColumnId, Object>, String> antiConditionTag;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> compositeConditionConditions;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> compositeConditionAntiConditions;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> rarity;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> rarityMultipliers;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> percentage;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> minLevel;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> maxLevel;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> specificShinyRate;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> specificBossRate;
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> specificPokeRusRate;    
-    @FXML private TableColumn<HashMap<ColumnId, Object>, String> heldItems; 
+    @FXML private TableColumn<HashMap<ColumnId, Object>, ?> compositeConditionConditions;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, ?> compositeConditionAntiConditions;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Float> rarity;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, ?> rarityMultipliers;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Float> percentage;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> minLevel;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Integer> maxLevel;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Float> specificShinyRate;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Float> specificBossRate;
+    @FXML private TableColumn<HashMap<ColumnId, Object>, Float> specificPokeRusRate;    
+    @FXML private TableColumn<HashMap<ColumnId, Object>, ?> heldItems; 
     
     public MainTableController(ControllerManager manager, Model model) {
         this.manager = manager;
@@ -140,6 +154,7 @@ public class MainTableController implements Initializable {
 		spawnSetId.setCellValueFactory(new MapValueFactory("spawnSetId"));
 		spawnSetIndex.setCellValueFactory(new MapValueFactory("spawnSetIndex"));
 		
+		/*
 		for (Entry<ColumnId, TableColumn<HashMap<ColumnId, Object>, String>> entry : columnMap.entrySet()) {
 			TableColumn<HashMap<ColumnId, Object>, String> column = entry.getValue();
 			ColumnId id = entry.getKey();
@@ -148,11 +163,12 @@ public class MainTableController implements Initializable {
 			column.setCellValueFactory(new MapValueFactory(id));
 			column.setCellFactory(getStringCellFactory());
 			
-		}	
+		}
+		*/	
 	}
 
-	private Callback<TableColumn<HashMap<ColumnId, Object>, String>, TableCell<HashMap<ColumnId, Object>, String>> getStringCellFactory() {
-		return new Callback<TableColumn<HashMap<ColumnId, Object>, String>, TableCell<HashMap<ColumnId, Object>, String>>() {
+	private Callback<TableColumn<HashMap<ColumnId, Object>, Object>, TableCell<HashMap<ColumnId, Object>, Object>> getStringCellFactory() {
+		return new Callback<TableColumn<HashMap<ColumnId, Object>, Object>, TableCell<HashMap<ColumnId, Object>, Object>>() {
             @SuppressWarnings({ "rawtypes", "unchecked" })
 			@Override
             public TableCell call(TableColumn p) {
@@ -207,8 +223,9 @@ public class MainTableController implements Initializable {
 		dataList.removeAll(allTableEntries);
 	}
 	
-	private HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, String>> mapColumns() {
-		HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, String>> newMap = new HashMap<ColumnId, TableColumn<HashMap<ColumnId, Object>, String>>();
+
+	private HashMap<ColumnId, TableColumn<?, ?>> mapColumns() {
+		HashMap<ColumnId, TableColumn<?, ?>> newMap = new HashMap<ColumnId, TableColumn<?, ?>>();
 	
 		newMap.put(ColumnId.spawnSetId, spawnSetId);
 		newMap.put(ColumnId.spawnSetIndex, spawnSetIndex);
@@ -286,4 +303,5 @@ public class MainTableController implements Initializable {
 
 		return newMap;
 	}
+
 }
