@@ -11,6 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+	// JavaFX application initiator. Instantiates the primary Model and Controller classes, and ties the 
+	// 'View' to the main .fxml file.
+
 public class Main extends Application {
 	
     public static void main(String[] args) {

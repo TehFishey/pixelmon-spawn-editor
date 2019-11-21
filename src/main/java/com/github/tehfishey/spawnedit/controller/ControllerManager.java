@@ -12,6 +12,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
+	// Controller "meta-class" that's responsible for communication between controller classes and which contains
+	// "global"/shared resources/objects (including the command manager, JavaFX fileChooser/directoryChooser, and a
+	// hashmap that tracks table column visibility). 
+
+	// Kinda a messy, catch-all, iceberg class right now, but I'm not sure how else to do all of this, especially without
+	// singletons.
+
 public class ControllerManager {
 
 	private final HashMap<ColumnId, BooleanProperty> visibleColumns;

@@ -7,6 +7,11 @@ import com.github.tehfishey.spawnedit.pixelmon.Enums.Growth;
 import com.github.tehfishey.spawnedit.pixelmon.Enums.Nature;
 import com.github.tehfishey.spawnedit.pixelmon.Enums.PokeRusType;
 
+	// Approximate representation of Pixelmon's PokemonSpec class.
+	// Some elements currently nonexistant/not tracked until I work out logic for how they will be handled in the utility.
+	// Used for modeling spawn data.
+
+
 public class PokemonSpec {
 	
 	String name;

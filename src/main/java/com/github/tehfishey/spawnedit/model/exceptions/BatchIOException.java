@@ -5,6 +5,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+	// Batch exception for passing to the FileManager method caller when multiple
+	// IOExceptions are raised during a single file/directory loading operation.
+
 public class BatchIOException extends Exception {
 	private static final long serialVersionUID = 1L;
 	final HashMap<Path, IOException> exceptedFilePathsMap;

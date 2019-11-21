@@ -14,6 +14,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.DirectoryChooser;
 
+	// Command which saves a specified node (object or directory) from the model's/controller's 
+	// virtual path tree to a location. Called from TreeCellFactory. 
+
+	// Because this command interacts with the file system, it cannot be undone.
+
 public class PathTreeSaveFile extends Command {
 
 	Model model;

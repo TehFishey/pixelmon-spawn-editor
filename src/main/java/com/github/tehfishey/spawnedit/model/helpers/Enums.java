@@ -1,5 +1,9 @@
 package com.github.tehfishey.spawnedit.model.helpers;
 
+	// Enums for each data field contained in SpawnEntries, which are used by the Controller when generating
+	// TableEntries. This class should be moved to the Controller, but first I need to update the SpawnEntry class 
+	// to work without tracking its own TableEntries (Table entries should be an element of the controller, not the model).
+
 public class Enums {
 	private Enums() {}
 	

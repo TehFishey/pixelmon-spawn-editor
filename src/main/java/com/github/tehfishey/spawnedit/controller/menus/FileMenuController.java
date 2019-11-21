@@ -10,6 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 
+	// Controller for elements in the FileMenu.fxml file.
+	// Manages general FileManager save and load commands.
+
 public class FileMenuController {
 	
 	private final ControllerManager manager;

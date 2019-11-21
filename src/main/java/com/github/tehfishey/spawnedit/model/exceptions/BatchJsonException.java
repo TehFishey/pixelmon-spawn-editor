@@ -6,6 +6,9 @@ import java.util.HashMap;
 
 import com.google.gson.JsonParseException;
 
+	// Batch exception for passing to the FileManager method caller when multiple
+	// JsonParseExceptions are raised during a single file/directory loading operation.
+
 public class BatchJsonException extends Exception {
 	private static final long serialVersionUID = 1L;
 	final HashMap<Path, JsonParseException> exceptedFilePathsMap;

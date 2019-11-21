@@ -1,5 +1,8 @@
 package com.github.tehfishey.spawnedit.pixelmon;
 
+	// Approximate representation of Pixelmon's ItemStack class.
+	// Used for modeling spawn data.
+
 public class ItemStack {
 	String itemID;
 	Integer quantity;

@@ -9,6 +9,9 @@ import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeItem;
 
+	// Command which creates a new directory node at a specified spot in the 
+	// model's/controller's virtual path tree. Called from TreeCellFactory.
+
 public class PathTreeNewDirectory extends Command {
 	TreeItem<PathTreeNode> parentItem;
 	TreeItem<PathTreeNode> newItem;

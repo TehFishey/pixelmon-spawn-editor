@@ -2,6 +2,9 @@ package com.github.tehfishey.spawnedit.pixelmon;
 
 import java.util.ArrayList;
 
+	// 'Super-object' that's meant to represent all spawn data contained in a single .json file.
+	// Used for modeling spawn data.
+
 public class SpawnSet {
 	String id;
 	ArrayList<SpawnInfoPokemon> spawnInfos;

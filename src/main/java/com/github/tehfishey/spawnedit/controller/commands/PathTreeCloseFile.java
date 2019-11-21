@@ -10,6 +10,9 @@ import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+	// Command which closes/removes a specified node (file or directory) from the model's/controller's
+	// virtual path tree. Called from TreeCellFactory.
+
 public class PathTreeCloseFile extends Command {
 
 	Model model;

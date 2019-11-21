@@ -14,6 +14,11 @@ import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 	
+	// Controller for elements in the MainTree.fxml file.
+	// Governs the GUI for viewing & manipulating the model's virtual path tree. Individual tree entries (and their respective Commands)
+	// are instantiated in the TreeCellFactory helper class. Maintains a custom 'dragboard' to facilitate cut/paste (migration) operations
+	// within the tree, as well as references to the Model and ControllerManager and a listener that tracks path updates in the Model.
+
 public class MainTreeController {
 	private final Model model;
 	private final ControllerManager manager;
