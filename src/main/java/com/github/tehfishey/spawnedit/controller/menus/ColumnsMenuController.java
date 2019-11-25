@@ -10,6 +10,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 
+	// Controller for elements in the ColumnsMenu.fxml file. 
+	// Manages toggle switches for showing/hiding columns in MainTableController. Switches
+	// are coordinated between these classes via the ControllerManager.
+
 public class ColumnsMenuController {
 	
 	private final ControllerManager manager;

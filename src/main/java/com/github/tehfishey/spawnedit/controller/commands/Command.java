@@ -1,5 +1,7 @@
 package com.github.tehfishey.spawnedit.controller.commands;
 
+	// Abstract Command class. 
+
 public abstract class Command {
 	protected boolean canUndo;
 	

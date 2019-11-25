@@ -13,6 +13,12 @@ import com.github.tehfishey.spawnedit.model.exceptions.BatchJsonException;
 import javafx.scene.control.Alert;
 import javafx.stage.DirectoryChooser;
 
+	// Loads SpawnEntries/PathTreeNodes from all .json files in a user-selected directory into the Model, 
+	// throwing various exceptions when they arise. Called from FileMenuController.
+
+	// Because this command interacts with the file system, it cannot be undone.
+
+
 public class FileMenuLoadDirectory extends Command {
 
 	Model model;

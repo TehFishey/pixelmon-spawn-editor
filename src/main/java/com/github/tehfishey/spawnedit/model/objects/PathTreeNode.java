@@ -9,6 +9,11 @@ import java.util.Iterator;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
+	// A tree-style domain object that's used to model a virtual directory-path structure within the Model.
+	// Each tree node can be associated with either the Model's root, a directory, or a Pixelmon .json data file. File
+	// associations are tracked using the same fileId strings used by the Model itself. Methods allow for addition, removal, 
+	// and migration of files/directories/tree nodes, as well as iteration and HashMap conversion, which facilities saving/loading operations.
+
 public class PathTreeNode implements Iterable<PathTreeNode> {
 	private final NodeType nodeType;
 	private String fileId;

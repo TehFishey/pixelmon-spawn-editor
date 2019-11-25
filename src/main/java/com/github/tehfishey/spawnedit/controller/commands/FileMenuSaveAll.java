@@ -13,6 +13,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.DirectoryChooser;
 
+	// Command which saves all SpawnEntries currently in the Model to their respective paths
+	// in the model's virtual path tree, with a specified root directory. Called from FileMenuController.
+	
+	// Because this command interacts with the file system, it cannot be undone.
+
 public class FileMenuSaveAll extends Command {
 
 	Model model;

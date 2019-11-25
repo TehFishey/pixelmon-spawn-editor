@@ -1,5 +1,8 @@
 package com.github.tehfishey.spawnedit.pixelmon;
 
+	// Approximate representation of Pixelmon's SpawnInfo class.
+	// Used for modeling spawn data.
+
 public class SpawnInfo {
 	String typeID;
 	String interval;

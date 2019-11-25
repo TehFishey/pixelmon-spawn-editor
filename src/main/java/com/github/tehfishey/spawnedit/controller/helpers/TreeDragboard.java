@@ -4,6 +4,8 @@ import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
 
 import javafx.scene.control.TreeItem;
 
+	// Custom/dummy 'Dragboard' object which helps facilitate drag & drop events in the main TreeView.
+	
 public class TreeDragboard {
 	TreeItem<PathTreeNode> draggedTreeItem;
 	PathTreeNode draggedModelItem;

@@ -1,5 +1,8 @@
 package com.github.tehfishey.spawnedit.pixelmon;
 
+	// Approximate representation of Pixelmon's RarityMultiplier class.
+	// Used for modeling spawn data.
+
 public class RarityMultiplier {
 	Float multiplier;
 	Condition condition;

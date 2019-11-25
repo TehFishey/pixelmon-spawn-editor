@@ -31,6 +31,15 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
+	// Controller for elements in the MainTable.fxml file.
+	// Generates, contains, and displays all cell value data associated with the model's SpawnEntries/TableEntry HashMaps.
+	// (Because of the large number of columns/data fields, TableColumns draw info from HashMaps instead of a purpose-built
+	// data class - having 70+ getters/setters would be insane, right? I might change this later?)
+
+	// Really, this class is just a mess. Cell values/properties are stored as Strings rather than their respective object types.
+	// It's impossible to edit cell values, and it's non-trivial to implement methods for doing so that would actually update the 
+	// model. I have no idea what I'm doing in JavaFx and am very, very sad :(
+
 public class MainTableController implements Initializable {
 	
 	private final ControllerManager manager;

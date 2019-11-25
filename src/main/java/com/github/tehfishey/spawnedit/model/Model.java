@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
 import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 
+	// Primary data model class; its purpose is to track and store all data objects which are 
+	// currently being manipulated by the program. Contains a single FileManager component which handles
+	// reading/writing operations. Maintains an array of SpawnEntry objects (which each represent a single Pixelmon
+	// SpawnInfo), and virtual file path in the form of a single path tree (which tracks what data belongs where). 
+	// Also registers/maintains listeners, which are notified when data is updated.
+
 public class Model {
 	private final FileManager fileManager;
 	private final PropertyChangeSupport updateListenerSupport;

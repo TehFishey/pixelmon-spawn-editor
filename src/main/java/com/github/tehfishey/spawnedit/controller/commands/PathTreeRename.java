@@ -10,6 +10,9 @@ import com.google.common.io.Files;
 
 import javafx.scene.control.TextInputDialog;
 
+	// Command which renames a specified node (file or directory) in the model's/controller's 
+	// virtual path tree. Called from TreeCellFactory.
+
 public class PathTreeRename extends Command {
 	PathTreeNode node;
 	TreeCellFactory cell;

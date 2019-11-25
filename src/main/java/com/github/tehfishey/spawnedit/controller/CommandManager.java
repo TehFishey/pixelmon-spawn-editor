@@ -4,6 +4,9 @@ import java.util.ArrayDeque;
 
 import com.github.tehfishey.spawnedit.controller.commands.Command;
 
+	// Compoment of the ControllerManager which manages stacks of Command classes; governs 
+	// undo and redo operations for all controller classes.
+
 public class CommandManager {
 	private LimitedStack<Command> undoStack;
 	private LimitedStack<Command> redoStack;

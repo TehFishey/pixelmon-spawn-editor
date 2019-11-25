@@ -1,5 +1,8 @@
 package com.github.tehfishey.spawnedit.pixelmon;
 
+	// Class which mirrors Pixelmon's json serialization for extra spec values/keys.
+	// Used for modeling spawn data.
+
 public class ExtraSpecValue {
 	String key;
 	String value;

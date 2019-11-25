@@ -2,6 +2,8 @@ package com.github.tehfishey.spawnedit.controller.dialogs;
 
 import javafx.scene.control.TextInputDialog;
 
+	// Utility class for building various dialogs which prompt the user to input text.
+
 public class TextDialogFactory {
 
 	private TextDialogFactory() {}

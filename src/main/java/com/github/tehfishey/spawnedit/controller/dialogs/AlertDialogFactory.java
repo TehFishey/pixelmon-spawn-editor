@@ -7,6 +7,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
+	// Utility class for building various Alert/warning dialogs.
+
 public class AlertDialogFactory {
 	
 	private AlertDialogFactory() {}

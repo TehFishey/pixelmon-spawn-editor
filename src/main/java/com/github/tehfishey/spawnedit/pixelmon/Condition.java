@@ -4,6 +4,9 @@ import com.github.tehfishey.spawnedit.pixelmon.Enums.Temperature;
 import com.github.tehfishey.spawnedit.pixelmon.Enums.Time;
 import com.github.tehfishey.spawnedit.pixelmon.Enums.Weather;
 
+	// Approximate representation of Pixelmon's Condition class.
+	// Used for modeling spawn data.
+
 public class Condition {
 	
 	Time times[];

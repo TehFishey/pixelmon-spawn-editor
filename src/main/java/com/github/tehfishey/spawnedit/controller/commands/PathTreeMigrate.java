@@ -7,6 +7,9 @@ import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
+	// Command which migrates a specified node (file or directory) in the model's/controller's virtual 
+	// path tree to a specified new parent. Called from TreeCellFactory.
+
 public class PathTreeMigrate extends Command {
 
 	TreeView<PathTreeNode> treeView;

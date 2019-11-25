@@ -9,6 +9,9 @@ import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeItem;
 
+	//Command which renames a specified node (file or directory) in the model's/controller's 
+	// virtual path tree. Called from TreeCellFactory.
+
 public class PathTreeNewFile extends Command {
 	TreeItem<PathTreeNode> parentItem;
 	TreeItem<PathTreeNode> newItem;

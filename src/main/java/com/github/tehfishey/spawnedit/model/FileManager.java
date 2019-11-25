@@ -17,6 +17,11 @@ import com.github.tehfishey.spawnedit.model.objects.PathTreeNode;
 import com.github.tehfishey.spawnedit.model.objects.SpawnEntry;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
+	// Component of the Model responsible for all file operations. Loads .json files, converts their contents
+	// domain data objects, and does the reverse when saving. This class's methods are typically called directly
+	// by the controller when loading & saving operations are to be initiated. When exceptions are caught on loading/saving,
+	// they are consolidated into single "batch" exceptions before being passed back to the controller or method caller.
+
 public class FileManager {
 	private final Model parent;
 	private final FileLoader fileLoader;

@@ -8,6 +8,10 @@ import com.github.tehfishey.spawnedit.pixelmon.SpawnSet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+	// Component of the FileManager class. Responsible for writing .json files from SpawnSet
+	// objects, which mirror Pixelmon's data structures. Conversion of internal domain objects
+	// to SpawnSets is done in the FileManager.
+
 public class FileSaver {
 
 	private Gson printer;

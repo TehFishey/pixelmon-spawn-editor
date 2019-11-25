@@ -8,8 +8,8 @@ import com.github.tehfishey.spawnedit.model.helpers.Enums.ColumnId;
 import com.github.tehfishey.spawnedit.pixelmon.SpawnInfoPokemon;
 
 	// Model's primary domain object type. SpawnEntry serves as a wrapper for SpawnInfo objects, which 
-	// inherit their structure from Pixelmon's data files. Additional fields track which data file the 
-	// wrapped SpawnInfo came from, and its index within that file.
+	// inherit their structure from Pixelmon's data files. Additional fields track which SpawnSet the 
+	// wrapped SpawnInfo came from, and its index within that object/file.
 
 public class SpawnEntry {
 

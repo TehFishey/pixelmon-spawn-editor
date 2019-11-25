@@ -1,7 +1,5 @@
 package com.github.tehfishey.spawnedit.controller.helpers;
 
-import java.util.Objects;
-
 import com.github.tehfishey.spawnedit.controller.ControllerManager;
 import com.github.tehfishey.spawnedit.controller.commands.PathTreeCloseFile;
 import com.github.tehfishey.spawnedit.controller.commands.PathTreeMigrate;
@@ -25,6 +23,9 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+
+	// Utility class for creating entries in the controller's directory TreeView. Manages drag & drop events,
+	// as well as Command executions from each TreeCell's context menu.
 
 public class TreeCellFactory extends TreeCell<PathTreeNode> {
 	ControllerManager manager;
